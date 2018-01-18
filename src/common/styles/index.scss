@@ -1,6 +1,46 @@
 @import './reset.scss';
 @import './variables.scss';
 body {
-    background: #fff;
+    background: $border-color;
     color: $font-color-n;
+    font-size: $font-size-n;
+}
+
+.title {
+    padding: 25px 0;
+    font-weight: bold;
+    color: $font-color-d;
+    font-size: $font-size-ll;
+}
+
+.content-sum {
+    font-size: $font-size-n;
+    margin-top: 15px;
+    background-color: #fff;
+}
+
+.content {
+    margin: 0 22px;
+    padding-bottom: 25px;
+}
+
+.content-table {
+    width: 100%;
+    font-size: $font-size-n;
+    tr {
+        &:first-child {
+            background-color: $nav-bg-color;
+            font-size: $font-size-l;
+        }
+        td {
+            padding: 24px 0;
+        }
+    }
+}
+
+.source {
+    color: $font-color-s;
+    span:first-child {
+        padding-right: 30px;
+    }
 }

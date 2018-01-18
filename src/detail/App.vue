@@ -7,7 +7,56 @@
 					{{nav}}
 				</li>
 			</ul>
-			<div id="myChart" :style="{width: '100%',height: '320px'}"></div>
+			<div :style="{position:'relative',width: '100%',height: '250px'}">
+				<div id="myChart" :style="{width: '100%',height: '300px', position: 'absolute', top: '-40px',left: '0', zIndex:'1'}"></div>
+			</div>
+			<div class="income-change">
+				<ul class="clearfix">
+					<li>本基金<span>0.17%</span></li>
+					<li>同类平均<span>0.21%</span></li>
+					<li>同类排名<span>4/50</span></li>
+				</ul>
+			</div>
+			<div class="income-info">
+				<table>
+					<tr>
+						<td width="25%">时间</td>
+						<td width="25%">区间回报</td>
+						<td width="25%">同类平均</td>
+						<td width="25%">沪深300</td>
+					</tr>
+					<tr>
+						<td>近1月</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>近3月</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>近6月</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>今年以来</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>近3年</td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
 </template>
@@ -28,13 +77,11 @@ export default {
 			navs: ['近1月', '近3月', '近6月', '今年以来', '近3年'],
 			navSelect: 0,
 			innerCode: 57835,
-			dateRange: 1,
-			xData: [],
-			yData: []
+			dateRange: 1
 		}
 	},
 	created(){
-		this._getData()
+		this.incomeRange()
 	},
 	mounted(){
 		myChart = echarts.init(document.getElementById('myChart'));
@@ -43,24 +90,10 @@ export default {
 	methods: {
 		changeBg(index){
 			this.navSelect = index
-		},
-		_getData(){
-			this.xData1 = []
-			getData(`${this.innerCode}/${this.dateRange}/totalnet/list`, 'get').then((res)=>{
-				console.log(res.content.netList)
-				if(res.code === 0){
-					let netList = res.content.netList
-					let l = netList.length
-					for(let i=0; i<l; i++){
-						this.xData.push(netList[i].netDate)
-						this.yData.push(netList[i].totalNet)
-					}
-					console.log(this.xData.length)
-				}
-			})
+			this.dateRange = index + 1
+			this.drawLine()
 		},
 		drawLine(){
-			console.log(this.xData)
 			let that = this;
 			if (myChart != null && myChart != "" && myChart != undefined) {
 				myChart.dispose();
@@ -71,8 +104,8 @@ export default {
                     trigger: 'axis'
                 },
                 grid: {
-                    left: 50,
-                    right: 30
+                    left: 60,
+                    right: 20
                 },
                 xAxis: {
                     type : 'category',
@@ -81,7 +114,7 @@ export default {
                     axisLabel: {
                         show: true,
                         textStyle: {
-                            color: '#999',
+                            color: '#666',
                             fontSize: '12px',
                             fontFamily: 'Arial'
 						},
@@ -102,13 +135,13 @@ export default {
                     axisTick: {
                         show: false
                     },
-                    data: that.xData
+                    data: []
                 },
                 yAxis: {
                     min: 'dataMin',
                     axisLabel: {
                         show: true,
-                        color: '#ff3333',
+                        color: '#666',
                         fontSize: '12px',
                         fontFamily: 'Arial',
                         margin: 10,
@@ -137,23 +170,48 @@ export default {
                     symbolSize: 4,
                     itemStyle: {
                         normal: {
-                            color: '#ff6868'
+                            color: '#5b80fe'
                         }
                     },
                     areaStyle: {
                         normal: {
                             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                                 offset: 0,
-                                color: '#fdb4b4'
+                                color: '#dee2ff'
                             }, {
                                 offset: 1,
                                 color: '#fcfcfc'
                             }])
                         }
                     },
-                    data: that.yData
+                    data: []
                 }]
-            });
+			})
+			getData(`${this.innerCode}/${this.dateRange}/totalnet/list`, 'get').then((res)=>{
+				if(res.code === 0){
+					let netList = res.content.netList
+					let l = netList.length
+					let xData = []
+					let yData = []
+					for(let i=0; i<l; i++){
+						xData.push(netList[i].netDate)
+						yData.push(netList[i].totalNet)
+					}
+					myChart.setOption({
+						xAxis: {
+							data: xData
+						},
+						series: [{
+							data: yData
+						}]
+					})
+				}
+			})
+		},
+		incomeRange(){
+			getData(`${this.innerCode}/net/range`, 'get').then((res)=>{
+				console.log(res)
+			})
 		}
 	}
 }
@@ -169,7 +227,10 @@ export default {
 		padding: 25px 0 25px 22px;
 	}
 	.income-chart{
+		position: relative;
 		.chart-nav{
+			position: relative;
+			z-index: 2;
 			li{
 				float: left;
 				width: 20%;
@@ -182,6 +243,51 @@ export default {
 			}
 			.on{
 				background: $color-white;
+			}
+		}
+		.income-change{
+			padding: 0 30px;
+			font-size: 26px;
+			position: relative;
+			ul{
+				li{
+					float: left;
+					text-align: center;
+					margin-right: 48px;
+					&:last-child{
+						margin-right: 0;
+					}
+					&:before{
+						content: "";
+						display: inline-block;
+						width: 8px;
+						height: 8px;
+						border-radius: 4px;
+						background: $font-color-r;
+						vertical-align: middle;
+						margin-right: 10px;
+						margin-top: -5px;
+					}
+					span{
+						padding-left: 10px;
+					}
+				}
+			}
+		}
+		.income-info{
+			margin-top: 35px;
+			table{
+				width: 100%;
+				text-align: center;
+				tr{
+					height: 70px;
+					line-height: 70px;
+					font-size: $font-size-n;
+					&:first-child{
+						background-color: $nav-bg-color;
+						font-size: $font-size-l;
+					}
+				}
 			}
 		}
 	}

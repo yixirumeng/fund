@@ -57,10 +57,40 @@ const devWebpackConfig = merge(baseWebpackConfig, {
             chunks: ['detail']
         }),
         new HtmlWebpackPlugin({
-            filename: 'index2.html',
+            filename: 'rate.html',
             template: 'index.html',
             inject: true,
-            chunks: ['app2']
+            chunks: ['rate']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'bonus.html',
+            template: 'index.html',
+            inject: true,
+            chunks: ['bonus']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'support.html',
+            template: 'index.html',
+            inject: true,
+            chunks: ['support']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'newsContent.html',
+            template: 'index.html',
+            inject: true,
+            chunks: ['newsContent']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'newsList.html',
+            template: 'index.html',
+            inject: true,
+            chunks: ['newsList']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'infoOpen.html',
+            template: 'index.html',
+            inject: true,
+            chunks: ['infoOpen']
         }),
         // copy custom static assets
         new CopyWebpackPlugin([{

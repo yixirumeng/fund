@@ -39,7 +39,12 @@ module.exports = {
     build: {
         // Template for index.html
         detail: path.resolve(__dirname, '../dist/detail.html'),
-        index2: path.resolve(__dirname, '../dist/index2.html'),
+        rate: path.resolve(__dirname, '../dist/rate.html'),
+        bonus: path.resolve(__dirname, '../dist/bonus.html'),
+        support: path.resolve(__dirname, '../dist/support.html'),
+        newsContent: path.resolve(__dirname, '../dist/newsContent.html'),
+        newsList: path.resolve(__dirname, '../dist/newsList.html'),
+        infoOpen: path.resolve(__dirname, '../dist/infoOpen.html'),
 
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),

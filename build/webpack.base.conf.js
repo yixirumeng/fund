@@ -14,7 +14,12 @@ module.exports = {
     context: path.resolve(__dirname, '../'),
     entry: {
         detail: './src/detail/main.js',
-        index2: './src/page2/main.js'
+        rate: './src/rate/main.js',
+        bonus: './src/bonus/main.js',
+        support: './src/support/main.js',
+        newsContent: './src/newsContent/main.js',
+        newsList: './src/newsList/main.js',
+        infoOpen: './src/infoOpen/main.js',
     },
     output: {
         path: config.build.assetsRoot,

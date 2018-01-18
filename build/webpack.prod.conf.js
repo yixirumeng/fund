@@ -74,7 +74,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             chunks: ['manifest', 'vendor', 'detail']
         }),
         new HtmlWebpackPlugin({
-            filename: config.build.index2,
+            filename: config.build.rate,
             template: 'index.html',
             inject: true,
             minify: {
@@ -86,7 +86,82 @@ const webpackConfig = merge(baseWebpackConfig, {
             },
             // necessary to consistently work with multiple chunks via CommonsChunkPlugin
             chunksSortMode: 'dependency',
-            chunks: ['manifest', 'vendor', 'app2']
+            chunks: ['manifest', 'vendor', 'rate']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.bonus,
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'bonus']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.support,
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'support']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.newsContent,
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'newsContent']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.newsList,
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'newsList']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.infoOpen,
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'infoOpen']
         }),
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),
