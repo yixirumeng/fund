@@ -8,20 +8,10 @@
 					<td>派发时期</td>
 					<td>分红(元)</td>
 				</tr>
-				<tr>
-					<td>2017.12.20</td>
-					<td>2017.12.20</td>
-					<td>每份0.4290</td>
-				</tr>
-				<tr>
-					<td>2017.12.20</td>
-					<td>2017.12.20</td>
-					<td>每份0.4290</td>
-				</tr>
-				<tr>
-					<td>2017.12.20</td>
-					<td>2017.12.20</td>
-					<td>每份0.4290</td>
+				<tr v-for="(info, index) in bonusInfos" :key="index">
+					<td>{{info.bonusDate}}</td>
+					<td>{{info.bonusDate}}</td>
+					<td class="obvious">每份{{info.bonusInfo}}000</td>
 				</tr>
 			</table>
 		</div>
@@ -29,7 +19,31 @@
 </template>
 
 <script>
+import {getData} from '@/common/js/api'
+
 export default {
+	data(){
+		return {
+			bonusParam: {
+				innerCode: 15776,
+				currentPage: 1,
+				pageSize: 10
+			},
+			bonusInfos: null
+		}
+	},
+	created(){
+		this.getBonus()
+	},
+	methods: {
+		getBonus(){
+			getData('fund/15776/history/bonus', 'get', this.bonusParam).then((res) => {
+				if(res.code === 0){
+					this.bonusInfos = res.content.list
+				}
+			})
+		}
+	}
 }
 </script>
 
@@ -43,6 +57,9 @@ export default {
 	.content-table{
 		text-align: center;
 		border-top: 1px solid $border-color;
+		.obvious{
+			color: #f7b709;
+		}
 	}
 }
 </style>

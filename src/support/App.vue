@@ -2,7 +2,7 @@
 	<div>
 		<div class="support-nav">
 			<ul class="clearfix">
-				<li v-for="(nav, index) in navs" :key="index" :class="{on: nowIndex==index}" @click="changeNav(index)">{{nav}}</li>
+				<li v-for="(nav, index) in navs" :key="index" :class="{'nav-on': nowIndex==index}" @click="changeNav(index)">{{nav}}</li>
 			</ul>
 		</div>
 		<div v-show="detail===0">
@@ -219,10 +219,6 @@ export default {
 			padding: 28px 0 22px;
 			&:last-child{
 				margin-right: 0;
-			}
-			&.on{
-				border-bottom: 6px solid $font-color-r;
-				color: $font-color-r;
 			}
 		}
 	}

@@ -13,7 +13,9 @@
 </template>
 
 <script>
+import {getData} from '@/common/js/api'
 export default {
+	
 }
 </script>
 

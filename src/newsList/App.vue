@@ -8,37 +8,13 @@
 			</ul>
 			<div class="content-lists">
 				<ul>
-					<li>
+					<li v-for="(info, index) in listInfo" :key="index">
 						<div class="lists-title">
-							理财基金：细说定投
-							<span class="hot"></span>
+							<span class="title-detail no-wrap">{{info.title}}</span>
+							<span class="hot" v-if="index<3"></span>
 						</div>
 						<div class="source">
-							<span>证券时报</span><span>3小时前</span>
-						</div>
-					</li>
-					<li>
-						<div class="lists-title">理财基金：细说定投</div>
-						<div class="source">
-							<span>证券时报</span><span>3小时前</span>
-						</div>
-					</li>
-					<li>
-						<div class="lists-title">理财基金：细说定投</div>
-						<div class="source">
-							<span>证券时报</span><span>3小时前</span>
-						</div>
-					</li>
-					<li>
-						<div class="lists-title">理财基金：细说定投</div>
-						<div class="source">
-							<span>证券时报</span><span>3小时前</span>
-						</div>
-					</li>
-					<li>
-						<div class="lists-title">理财基金：细说定投</div>
-						<div class="source">
-							<span>证券时报</span><span>3小时前</span>
+							<span>麟龙基金</span><span>{{info.publishTime}}</span>
 						</div>
 					</li>
 				</ul>
@@ -49,19 +25,37 @@
 
 <script>
 import hot from '@/common/images/hot@2x.png'
+import {getData} from '@/common/js/api'
 export default {
 	data(){
 		return {
 			navs: ['基金新闻', '市场信息'],
 			nowIndex: 0,
 			detail: 0,
-			hot
+			hot,
+			pageInfo: {
+				currentPage: 1,
+				pageSize: 10,
+				categoryId: 1
+			},
+			listInfo: null
 		}
+	},
+	created(){
+		this.getNewsList()
+		
 	},
 	methods:{
 		changeNav(index){
 			this.nowIndex = index
 			this.detail = index
+		},
+		getNewsList(){
+			getData('manage/info/0/summaryList/', 'get', this.pageInfo).then((res)=>{
+				if(res.code === 0){
+					this.listInfo = res.content.list
+				}
+			})
 		}
 	}
 }
@@ -105,13 +99,17 @@ export default {
 					.lists-title{
 						font-size: 34px;
 						color: $font-color-d;
-						.hot{
+						span{
 							display: inline-block;
 							vertical-align: middle;
-							width: 96px;
-							height: 40px;
-							margin-top: -10px;
-							@include bg-image('../common/images/hot')
+							&.title-detail{
+								max-width: 580px;
+							}
+							&.hot{
+								width: 96px;
+								height: 40px;
+								@include bg-image('../common/images/hot')
+							}
 						}
 					}
 					.source{

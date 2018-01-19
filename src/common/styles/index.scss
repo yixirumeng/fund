@@ -44,3 +44,14 @@ body {
         padding-right: 30px;
     }
 }
+
+.no-wrap {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.nav-on {
+    border-bottom: 6px solid $font-color-r;
+    color: $font-color-r;
+}

@@ -1,62 +1,126 @@
 <template>
-	<div class="income">
-		<h2>累计收益</h2>
-		<div class="income-chart">
-			<ul class="chart-nav clearfix">
-				<li v-for="(nav, index) in navs" :key="index" :class="{on: navSelect==index}" @click="changeBg(index)">
-					{{nav}}
-				</li>
-			</ul>
-			<div :style="{position:'relative',width: '100%',height: '250px'}">
-				<div id="myChart" :style="{width: '100%',height: '300px', position: 'absolute', top: '-40px',left: '0', zIndex:'1'}"></div>
-			</div>
-			<div class="income-change">
-				<ul class="clearfix">
-					<li>本基金<span>0.17%</span></li>
-					<li>同类平均<span>0.21%</span></li>
-					<li>同类排名<span>4/50</span></li>
+	<div>
+		<div class="content">
+			<h2 class="title">累计收益</h2>
+			<div class="income-chart">
+				<ul class="chart-nav clearfix">
+					<li v-for="(nav, index) in navs" :key="index" :class="{on: navSelect==index}" @click="changeBg(index)">
+						{{nav}}
+					</li>
 				</ul>
+				<div :style="{position:'relative',width: '100%',height: '250px'}">
+					<div id="myChart" :style="{width: '100%',height: '300px', position: 'absolute', top: '-40px',left: '0', zIndex:'1'}"></div>
+				</div>
+				<div class="income-change">
+					<ul class="clearfix">
+						<li>本基金<span>0.17%</span></li>
+						<li>同类平均<span>0.21%</span></li>
+						<li>同类排名<span>4/50</span></li>
+					</ul>
+				</div>
 			</div>
 			<div class="income-info">
-				<table>
+				<table class="content-table">
 					<tr>
-						<td width="25%">时间</td>
-						<td width="25%">区间回报</td>
-						<td width="25%">同类平均</td>
-						<td width="25%">沪深300</td>
+						<td>时间</td>
+						<td>区间回报</td>
+						<td>同类平均</td>
+						<td>沪深300</td>
 					</tr>
 					<tr>
 						<td>近1月</td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td class="rise">+0.46%</td>
+						<td class="decline">+0.46%</td>
+						<td class="rise">+0.46%</td>
 					</tr>
 					<tr>
 						<td>近3月</td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td class="rise">+0.46%</td>
+						<td class="decline">+0.46%</td>
+						<td class="rise">+0.46%</td>
 					</tr>
 					<tr>
 						<td>近6月</td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td class="rise">+0.46%</td>
+						<td class="decline">+0.46%</td>
+						<td class="rise">+0.46%</td>
 					</tr>
 					<tr>
 						<td>今年以来</td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td class="rise">+0.46%</td>
+						<td class="decline">+0.46%</td>
+						<td class="rise">+0.46%</td>
 					</tr>
 					<tr>
 						<td>近3年</td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td class="rise">+0.46%</td>
+						<td class="decline">+0.46%</td>
+						<td class="rise">+0.46%</td>
 					</tr>
 				</table>
 			</div>
+		</div>
+		<div class="content content-separate">
+			<div class="info-nav">
+				<ul class="clearfix">
+					<li v-for="(infoNav, index) in infoNavs" :key="index" :class="{'nav-on': infoNavSelect===index}" @click="changeInfoNav(index)">{{infoNav}}</li>
+				</ul>
+			</div>
+			<div class="details-info" v-show="infoShow===0">
+				<ul>
+					<li>
+						<div class="archives-info">基金信息</div>
+						<div class="archives-num">最近规模：2.92亿</div>
+					</li>
+					<li>
+						<div class="archives-info">基金公司</div>
+						<div class="archives-num">前海开源</div>
+					</li>
+					<li>
+						<div class="archives-info">基金经理</div>
+						<div class="archives-num">徐丽萍</div>
+					</li>
+					<li>
+						<div class="archives-info">分红信息</div>
+						<div class="archives-num"></div>
+					</li>
+					<li>
+						<div class="archives-info">基金持仓</div>
+						<div class="archives-num"></div>
+					</li>
+				</ul>
+			</div>
+			<div class="details-info" v-show="infoShow===1">
+				<ul>
+					<li>
+						<div class="notice-info no-wrap">工银瑞信金融地产，工银音信基金管理有限音信基金管理有限</div>
+						<div class="notice-time">2017.12.23</div>
+					</li>
+					<li>
+						<div class="notice-info no-wrap">工银瑞信金融地产，工银音信基金管理有限音信基金管理有限</div>
+						<div class="notice-time">2017.12.23</div>
+					</li>
+					<li>
+						<div class="notice-info no-wrap">工银瑞信金融地产，工银音信基金管理有限音信基金管理有限</div>
+						<div class="notice-time">2017.12.23</div>
+					</li>
+					<li>
+						<div class="notice-info no-wrap">工银瑞信金融地产，工银音信基金管理有限音信基金管理有限</div>
+						<div class="notice-time">2017.12.23</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="content content-bottom">
+			<h2 class="title">基金净值</h2>
+			<table class="content-table">
+				<tr>
+					<td>日期</td>
+					<td>单位净值</td>
+					<td>累计净值</td>
+					<td>日涨幅</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 </template>
@@ -75,13 +139,16 @@ export default {
 	data(){
 		return {
 			navs: ['近1月', '近3月', '近6月', '今年以来', '近3年'],
+			infoNavs: ['基金档案', '基金公告'],
 			navSelect: 0,
+			infoNavSelect: 0,
+			infoShow: 0,
 			innerCode: 57835,
 			dateRange: 1
 		}
 	},
 	created(){
-		this.incomeRange()
+		// this.incomeRange()
 	},
 	mounted(){
 		myChart = echarts.init(document.getElementById('myChart'));
@@ -92,6 +159,10 @@ export default {
 			this.navSelect = index
 			this.dateRange = index + 1
 			this.drawLine()
+		},
+		changeInfoNav(index){
+			this.infoNavSelect = index
+			this.infoShow = index
 		},
 		drawLine(){
 			let that = this;
@@ -187,7 +258,7 @@ export default {
                     data: []
                 }]
 			})
-			getData(`${this.innerCode}/${this.dateRange}/totalnet/list`, 'get').then((res)=>{
+			getData(`fund/${this.innerCode}/${this.dateRange}/totalnet/list`, 'get').then((res)=>{
 				if(res.code === 0){
 					let netList = res.content.netList
 					let l = netList.length
@@ -207,11 +278,6 @@ export default {
 					})
 				}
 			})
-		},
-		incomeRange(){
-			getData(`${this.innerCode}/net/range`, 'get').then((res)=>{
-				console.log(res)
-			})
 		}
 	}
 }
@@ -219,12 +285,13 @@ export default {
 
 <style lang="scss" scoped>
 @import '../common/styles/variables.scss';
-.income{
-	h2{
-		color: $font-color-d;
-		font-size: $font-size-ll;
-		font-weight: bold;
-		padding: 25px 0 25px 22px;
+@import '../common/styles/mixin.scss';
+.content{
+	background: $color-white;
+	margin: 0;
+	font-size: $font-size-n;
+	.title{
+		padding-left: 30px;
 	}
 	.income-chart{
 		position: relative;
@@ -274,22 +341,77 @@ export default {
 				}
 			}
 		}
-		.income-info{
-			margin-top: 35px;
-			table{
-				width: 100%;
-				text-align: center;
-				tr{
-					height: 70px;
-					line-height: 70px;
-					font-size: $font-size-n;
-					&:first-child{
-						background-color: $nav-bg-color;
-						font-size: $font-size-l;
+	}
+	.content-table{
+		text-align: center;
+	}
+	.rise{
+		color: $font-color-r;
+	}
+	.decline{
+		color: $font-color-g;
+	}
+	.income-info{
+		margin-top: 35px;
+	}
+	.info-nav{
+		font-size: $font-size-ll;
+		ul{
+			li{
+				float: left;
+				padding: 24px 0;
+				margin-right: 50px;
+			}
+		}
+	}
+	.details-info{
+		margin-top: 15px;
+		ul{
+			li{
+				padding: 20px 0;
+				border-bottom: 1px solid $border-color;
+				&:after{
+					content: "";
+					display: block;
+					clear: both;
+				}
+				.archives-info{
+					float: left;
+				}
+				.archives-num{
+					float: right;
+					color: $font-color-d;
+					&:after{
+						content: "";
+						display: inline-block;
+						vertical-align: middle;
+						margin-left: 20px;
+						width: 11px;
+						height: 19px;
+						@include bg-image('../common/images/arrow');
+						background-repeat: no-repeat;
 					}
+				}
+				.notice-info{
+					font-size: $font-size-title;
+					color: $font-color-d;
+				}
+				.notice-time{
+					color: $font-color-s;
+					margin-top: 20px;
 				}
 			}
 		}
 	}
+}
+
+.content-separate{
+	margin-top: 15px;
+	padding: 0 30px;
+}
+
+.content-bottom{
+	margin-top: 15px;
+	padding: 0;
 }
 </style>
