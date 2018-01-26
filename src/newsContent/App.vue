@@ -1,21 +1,73 @@
 <template>
 	<div class="content-sum">
 		<div class="content">
-			<div class="title">明星个人收入资本化玩不转了 华谊兄弟因此事被证监会处罚</div>
+			<div class="title">{{title}}</div>
 			<div class="source">
-				<span>北京商报</span><span>3小时前</span>
+				<span>{{publishMedia}}</span><span>{{publishTime}}</span>
 			</div>
-			<div class="content-details">
-				2017年12月20日，华谊兄弟发布公告称，公司于近日收到中国证券监督管理委员会浙江监管局（以下简称：浙江证监局）《关于对华谊兄弟传媒股份有限公司及相关人员采取出具警示函措施的决定》。浙江证监局表示，华谊兄弟未能对2015年合并报表范围内两家子公司的收入来源进行及时、完整地披露，直至2017年10月26日才对上述事项进行补充说明和披露；公司总经理兼副董事长王忠磊对此负有主要责任。上述行为违反《上市公司信息披露管理办法》第二条、第三条的规定。根据《上市公司信息披露管理办法》第五十八条、第五十九条的规定，我局决定对公司、王忠磊予以警示。
+			<div class="content-details" v-html="content">
+				
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import {getData} from '@/common/js/api'
+import {getData, getQueryString} from '@/common/js/api'
+import $ from 'jquery'
+
 export default {
-	
+	data(){
+		return {
+			infoId: '',
+			title: '',
+			publishMedia: '',
+			publishTime: '',
+			content: ''
+		}
+	},
+	created(){
+		this.getInfoId()
+		this.getContent()
+	},
+	methods: {
+		getInfoId(){
+			let infoId = getQueryString('infoId')
+			this.infoId = infoId
+		},
+		getContent(){
+			getData(`manage/info/${this.infoId}/content`, 'get').then((res) => {
+				console.log(res)
+				this.title = res.title
+				this.publishMedia = res.publishMedia
+				this.publishTime = res.publishTime
+				this.content = res.content
+			}).then(()=>{
+				this.styleReset()
+			})
+		},
+		styleReset(){
+			$('.content-details').find('img').css({
+				'margin': '0',
+				'display': 'block',
+				'width': '100%',
+				'word-break': 'break-all',
+				'word-wrap':'break-word'
+			})
+			$('.content-details span').css({
+				'display': 'block',
+				'width': '100%',
+				'word-break': 'break-all',
+				'word-wrap':'break-word'
+			})
+			$('.content-details em').css({
+				'display': 'block',
+				'width': '100%',
+				'word-break': 'break-all',
+				'word-wrap':'break-word'
+			})
+		}
+	}
 }
 </script>
 
@@ -34,6 +86,13 @@ export default {
 		color: $font-color-d;
 		line-height: 1.8;
 		text-align: justify;
+		p{
+			img{
+				display: block !important;
+				width: 100% !important;
+				margin: 0 !important;
+			}
+		}
 	}
 }
 </style>

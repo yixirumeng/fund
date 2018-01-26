@@ -20,6 +20,13 @@ module.exports = {
         newsContent: './src/newsContent/main.js',
         newsList: './src/newsList/main.js',
         infoOpen: './src/infoOpen/main.js',
+        investorRights: './src/investorRights/main.js',
+        investmentAccess: './src/investmentAccess/main.js',
+        onlineTrade: './src/onlineTrade/main.js',
+        riskExplain: './src/riskExplain/main.js',
+        riskTest: './src/riskTest/main.js',
+        riskTestResult: './src/riskTestResult/main.js',
+
     },
     output: {
         path: config.build.assetsRoot,

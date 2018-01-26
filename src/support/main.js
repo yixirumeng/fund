@@ -4,7 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import '@/common/styles/index.scss'
 import 'lib-flexible'
+import fastclick from 'fastclick'
 
+fastclick.attach(document.body)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

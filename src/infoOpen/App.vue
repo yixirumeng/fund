@@ -1,41 +1,96 @@
 <template>
 	<div class="content-sum">
-		<div class="content">
-			<div class="title">{{title}}</div>
-			<div class="info-details" v-html="content">
-				
-			</div>
-			<div class="info-source">
-				好友基金
-			</div>
-			<div class="source">
-				<span>2017.12.07</span><span>14:40:53</span>
-			</div>
-		</div>
+		<ul v-for="(item, index) in contentList" :key="index">
+			<li>
+				<div class="content">
+					<div class="title">{{item.title}}</div>
+					<div class="info-details" v-html="item.content">
+					</div>
+					<!-- <div class="info-source">
+						{{item.publishMedia}}
+					</div>
+					<div class="source">
+						{{item.publishTime}}
+					</div> -->
+				</div>
+			</li>
+		</ul>
 	</div>
 </template>
 
 <script>
 import {getData} from '@/common/js/api'
+import $ from 'jquery'
 
+var swOpen = true
 export default {
 	data(){
 		return {
-			title: '',
-			content: ''
+			currentPage: 1,
+			pageSize: 10,
+			contentList: [],
+			totalPage: null
 		}
 	},
 	created(){
 		this.getInfo()
 	},
+	mounted(){
+		this.moreInfoLoad()
+		this.resizeInfoLoad()
+	},
 	methods: {
 		getInfo(){
-			getData('manage/info/44/content', 'get').then((res)=>{
-				console.log(res)
-				if(res.code === 0){
-					this.title = res.content.title
-					this.content = res.content.content
+			let currentPage = this.currentPage
+			let pageSize = this.pageSize
+			let data = {
+				currentPage,
+				pageSize
+			}
+			getData(`manage/info/1/summaryList/`, 'get', data).then((res)=>{
+				for(let i=0; i<res.list.length; i++){
+					this.contentList.push(res.list[i])
 				}
+				this.totalPage = Math.ceil(res.totleCount/this.pageSize)
+				swOpen = true
+			}).then(() => {
+				this.styleReset()
+			})
+		},
+		styleReset(){
+			$(".info-details img").css({
+				'display': 'block',
+				'width': '100%'
+			})
+			$(".info-details table").css({
+				'display': 'block',
+				'width': '100%',
+				'margin': '0'
+			})
+			$(".info-details p").css({
+				'margin': '0',
+				'white-space': 'normal',
+				'word-break': 'break-all',
+				'word-wrap': 'break-word'
+			})
+		},
+		moreInfoLoad(){
+			$(window).scroll(()=>{
+				let scrollH = $(window).scrollTop()
+				let screenH = $(window).height()
+				let bodyH = $(document).height()
+				if(scrollH + screenH >= bodyH){
+					if(swOpen && this.currentPage<this.totalPage){
+						swOpen = false
+						this.currentPage += 1
+						this.getInfo()
+					}
+				}
+			})
+		},
+		resizeInfoLoad(){
+			$(window).resize(() => {
+				this.moreInfoLoad()
 			})
 		}
 	}
@@ -46,18 +101,27 @@ export default {
 @import '../common/styles/variables.scss';
 .content-sum{
 	margin: 25px 30px;
-	.content{
-		margin: 30px;
-		font-size: $font-size-ll;
-		.title{
-			padding-top: 30px;
-			padding-bottom: 30px;
-			font-size: $font-size-title;
-			line-height: 1.5;
-		}
-		.info-source{
-			margin: 30px 0;
-			text-align: right;
+	background-color: $border-color;
+	ul{
+		li{
+			background-color: $color-white;
+			margin-bottom: 36px;
+			border-radius: 5px;
+			.content{
+				margin: 30px;
+				padding: 30px 0;
+				font-size: $font-size-ll;
+				.title{
+					padding-top: 0;
+					padding-bottom: 30px;
+					font-size: $font-size-title;
+					line-height: 1.5;
+				}
+				.info-source{
+					margin: 30px 0;
+					text-align: right;
+				}
+			}
 		}
 	}
 }

@@ -55,3 +55,55 @@ body {
     border-bottom: 6px solid $font-color-r;
     color: $font-color-r;
 }
+
+.color-red {
+    color: $font-color-r;
+}
+
+.color-green {
+    color: $font-color-g;
+}
+
+.invest-sum {
+    width: 100%;
+    background-color: $color-white;
+}
+
+.invest {
+    margin: 0 30px;
+    padding: 60px 0 24px;
+    font-size: $font-size-ll;
+}
+
+.invest-title {
+    font-size: $font-size-title;
+    text-align: center;
+    padding-bottom: 30px;
+    font-weight: bold;
+}
+
+.invest-table {
+    width: 100%;
+    border: 1px solid $invest-border-color;
+    margin: 30px 0;
+    tr {
+        border: 1px solid $invest-border-color;
+        &:first-child {
+            background-color: $invest-table-bg;
+            text-align: center;
+            td {
+                vertical-align: middle;
+                text-align: center;
+                font-size: $font-size-ll;
+            }
+        }
+        td {
+            border: 1px solid $invest-border-color;
+            vertical-align: top;
+            font-size: $font-size-l;
+            line-height: 1.5;
+            word-wrap: break-word;
+            text-align: justify;
+        }
+    }
+}

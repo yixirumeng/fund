@@ -45,6 +45,12 @@ module.exports = {
         newsContent: path.resolve(__dirname, '../dist/newsContent.html'),
         newsList: path.resolve(__dirname, '../dist/newsList.html'),
         infoOpen: path.resolve(__dirname, '../dist/infoOpen.html'),
+        investorRights: path.resolve(__dirname, '../dist/investorRights.html'),
+        investmentAccess: path.resolve(__dirname, '../dist/investmentAccess.html'),
+        onlineTrade: path.resolve(__dirname, '../dist/onlineTrade.html'),
+        riskExplain: path.resolve(__dirname, '../dist/riskExplain.html'),
+        riskTest: path.resolve(__dirname, '../dist/riskTest.html'),
+        riskTestResult: path.resolve(__dirname, '../dist/riskTestResult.html'),
 
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),

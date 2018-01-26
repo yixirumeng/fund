@@ -13,9 +13,9 @@
 				</div>
 				<div class="income-change">
 					<ul class="clearfix">
-						<li>本基金<span>0.17%</span></li>
-						<li>同类平均<span>0.21%</span></li>
-						<li>同类排名<span>4/50</span></li>
+						<li><span>本基金</span><span>{{rangeInfos[0]}}</span></li>
+						<li><span>同类平均</span><span :class="{'color-red': parseFloat(rangeInfos[1])>0, 'color-green': parseFloat(rangeInfos[1])<0}">{{rangeInfos[1]}}</span></li>
+						<li><span>同类排名</span><span>{{rangeInfos[2]}}</span></li>
 					</ul>
 				</div>
 			</div>
@@ -25,40 +25,47 @@
 						<td>时间</td>
 						<td>区间回报</td>
 						<td>同类平均</td>
-						<td>沪深300</td>
+						<td>同类排名</td>
 					</tr>
 					<tr>
 						<td>近1月</td>
-						<td class="rise">+0.46%</td>
-						<td class="decline">+0.46%</td>
-						<td class="rise">+0.46%</td>
+						<td v-for="(item, index) in rangeInfoList.rangeInfoOne" :key="index" :class="{'color-red': parseFloat(item)>0, 'color-green': parseFloat(item)<0}">{{item}}</td>
 					</tr>
 					<tr>
 						<td>近3月</td>
-						<td class="rise">+0.46%</td>
-						<td class="decline">+0.46%</td>
-						<td class="rise">+0.46%</td>
+						<td v-for="(item, index) in rangeInfoList.rangeInfoThree" :key="index" :class="{'color-red': parseFloat(item)>0, 'color-green': parseFloat(item)<0}">{{item}}</td>
 					</tr>
 					<tr>
 						<td>近6月</td>
-						<td class="rise">+0.46%</td>
-						<td class="decline">+0.46%</td>
-						<td class="rise">+0.46%</td>
+						<td v-for="(item, index) in rangeInfoList.rangeInfoSix" :key="index" :class="{'color-red': parseFloat(item)>0, 'color-green': parseFloat(item)<0}">{{item}}</td>
 					</tr>
 					<tr>
 						<td>今年以来</td>
-						<td class="rise">+0.46%</td>
-						<td class="decline">+0.46%</td>
-						<td class="rise">+0.46%</td>
+						<td v-for="(item, index) in rangeInfoList.rangeInfoThisYear" :key="index" :class="{'color-red': parseFloat(item)>0, 'color-green': parseFloat(item)<0}">{{item}}</td>
 					</tr>
 					<tr>
 						<td>近3年</td>
-						<td class="rise">+0.46%</td>
-						<td class="decline">+0.46%</td>
-						<td class="rise">+0.46%</td>
+						<td v-for="(item, index) in rangeInfoList.rangeInfoThreeYear" :key="index" :class="{'color-red': parseFloat(item)>0, 'color-green': parseFloat(item)<0}">{{item}}</td>
 					</tr>
 				</table>
 			</div>
+		</div>
+		<div class="content content-bottom">
+			<h2 class="title">基金净值</h2>
+			<table class="content-table">
+				<tr>
+					<td>日期</td>
+					<td>单位净值</td>
+					<td>累计净值</td>
+					<td>日涨幅</td>
+				</tr>
+				<tr v-for="(net, index) in netInfos" :key="index">
+					<td>{{net.netDate}}</td>
+					<td>{{net.unitNet}}</td>
+					<td>{{net.totalNet}}</td>
+					<td>{{net.rangeDay}}</td>
+				</tr>
+			</table>
 		</div>
 		<div class="content content-separate">
 			<div class="info-nav">
@@ -70,15 +77,22 @@
 				<ul>
 					<li>
 						<div class="archives-info">基金信息</div>
-						<div class="archives-num">最近规模：2.92亿</div>
+						<div class="archives-num">
+							最近规模：
+							{{fundInfo[0]}}
+						</div>
 					</li>
 					<li>
 						<div class="archives-info">基金公司</div>
-						<div class="archives-num">前海开源</div>
+						<div class="archives-num">
+							{{fundInfo[1]}}
+						</div>
 					</li>
 					<li>
 						<div class="archives-info">基金经理</div>
-						<div class="archives-num">徐丽萍</div>
+						<div class="archives-num">
+							{{fundInfo[2]}}
+						</div>
 					</li>
 					<li>
 						<div class="archives-info">分红信息</div>
@@ -92,41 +106,18 @@
 			</div>
 			<div class="details-info" v-show="infoShow===1">
 				<ul>
-					<li>
-						<div class="notice-info no-wrap">工银瑞信金融地产，工银音信基金管理有限音信基金管理有限</div>
-						<div class="notice-time">2017.12.23</div>
-					</li>
-					<li>
-						<div class="notice-info no-wrap">工银瑞信金融地产，工银音信基金管理有限音信基金管理有限</div>
-						<div class="notice-time">2017.12.23</div>
-					</li>
-					<li>
-						<div class="notice-info no-wrap">工银瑞信金融地产，工银音信基金管理有限音信基金管理有限</div>
-						<div class="notice-time">2017.12.23</div>
-					</li>
-					<li>
-						<div class="notice-info no-wrap">工银瑞信金融地产，工银音信基金管理有限音信基金管理有限</div>
-						<div class="notice-time">2017.12.23</div>
+					<li v-for="(item, index) in notice" :key="index">
+						<div class="notice-info no-wrap">{{item.noticeTitle}}</div>
+						<div class="notice-time">{{item.noticeDate}}</div>
 					</li>
 				</ul>
 			</div>
-		</div>
-		<div class="content content-bottom">
-			<h2 class="title">基金净值</h2>
-			<table class="content-table">
-				<tr>
-					<td>日期</td>
-					<td>单位净值</td>
-					<td>累计净值</td>
-					<td>日涨幅</td>
-				</tr>
-			</table>
 		</div>
 	</div>
 </template>
 
 <script>
-import {getData} from '@/common/js/api'
+import {getData, getQueryString} from '@/common/js/api'
 import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/tooltip';
@@ -143,27 +134,133 @@ export default {
 			navSelect: 0,
 			infoNavSelect: 0,
 			infoShow: 0,
-			innerCode: 57835,
-			dateRange: 1
+			innerCode: '',
+			dateRange: 1,
+			rangeInfoSum: null,
+			rangeInfos: [],
+			rangeInfoList: {
+				rangeInfoOne: [],
+				rangeInfoThree: [],
+				rangeInfoSix: [],
+				rangeInfoThisYear: [],
+				rangeInfoThreeYear: []
+			},
+			netInfos: [],
+			currentPage: 1,
+			pageSize: 10,
+			fundInfo: [],
+			notice: []
 		}
 	},
 	created(){
-		// this.incomeRange()
+		this.changeUrl()
+		this.getRangeData()
+		this.getFundInfo()
+		this.getNet()
+		this.getAnnounce()
 	},
 	mounted(){
 		myChart = echarts.init(document.getElementById('myChart'));
 		this.drawLine()
 	},
 	methods: {
+		// 获取url参数值
+		changeUrl(){
+			let fundcode = getQueryString('fundcode')
+			if(fundcode){
+				this.innerCode = fundcode
+			}
+		},
+		// 图表曲线tab切换
 		changeBg(index){
 			this.navSelect = index
 			this.dateRange = index + 1
 			this.drawLine()
+			let range, avg, order
+			if(index === 0){
+				this.rangeInfos.splice(0, this.rangeInfos.length)
+				this.rangeInfos = this.rangeData(this.rangeInfoSum.rangeOneMonth, this.rangeInfoSum.avgOneMonth, this.rangeInfoSum.orderOneMonth)
+			}else if(index === 1){
+				this.rangeInfos.splice(0, this.rangeInfos.length)
+				this.rangeInfos = this.rangeData(this.rangeInfoSum.rangeThreeMonth, this.rangeInfoSum.avgThreeMonth, this.rangeInfoSum.orderThreeMonth)
+			}else if(index === 2){
+				this.rangeInfos.splice(0, this.rangeInfos.length)
+				this.rangeInfos = this.rangeData(this.rangeInfoSum.rangeSixMonth, this.rangeInfoSum.avgSixMonth, this.rangeInfoSum.orderSixMonth)
+			}else if(index === 3){
+				this.rangeInfos.splice(0, this.rangeInfos.length)
+				this.rangeInfos = this.rangeData(this.rangeInfoSum.rangeThisYear, this.rangeInfoSum.avgThisYear, this.rangeInfoSum.orderThisYear)
+			}else if(index === 4){
+				this.rangeInfos.splice(0, this.rangeInfos.length)
+				this.rangeInfos = this.rangeData(this.rangeInfoSum.rangeThreeYear, this.rangeInfoSum.avgThreeYear, this.rangeInfoSum.orderThreeYear)
+			}
 		},
+		// 基金信息、公告tab切换
 		changeInfoNav(index){
 			this.infoNavSelect = index
 			this.infoShow = index
 		},
+		// 获取累计收益栏目数据
+		getRangeData(){
+			getData(`fund/${this.innerCode}/net/range`, 'get').then((res)=>{
+				this.rangeInfoSum = res
+
+				this.rangeInfos.splice(0, this.rangeInfos.length)
+				this.rangeInfos = this.rangeData(res.rangeOneMonth, res.avgOneMonth, res.orderOneMonth)
+
+				this.rangeInfoList.rangeInfoOne = this.rangeDataNew(res.rangeOneMonth, res.avgOneMonth, res.orderOneMonth, res.orderOneMonthCount)
+				this.rangeInfoList.rangeInfoThree = this.rangeDataNew(res.rangeThreeMonth, res.avgThreeMonth, res.orderThreeMonth, res.orderThreeMonthCount)
+				this.rangeInfoList.rangeInfoSix = this.rangeDataNew(res.rangeSixMonth, res.avgSixMonth, res.orderSixMonth, res.orderSixMonthCount)
+				this.rangeInfoList.rangeInfoThisYear = this.rangeDataNew(res.rangeThisYear, res.avgThisYear, res.orderThisYear, res.orderThisYearCount)
+				this.rangeInfoList.rangeInfoThreeYear = this.rangeDataNew(res.rangeThreeYear, res.avgThreeYear, res.orderThreeYear, res.orderThreeYearCount)
+			})
+		},
+		// 格式化区间报告、同类平均、同类排名
+		rangeData(range, avg, order){
+			let newRange = range ? `${range}%` : '-'
+			let newAvg = avg ? avg>0 ? `+${avg}%` : `-${avg}%` : '-'
+			let newOrder = order ? `${order}` : '-'
+			return [newRange, newAvg, newOrder]
+		},
+		rangeDataNew(range, avg, order, orderCount){
+			let newRange = range ? range>0 ? `+${range}%` : `-${range}%` : '-'
+			let newAvg = avg ? avg>0 ? `+${avg}%` : `-${avg}%` : '-'
+			let newOrder = order ? `${order}/${orderCount}` : '-'
+			return [newRange, newAvg, newOrder]
+		},
+		// 获取基金净值
+		getNet(){
+			let currentPage = this.currentPage
+			let pageSize = this.pageSize
+			let data = {
+				currentPage,
+				pageSize
+			}
+			getData(`fund/${this.innerCode}/history/net`, 'get', data).then((res) => {
+				let l = res.list.length
+				for(let i=0; i<l; i++){
+					this.netInfos.push(res.list[i])
+				}
+
+			})
+		},
+		// 获取基金信息
+		getFundInfo(){
+			getData(`fund/${this.innerCode}/detail/info`, 'get').then((res) => {
+				let netAsset = res.abbrNetAsset
+				let fundManger = res.abbrFundManager
+				let managerName = res.managerList[0].managerName
+				this.fundInfo.push(netAsset, fundManger, managerName)
+			})
+		},
+		// 获取基金公告
+		getAnnounce(){
+			getData(`fund/${this.innerCode}/notice/0/list/${this.currentPage}/${this.pageSize}`, 'get').then((res) => {
+				for(let i=0; i<5; i++){
+					this.notice.push(res.list[i])
+				}
+			})
+		},
+		// 生成图表
 		drawLine(){
 			let that = this;
 			if (myChart != null && myChart != "" && myChart != undefined) {
@@ -259,24 +356,22 @@ export default {
                 }]
 			})
 			getData(`fund/${this.innerCode}/${this.dateRange}/totalnet/list`, 'get').then((res)=>{
-				if(res.code === 0){
-					let netList = res.content.netList
-					let l = netList.length
-					let xData = []
-					let yData = []
-					for(let i=0; i<l; i++){
-						xData.push(netList[i].netDate)
-						yData.push(netList[i].totalNet)
-					}
-					myChart.setOption({
-						xAxis: {
-							data: xData
-						},
-						series: [{
-							data: yData
-						}]
-					})
+				let netList = res.netList
+				let l = netList.length
+				let xData = []
+				let yData = []
+				for(let i=0; i<l; i++){
+					xData.push(netList[i].netDate)
+					yData.push(netList[i].totalNet)
 				}
+				myChart.setOption({
+					xAxis: {
+						data: xData
+					},
+					series: [{
+						data: yData
+					}]
+				})
 			})
 		}
 	}
@@ -320,8 +415,15 @@ export default {
 				li{
 					float: left;
 					text-align: center;
-					margin-right: 48px;
+					margin-right: 30px;
+					&:nth-child(1){
+						width: 185px;
+					}
+					&:nth-child(2){
+						width: 245px;
+					}
 					&:last-child{
+						width: 200px;
 						margin-right: 0;
 					}
 					&:before{
@@ -333,10 +435,13 @@ export default {
 						background: $font-color-r;
 						vertical-align: middle;
 						margin-right: 10px;
-						margin-top: -5px;
 					}
 					span{
-						padding-left: 10px;
+						vertical-align: middle;
+						display: inline-block;
+						&:last-child{
+							padding-left: 10px;
+						}
 					}
 				}
 			}
@@ -344,6 +449,9 @@ export default {
 	}
 	.content-table{
 		text-align: center;
+		tr:nth-child(2n-1){
+			background-color: $nav-bg-color;
+		}
 	}
 	.rise{
 		color: $font-color-r;

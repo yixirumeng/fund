@@ -163,6 +163,96 @@ const webpackConfig = merge(baseWebpackConfig, {
             chunksSortMode: 'dependency',
             chunks: ['manifest', 'vendor', 'infoOpen']
         }),
+        new HtmlWebpackPlugin({
+            filename: config.build.investorRights,
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'investorRights']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.investmentAccess,
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'investmentAccess']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.onlineTrade,
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'onlineTrade']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.riskExplain,
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'riskExplain']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.riskTest,
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'riskTest']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.riskTestResult,
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'riskTestResult']
+        }),
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),
         // enable scope hoisting

@@ -92,6 +92,42 @@ const devWebpackConfig = merge(baseWebpackConfig, {
             inject: true,
             chunks: ['infoOpen']
         }),
+        new HtmlWebpackPlugin({
+            filename: 'investorRights.html',
+            template: 'index.html',
+            inject: true,
+            chunks: ['investorRights']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'investmentAccess.html',
+            template: 'index.html',
+            inject: true,
+            chunks: ['investmentAccess']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'onlineTrade.html',
+            template: 'index.html',
+            inject: true,
+            chunks: ['onlineTrade']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'riskExplain.html',
+            template: 'index.html',
+            inject: true,
+            chunks: ['riskExplain']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'riskTest.html',
+            template: 'index.html',
+            inject: true,
+            chunks: ['riskTest']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'riskTestResult.html',
+            template: 'index.html',
+            inject: true,
+            chunks: ['riskTestResult']
+        }),
         // copy custom static assets
         new CopyWebpackPlugin([{
             from: path.resolve(__dirname, '../static'),

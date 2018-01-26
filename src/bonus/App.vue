@@ -8,10 +8,10 @@
 					<td>派发时期</td>
 					<td>分红(元)</td>
 				</tr>
-				<tr v-for="(info, index) in bonusInfos" :key="index">
-					<td>{{info.bonusDate}}</td>
-					<td>{{info.bonusDate}}</td>
-					<td class="obvious">每份{{info.bonusInfo}}000</td>
+				<tr v-for="(item, index) in bonus" :key="index">
+					<td>{{item.bonusDate}}</td>
+					<td>{{item.bonusDate}}</td>
+					<td class="obvious">每份{{item.bonusInfo}}</td>
 				</tr>
 			</table>
 		</div>
@@ -19,27 +19,52 @@
 </template>
 
 <script>
-import {getData} from '@/common/js/api'
+import {getData, getQueryString} from '@/common/js/api'
 
 export default {
 	data(){
 		return {
-			bonusParam: {
-				innerCode: 15776,
-				currentPage: 1,
-				pageSize: 10
-			},
-			bonusInfos: null
+			innerCode: '',
+			bonus: null,
+			currentPage: 1,
+			pageSize: 10,
+			totalPage: null
 		}
 	},
 	created(){
+		this.changeUrl()
 		this.getBonus()
 	},
 	methods: {
+		// 获取url参数值
+		changeUrl(){
+			let fundcode = getQueryString('fundcode')
+			if(fundcode){
+				this.innerCode = fundcode
+			}
+		},
 		getBonus(){
-			getData('fund/15776/history/bonus', 'get', this.bonusParam).then((res) => {
-				if(res.code === 0){
-					this.bonusInfos = res.content.list
+			let currentPage = this.currentPage
+			let pageSize = this.pageSize
+			let data = {
+				currentPage,
+				pageSize
+			}
+			getData(`fund/${this.innerCode}/history/bonus`, 'get', data).then((res) => {
+				console.log(res)
+				this.bonus = res.list
+				if(res.page.totalPage > 1){
+					for(let i=1; i<res.page.totalPage; i++){
+						this.currentPage += 1
+						let newCurrentPage = this.currentPage
+						let newData = {
+							newCurrentPage,
+							pageSize
+						}
+						getData(`fund/${this.innerCode}/history/bonus`, 'get', data).then((res) => {
+							this.bonus.push(res.list)
+						})
+					}
 				}
 			})
 		}
