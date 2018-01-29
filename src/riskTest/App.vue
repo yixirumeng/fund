@@ -10,16 +10,21 @@
 						{{item.question_content}}
 					</div>
 					<ul>
-						<li v-for="(itemSection, indexSection) in item.section" :key="indexSection" @click="collectPoint(this, itemSection.question_no, itemSection.option_score)">
+						<li :class="{on: optionColorArr[index] === itemSection.option_no, on1: currentIndex === indexSection}" v-for="(itemSection, indexSection) in item.section" :key="indexSection" @click="collectPoint(index, itemSection.question_no, itemSection.option_no, indexSection)">
 							{{itemSection.option_content}}
 						</li>
 					</ul>
-				</div>
-				<div class="option-btn">
-					<span v-show="currentNumber !== 1" @click="prev">上一题</span><span v-show="currentNumber !== totalNumber" @click="next">下一题</span>
-				</div>
-				<div class="submit-btn" v-show="currentNumber === totalNumber">
-					提交
+					<div class="option-btn">
+						<span v-show="currentNumber !== 1" @click="prev">上一题</span><span v-show="currentNumber !== totalNumber" @click="next(index)">下一题</span>
+					</div>
+					<div class="question-error">
+						<div class="error-msg" v-show="error">
+							{{errorMsg}}
+						</div>
+					</div>
+					<div class="submit-btn" v-show="currentNumber === totalNumber" @click="answerSubmit">
+						提交
+					</div>
 				</div>
 			</div>
 		</div>
@@ -28,7 +33,6 @@
 
 <script>
 import {getData} from '@/common/js/api'
-import $ from 'jquery'
 
 export default {
 	data(){
@@ -36,7 +40,12 @@ export default {
 			currentNumber: 1,
 			totalNumber: null,
 			questionContent: '',
-			questionList: null
+			questionList: null,
+			optionColorArr: [],
+			currentIndex: -1,
+			answerArr: [],
+			error: false,
+			errorMsg: ''
 		}
 	},
 	created(){
@@ -50,16 +59,41 @@ export default {
 				this.questionList = res
 			})
 		},
-		collectPoint(index, number, score){
-			console.log(index)
-
-
+		collectPoint(index, questionNo, optionNo, indexSection){
+			this.currentIndex = indexSection
+			this.optionColorArr[index] = optionNo
+			let answerContent = `${questionNo}:${optionNo}`
+			this.answerArr[index] = answerContent
+			this.error = false
+			this.errorMsg = ''
+		},
+		answerSubmit(){
+			if(this.answerArr.length !== this.totalNumber){
+				this.error = true
+				this.errorMsg = '您还有尚未作答的题目，请作答后再提交'
+			}else{
+				for(let i=0; i<this.answerArr.length; i++){
+					if(typeof(this.answerArr[i]) === 'undefined'){
+						this.error = true
+						this.errorMsg = '您还有尚未作答的题目，请作答后再提交'
+						return false
+					}
+					i === this.answerArr.length-1 ? this.answer += `${this.answerArr[i]}` : this.answer += `${this.answerArr[i]}|`
+				}
+				window.location.href = `${window.location.protocol}//${window.location.host}/riskTestResult.html?answer=${this.answer}&phone=13840324361`
+			}
 		},
 		prev(){
 			this.currentNumber === 1 ? this.currentNumber = 1 : this.currentNumber -= 1
 		},
-		next(){
-			this.currentNumber === this.totalNumber ? this.currentNumber = this.totalNumber : this.currentNumber += 1
+		next(index){
+			if(typeof(this.answerArr[index]) != 'undefined'){
+				this.currentNumber === this.totalNumber ? this.currentNumber = this.totalNumber : this.currentNumber += 1
+				this.currentIndex = -1
+			}else{
+				this.error = true
+				this.errorMsg = '您还没有作答，请选择答案后再进行下一题'
+			}
 		}
 	}
 }
@@ -106,6 +140,9 @@ export default {
 						&.on{
 							background-color: rgba(254, 54, 80, .05);
 						}
+						&.on1{
+							background-color: rgba(254, 54, 80, .05);
+						}
 					}
 				}
 			}
@@ -124,7 +161,15 @@ export default {
 					padding: 0 60px;
 				}
 			}
+			.question-error{
+				font-size: $font-size-n;
+				color: $font-color-r;
+				text-align: center;
+				margin-top: 30px;
+				height: 28px;
+			}
 			.submit-btn{
+				display: block;
 				margin-top: 80px;
 				color: $color-white;
 				width: 100%;

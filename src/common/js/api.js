@@ -1,9 +1,9 @@
 import axios from 'axios'
-// import jsonp from 'jsonp'
+import $ from 'jquery'
 
 const ajaxUrl = 'http://223.100.7.112:25010/fund-business/'
 
-const ajaxUrl1 = 'http://192.168.4.112:8080/'
+const ajaxUrl1 = 'http://192.168.4.195:8080/'
 
 export function getData(url, method, data = null) {
     return axios({
@@ -24,4 +24,18 @@ export function getQueryString(name) {
         return unescape(r[2]);
     }
     return null;
+}
+
+export function getData1(url, data = null) {
+    return (
+        $.ajax({
+            url,
+            method: 'GET',
+            data,
+            dataType: 'jsonp',
+            success: function(result) {
+                return Promise.resolve(result)
+            }
+        })
+    )
 }
