@@ -52,6 +52,7 @@ export default {
 		this.getQuestion()
 	},
 	methods: {
+		// 获取题目信息
 		getQuestion(){
 			getData('ufx/question/list', 'post').then((res) => {
 				console.log(res)
@@ -59,6 +60,7 @@ export default {
 				this.questionList = res
 			})
 		},
+		// 得到答题结果并格式化
 		collectPoint(index, questionNo, optionNo, indexSection){
 			this.currentIndex = indexSection
 			this.optionColorArr[index] = optionNo
@@ -67,6 +69,7 @@ export default {
 			this.error = false
 			this.errorMsg = ''
 		},
+		// 提交按钮事件，提交后页面跳转，错误信息提示
 		answerSubmit(){
 			if(this.answerArr.length !== this.totalNumber){
 				this.error = true
@@ -83,9 +86,11 @@ export default {
 				window.location.href = `${window.location.protocol}//${window.location.host}/riskTestResult.html?answer=${this.answer}&phone=13840324361`
 			}
 		},
+		// 上一题按钮事件
 		prev(){
 			this.currentNumber === 1 ? this.currentNumber = 1 : this.currentNumber -= 1
 		},
+		// 下一题按钮事件
 		next(index){
 			if(typeof(this.answerArr[index]) != 'undefined'){
 				this.currentNumber === this.totalNumber ? this.currentNumber = this.totalNumber : this.currentNumber += 1
@@ -102,7 +107,6 @@ export default {
 <style lang="scss" scoped>
 @import '../common/styles/variables.scss';
 .invest-sum{
-	min-height: 1334px;
 	.invest{
 		.question-sum{
 			margin-left: 20px;

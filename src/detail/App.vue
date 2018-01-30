@@ -66,6 +66,7 @@
 					<td>{{net.rangeDay}}</td>
 				</tr>
 			</table>
+			<a :href="`fundNetList.html?fundcode=${innerCode}`" class="show-more">点击查看更多</a>
 		</div>
 		<div class="content content-separate">
 			<div class="info-nav">
@@ -107,10 +108,13 @@
 			<div class="details-info" v-show="infoShow===1">
 				<ul>
 					<li v-for="(item, index) in notice" :key="index">
-						<div class="notice-info no-wrap">{{item.noticeTitle}}</div>
-						<div class="notice-time">{{item.noticeDate}}</div>
+						<a :href="item.filePath">
+							<div class="notice-info no-wrap">{{item.noticeTitle}}</div>
+							<div class="notice-time">{{item.noticeDate}}</div>
+						</a>
 					</li>
 				</ul>
+				<a :href="`fundNoticeList.html?fundcode=${innerCode}`" class="show-more">点击查看更多</a>
 			</div>
 		</div>
 	</div>
@@ -202,6 +206,7 @@ export default {
 		// 获取累计收益栏目数据
 		getRangeData(){
 			getData(`fund/${this.innerCode}/net/range`, 'get').then((res)=>{
+				console.log(res)
 				this.rangeInfoSum = res
 
 				this.rangeInfos.splice(0, this.rangeInfos.length)
@@ -217,13 +222,13 @@ export default {
 		// 格式化区间报告、同类平均、同类排名
 		rangeData(range, avg, order){
 			let newRange = range ? `${range}%` : '-'
-			let newAvg = avg ? avg>0 ? `+${avg}%` : `-${avg}%` : '-'
+			let newAvg = avg ? avg>0 ? `+${avg}%` : `${avg}%` : '-'
 			let newOrder = order ? `${order}` : '-'
 			return [newRange, newAvg, newOrder]
 		},
 		rangeDataNew(range, avg, order, orderCount){
-			let newRange = range ? range>0 ? `+${range}%` : `-${range}%` : '-'
-			let newAvg = avg ? avg>0 ? `+${avg}%` : `-${avg}%` : '-'
+			let newRange = range ? range>0 ? `+${range}%` : `${range}%` : '-'
+			let newAvg = avg ? avg>0 ? `+${avg}%` : `${avg}%` : '-'
 			let newOrder = order ? `${order}/${orderCount}` : '-'
 			return [newRange, newAvg, newOrder]
 		},
@@ -478,6 +483,9 @@ export default {
 			li{
 				padding: 20px 0;
 				border-bottom: 1px solid $border-color;
+				a{
+					display: block;
+				}
 				&:after{
 					content: "";
 					display: block;

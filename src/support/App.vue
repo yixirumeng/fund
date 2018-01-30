@@ -225,6 +225,7 @@ export default {
 }
 
 .content-sum{
+	margin-top: 15px;
 	.title{
 		span{
 			padding: 0 30px;

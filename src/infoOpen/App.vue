@@ -40,6 +40,7 @@ export default {
 		this.resizeInfoLoad()
 	},
 	methods: {
+		// 获取披露信息
 		getInfo(){
 			let currentPage = this.currentPage
 			let pageSize = this.pageSize
@@ -57,6 +58,7 @@ export default {
 				this.styleReset()
 			})
 		},
+		// 披露信息内容文本样式重置
 		styleReset(){
 			$(".info-details img").css({
 				'display': 'block',
@@ -74,6 +76,7 @@ export default {
 				'word-wrap': 'break-word'
 			})
 		},
+		// 滚动加载更多
 		moreInfoLoad(){
 			$(window).scroll(()=>{
 				let scrollH = $(window).scrollTop()

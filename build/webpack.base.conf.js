@@ -26,7 +26,8 @@ module.exports = {
         riskExplain: './src/riskExplain/main.js',
         riskTest: './src/riskTest/main.js',
         riskTestResult: './src/riskTestResult/main.js',
-
+        fundNetList: './src/fundNetList/main.js',
+        fundNoticeList: './src/fundNoticeList/main.js'
     },
     output: {
         path: config.build.assetsRoot,

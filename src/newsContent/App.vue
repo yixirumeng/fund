@@ -31,10 +31,12 @@ export default {
 		this.getContent()
 	},
 	methods: {
+		// 获取新闻详情ID
 		getInfoId(){
 			let infoId = getQueryString('infoId')
 			this.infoId = infoId
 		},
+		// 获取新闻详情
 		getContent(){
 			getData(`manage/info/${this.infoId}/content`, 'get').then((res) => {
 				console.log(res)
@@ -46,6 +48,7 @@ export default {
 				this.styleReset()
 			})
 		},
+		// 对新闻内容文本样式重置
 		styleReset(){
 			$('.content-details').find('img').css({
 				'margin': '0',
@@ -74,7 +77,6 @@ export default {
 <style lang="scss" scoped>
 @import '../common/styles/variables.scss';
 .content-sum{
-	margin-top: 0;
 	.title{
 		font-size: 46px;
 		padding: 30px 0 36px;

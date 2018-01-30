@@ -124,48 +124,52 @@ export default {
 
 <style lang="scss" scoped>
 @import '../common/styles/variables.scss';
-.content{
-	.title{
-		border-bottom: 1px solid $border-color;
-	}
-	.content-table{
-		border: 1px solid $border-color;
-		margin-top: 26px;
-		td {
-            border: 1px solid $border-color;
-            padding-left: 20px;
-			&:first-child{
-				width: 70%;
-			}
-			&:last-child{
-				width: 30%;
-			}
-        }
-	}
-	.content-tip{
-		margin-top: 24px;
-		color: #999;
-	}
-	.business-info{
-		li{
-			padding: 24px 0;
+.content-sum{
+	margin-top: 15px;
+	.content{
+		.title{
 			border-bottom: 1px solid $border-color;
-			&:last-child{
-				border-bottom: none;
+		}
+		.content-table{
+			border: 1px solid $border-color;
+			margin-top: 26px;
+			td {
+				border: 1px solid $border-color;
+				padding-left: 20px;
+				&:first-child{
+					width: 70%;
+				}
+				&:last-child{
+					width: 30%;
+				}
 			}
-			div:first-child{
-				float: left;
-			}
-			div:last-child{
-				float: right;
-			}
-			&:after{
-				display: block;
-				content: "";
-				clear: both;
+		}
+		.content-tip{
+			margin-top: 24px;
+			color: #999;
+		}
+		.business-info{
+			li{
+				padding: 24px 0;
+				border-bottom: 1px solid $border-color;
+				&:last-child{
+					border-bottom: none;
+				}
+				div:first-child{
+					float: left;
+				}
+				div:last-child{
+					float: right;
+				}
+				&:after{
+					display: block;
+					content: "";
+					clear: both;
+				}
 			}
 		}
 	}
 }
+
 </style>
 

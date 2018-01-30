@@ -33,12 +33,14 @@ export default {
 		this.getResult()
 	},
 	methods: {
+		// 获取url参数
 		getAnswerContent(){
 			let newEligContent = getQueryString('answer')
 			this.eligContent = newEligContent
 			let newPhoneNumber = getQueryString('phone')
 			this.phoneNumber = newPhoneNumber
 		},
+		// 获取测试结果
 		getResult(){
 			let eligContent = '54:1|55:2|56:3|57:4|58:1|59:2|60:4|61:2|63:2'
 			let phoneNumber = '13840324361'
@@ -51,6 +53,7 @@ export default {
 				this.resultMsg = res.invest_risk_tolerance_desc
 			})
 		},
+		// 重新测评跳转
 		restart(){
 			window.location.href = `${window.location.protocol}//${window.location.host}/riskTest.html?phone=${this.phoneNumber}`
 		}
@@ -61,7 +64,6 @@ export default {
 <style lang="scss" scoped>
 @import '../common/styles/variables.scss';
 .invest-sum{
-	min-height: 1334px;
 	.invest{
 		font-size: $font-size-l;
 		.result-title{

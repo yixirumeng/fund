@@ -11,7 +11,7 @@
 					<li v-for="(info, index) in newsList" :key="index">
 						<a :href="'/newsContent.html?infoId='+info.id" class="lists-title" >
 							<span class="title-detail no-wrap">{{info.title}}</span>
-							<span class="hot" v-if="index<3"></span>
+							<span class="hot" v-if="index<3" :style="{'width': '48px', 'height': '20px', 'background-size': '48px 20px'}"></span>
 						</a>
 						<div class="source">
 							<span>麟龙基金</span><span>{{info.publishTime}}</span>
@@ -22,10 +22,10 @@
 			<div class="content-lists" v-show="nowIndex==1">
 				<ul>
 					<li v-for="(info, index) in marketList" :key="index">
-						<div class="lists-title">
+						<a :href="'/newsContent.html?infoId='+info.id" class="lists-title">
 							<span class="title-detail no-wrap">{{info.title}}</span>
 							<span class="hot" v-if="index<3"></span>
-						</div>
+						</a>
 						<div class="source">
 							<span>麟龙基金</span><span>{{info.publishTime}}</span>
 						</div>
@@ -69,10 +69,12 @@ export default {
 		this.resizeInfoLoad()
 	},
 	methods:{
+		// 导航切换
 		changeNav(index){
 			this.nowIndex = index
 			$(window).scrollTop(0)
 		},
+		// 获取基金新闻列表信息
 		getNewsList(){
 			let currentPage = this.currentPage1
 			let pageSize = this.pageSize
@@ -91,6 +93,7 @@ export default {
 				sw = true
 			})
 		},
+		// 获取市场信息列表
 		getMarketList(){
 			let currentPage = this.currentPage2
 			let pageSize = this.pageSize
@@ -108,6 +111,7 @@ export default {
 				sw = true
 			})
 		},
+		// 滚动加载更多
 		moreInfoLoad(){
 			$(window).scroll(()=>{
 				let scrollH = $(window).scrollTop()
@@ -139,7 +143,6 @@ export default {
 @import '../common/styles/variables.scss';
 @import '../common/styles/mixin.scss';
 .content-sum{
-	margin-top: 0;
 	.support-nav{
 		width: 100%;
 		position: fixed;
@@ -182,9 +185,7 @@ export default {
 								max-width: 580px;
 							}
 							&.hot{
-								width: 96px;
-								height: 40px;
-								@include bg-image('../common/images/hot')
+								background-image: url('../common/images/new@2x.png');
 							}
 						}
 					}
@@ -196,6 +197,5 @@ export default {
 		}
 	}
 }
-
 </style>
 

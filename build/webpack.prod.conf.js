@@ -120,7 +120,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         }),
         new HtmlWebpackPlugin({
             filename: config.build.newsContent,
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             minify: {
                 removeComments: true,
@@ -135,7 +135,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         }),
         new HtmlWebpackPlugin({
             filename: config.build.newsList,
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             minify: {
                 removeComments: true,
@@ -165,7 +165,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         }),
         new HtmlWebpackPlugin({
             filename: config.build.investorRights,
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             minify: {
                 removeComments: true,
@@ -180,7 +180,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         }),
         new HtmlWebpackPlugin({
             filename: config.build.investmentAccess,
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             minify: {
                 removeComments: true,
@@ -195,7 +195,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         }),
         new HtmlWebpackPlugin({
             filename: config.build.onlineTrade,
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             minify: {
                 removeComments: true,
@@ -210,7 +210,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         }),
         new HtmlWebpackPlugin({
             filename: config.build.riskExplain,
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             minify: {
                 removeComments: true,
@@ -225,7 +225,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         }),
         new HtmlWebpackPlugin({
             filename: config.build.riskTest,
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             minify: {
                 removeComments: true,
@@ -240,7 +240,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         }),
         new HtmlWebpackPlugin({
             filename: config.build.riskTestResult,
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             minify: {
                 removeComments: true,
@@ -252,6 +252,36 @@ const webpackConfig = merge(baseWebpackConfig, {
             // necessary to consistently work with multiple chunks via CommonsChunkPlugin
             chunksSortMode: 'dependency',
             chunks: ['manifest', 'vendor', 'riskTestResult']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.fundNetList,
+            template: 'index1.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'fundNetList']
+        }),
+        new HtmlWebpackPlugin({
+            filename: config.build.fundNoticeList,
+            template: 'index1.html',
+            inject: true,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeAttributeQuotes: true
+                    // more options:
+                    // https://github.com/kangax/html-minifier#options-quick-reference
+            },
+            // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+            chunksSortMode: 'dependency',
+            chunks: ['manifest', 'vendor', 'fundNoticeList']
         }),
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),

@@ -43,6 +43,7 @@ export default {
 				this.innerCode = fundcode
 			}
 		},
+		// 获取分红信息
 		getBonus(){
 			let currentPage = this.currentPage
 			let pageSize = this.pageSize
@@ -75,6 +76,7 @@ export default {
 <style lang="scss" scoped>
 @import '../common/styles/variables.scss';
 .content-sum{
+	margin-top: 15px;
 	.title{
 		padding-top: 25px;
 		margin-left: 22px;

@@ -76,13 +76,13 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         }),
         new HtmlWebpackPlugin({
             filename: 'newsContent.html',
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             chunks: ['newsContent']
         }),
         new HtmlWebpackPlugin({
             filename: 'newsList.html',
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             chunks: ['newsList']
         }),
@@ -94,39 +94,51 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         }),
         new HtmlWebpackPlugin({
             filename: 'investorRights.html',
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             chunks: ['investorRights']
         }),
         new HtmlWebpackPlugin({
             filename: 'investmentAccess.html',
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             chunks: ['investmentAccess']
         }),
         new HtmlWebpackPlugin({
             filename: 'onlineTrade.html',
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             chunks: ['onlineTrade']
         }),
         new HtmlWebpackPlugin({
             filename: 'riskExplain.html',
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             chunks: ['riskExplain']
         }),
         new HtmlWebpackPlugin({
             filename: 'riskTest.html',
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             chunks: ['riskTest']
         }),
         new HtmlWebpackPlugin({
             filename: 'riskTestResult.html',
-            template: 'index.html',
+            template: 'index1.html',
             inject: true,
             chunks: ['riskTestResult']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'fundNetList.html',
+            template: 'index1.html',
+            inject: true,
+            chunks: ['fundNetList']
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'fundNoticeList.html',
+            template: 'index1.html',
+            inject: true,
+            chunks: ['fundNoticeList']
         }),
         // copy custom static assets
         new CopyWebpackPlugin([{

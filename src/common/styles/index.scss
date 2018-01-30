@@ -15,7 +15,6 @@ body {
 
 .content-sum {
     font-size: $font-size-n;
-    margin-top: 15px;
     background-color: #fff;
 }
 
@@ -106,4 +105,13 @@ body {
             text-align: justify;
         }
     }
+}
+
+.show-more {
+    text-align: center;
+    font-size: $font-size-l;
+    padding: 16px 0;
+    color: #1998CF;
+    letter-spacing: 2px;
+    display: block;
 }
