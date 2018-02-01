@@ -140,6 +140,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
             inject: true,
             chunks: ['fundNoticeList']
         }),
+        new HtmlWebpackPlugin({
+            filename: 'starFund.html',
+            template: 'index1.html',
+            inject: true,
+            chunks: ['starFund']
+        }),
         // copy custom static assets
         new CopyWebpackPlugin([{
             from: path.resolve(__dirname, '../static'),

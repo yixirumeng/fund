@@ -39,7 +39,6 @@ export default {
 		// 获取新闻详情
 		getContent(){
 			getData(`manage/info/${this.infoId}/content`, 'get').then((res) => {
-				console.log(res)
 				this.title = res.title
 				this.publishMedia = res.publishMedia
 				this.publishTime = res.publishTime

@@ -85,7 +85,6 @@ export default {
 				categoryId
 			}
 			getData('manage/info/0/summaryList/', 'get', data).then((res)=>{
-				console.log(res)
 				for(let i=0; i<res.list.length; i++){
 					this.newsList.push(res.list[i])
 				}

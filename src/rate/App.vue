@@ -96,14 +96,15 @@ export default {
 	methods: {
 		// 获取url参数值
 		changeUrl(){
-			let fundcode = getQueryString('fundcode')
-			if(fundcode){
-				this.innerCode = fundcode
+			let innerCode = getQueryString('innerCode')
+			if(innerCode){
+				this.innerCode = innerCode
 			}
 		},
 		// 获取费率信息
 		getRate(){
 			getData(`fund/${this.innerCode}/detail/info`, 'get').then((res) => {
+				console.log(res)
 				this.affirmRate = res.affirmRate
 				this.applyRate = res.applyRate
 				this.redemptionRate = res.redemptionRate

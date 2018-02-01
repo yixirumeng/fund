@@ -170,9 +170,9 @@ export default {
 	methods: {
 		// 获取url参数值
 		changeUrl(){
-			let fundcode = getQueryString('fundcode')
-			if(fundcode){
-				this.innerCode = fundcode
+			let innerCode = getQueryString('innerCode')
+			if(innerCode){
+				this.innerCode = innerCode
 			}
 		},
 		// 图表曲线tab切换
@@ -196,6 +196,7 @@ export default {
 			}else if(index === 4){
 				this.rangeInfos.splice(0, this.rangeInfos.length)
 				this.rangeInfos = this.rangeData(this.rangeInfoSum.rangeThreeYear, this.rangeInfoSum.avgThreeYear, this.rangeInfoSum.orderThreeYear)
+				
 			}
 		},
 		// 基金信息、公告tab切换
@@ -292,13 +293,16 @@ export default {
                             fontFamily: 'Arial'
 						},
 						verticalAlign: 'bottom',
-                    	margin: 30
-                    },
+						margin: 30,
+						// showMaxLabel: true,
+						// showMinLabel: false,
+						align: 'center'
+					},
                     axisLine: {
                         lineStyle: {
                             color: '#ddd'
                         }
-                    },
+					},
                     splitLine: {
                         show: true,
                         lineStyle: {
@@ -315,7 +319,7 @@ export default {
                     axisLabel: {
                         show: true,
                         color: '#666',
-                        fontSize: '12px',
+                        fontSize: '14px',
                         fontFamily: 'Arial',
                         margin: 10,
                         formatter: function(value){

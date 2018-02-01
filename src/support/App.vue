@@ -8,76 +8,40 @@
 		<div v-show="detail===0">
 			<div class="content-sum">
 				<h2 class="title clearfix">
-					<span>重度持仓</span><span>2017年第三季度</span>
+					<span>重度持仓</span><span>{{supportYear}}年第{{supportQuarter}}季度</span>
 				</h2>
 				<table class="content-table">
 					<tr>
 						<td>股票名称</td>
 						<td>持仓占比</td>
 					</tr>
-					<tr>
+					<tr v-for="(item, index) in heavyStocks" :key="index">
 						<td>
-							<p>华泰柏瑞价值增长</p>
-							<p class="support-code">050065</p>
+							<p>{{item.chiNameAbbr}}</p>
+							<p class="support-code">{{item.secuCode}}</p>
 						</td>
 						<td>
-							<p>97.3%</p>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>华泰柏瑞价值增长</p>
-							<p class="support-code">050065</p>
-						</td>
-						<td>
-							<p>97.3%</p>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>华泰柏瑞价值增长</p>
-							<p class="support-code">050065</p>
-						</td>
-						<td>
-							<p>97.3%</p>
+							<p>{{item.ratioInNV}}%</p>
 						</td>
 					</tr>
 				</table>
 			</div>
 			<div class="content-sum">
 				<h2 class="title clearfix">
-					<span>持仓债券</span><span>2017年第三季度</span>
+					<span>持仓债券</span><span>{{supportYear}}年第{{supportQuarter}}季度</span>
 				</h2>
 				<table class="content-table">
 					<tr>
 						<td>股票名称</td>
 						<td>持仓占比</td>
 					</tr>
-					<tr>
+					<tr v-for="(item, index) in heavyBond" :key="index">
 						<td>
-							<p>华泰柏瑞价值增长</p>
-							<p class="support-code">050065</p>
+							<p>{{item.secuAbbr}}</p>
+							<p class="support-code">{{item.secuCode}}</p>
 						</td>
 						<td>
-							<p>97.3%</p>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>华泰柏瑞价值增长</p>
-							<p class="support-code">050065</p>
-						</td>
-						<td>
-							<p>97.3%</p>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<p>华泰柏瑞价值增长</p>
-							<p class="support-code">050065</p>
-						</td>
-						<td>
-							<p>97.3%</p>
+							<p>{{item.ratioInNV}}%</p>
 						</td>
 					</tr>
 				</table>
@@ -86,7 +50,7 @@
 		<div v-show="detail===1">
 			<div class="content-sum">
 				<h2 class="title title1 clearfix">
-					<span>配置详情</span><span>2017年第三季度</span>
+					<span>配置详情</span><span>{{supportYear}}年第{{supportQuarter}}季度</span>
 				</h2>
 				<div class="content">
 					<table class="content-table content-table1">
@@ -95,37 +59,15 @@
 							<td>市值(万元)</td>
 							<td>占净值比</td>
 						</tr>
-						<tr>
+						<tr v-for="(item, index) in industryAllocation" :key="index">
 							<td>
-								<div>电力、热力、燃气及水生产和供应业</div>
+								<div>{{item.industryName}}</div>
 							</td>
 							<td>
-								18,270.32
+								{{item.marketValue}}
 							</td>
 							<td>
-								83.41%
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div>电力、热力、燃气及水生产和供应业</div>
-							</td>
-							<td>
-								18,270.32
-							</td>
-							<td>
-								83.41%
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div>电力、热力、燃气及水生产和供应业</div>
-							</td>
-							<td>
-								18,270.32
-							</td>
-							<td>
-								83.41%
+								{{item.ratioInNV}}%
 							</td>
 						</tr>
 					</table>
@@ -135,7 +77,7 @@
 		<div v-show="detail===2">
 			<div class="content-sum">
 				<h2 class="title title1 clearfix">
-					<span>配置详情</span><span>2017年第四季度</span>
+					<span>配置详情</span><span>{{supportYear}}年第{{supportQuarter}}季度</span>
 				</h2>
 				<div class="content">
 					<table class="content-table">
@@ -143,36 +85,12 @@
 							<td>项目</td>
 							<td>数据</td>
 						</tr>
-						<tr>
+						<tr v-for="(item, index) in assetAllocation" :key="index">
 							<td>
-								股票占净比
+								{{assetTypeFormat(item.assetType)}}
 							</td>
 							<td>
-								93.29%
-							</td>
-						</tr>
-						<tr>
-							<td>
-								债券占净比
-							</td>
-							<td>
-								--
-							</td>
-						</tr>
-						<tr>
-							<td>
-								现金占净比
-							</td>
-							<td>
-								10.64%
-							</td>
-						</tr>
-						<tr>
-							<td>
-								净资产(亿元)
-							</td>
-							<td>
-								0.34
+								{{item.netValueRation}}%
 							</td>
 						</tr>
 					</table>
@@ -187,18 +105,110 @@
 </template>
 
 <script>
+import {getData, getQueryString} from '@/common/js/api'
+
 export default {
 	data(){
 		return {
 			navs: ['持仓明细', '行业配置', '资产配置'],
 			nowIndex: 0,
-			detail: 0
+			detail: 0,
+			innerCode: null,
+			supportYear: '',
+			supportQuarter: '',
+			quarter: '',
+			heavyStocks: null,
+			heavyBond: null,
+			industryAllocation: null,
+			assetAllocation: null
 		}
 	},
+	created(){
+		this.getSupportDate()
+		this.getFundCode()
+		this.getHeavyStocks()
+		this.getHeavyBond()
+		this.getIndustryAllocation()
+		this.getAssetAllocation()
+	},
 	methods:{
+		// 导航切换
 		changeNav(index){
 			this.nowIndex = index
 			this.detail = index
+		},
+		// 获取年份季度
+		getSupportDate(){
+			let date = new Date()
+			let year = date.getFullYear()
+			let month = date.getMonth() + 1
+			if(month>=1 && month<=3){
+				this.supportYear = year - 1
+				this.supportQuarter = '四'
+				this.quarter = '4'
+				return false
+			}else if(month>=4 && month<=6){
+				this.supportQuarter = '一'
+				this.quarter = '1'
+			}else if(month>=7 && month<= 9){
+				this.supportQuarter = '二'
+				this.quarter = '2'
+			}else if(month>=10 && month<= 12){
+				this.supportQuarter = '三'
+				this.quarter = '3'
+			}
+			this.supportYear = year
+		},
+		// 获取基金代码
+		getFundCode(){
+			let innerCode = getQueryString('innerCode')
+			if(innerCode){
+				this.innerCode = innerCode
+			}
+		},
+		// 请求参数格式化
+		paramsFormat(){
+			let year = this.supportYear
+			let quarter = this.quarter
+			let data = {
+				year,
+				quarter
+			}
+			return data
+		},
+		// 获取重仓持股信息
+		getHeavyStocks(){
+			getData(`fund/investment/${this.innerCode}/heavyStocks`, 'get', this.paramsFormat()).then((res) => {
+				this.heavyStocks = res
+			})
+		},
+		// 获取持仓债券信息
+		getHeavyBond(){
+			getData(`fund/investment/${this.innerCode}/heavyBond`, 'get', this.paramsFormat()).then((res) => {
+				this.heavyBond = res
+			})
+		},
+		// 获取行业配置信息
+		getIndustryAllocation(){
+			getData(`fund/investment/${this.innerCode}/industryAllocation`, 'get', this.paramsFormat()).then((res) => {
+				this.industryAllocation = res
+			})
+		},
+		// 获取资产配置信息
+		getAssetAllocation(){
+			getData(`fund/investment/${this.innerCode}/assetAllocation`, 'get', this.paramsFormat()).then((res) => {
+				console.log(res)
+				this.assetAllocation = res
+			})
+		},
+		// 资产配置项目名称格式化
+		assetTypeFormat(assetType){
+			let typeContain = assetType.indexOf('其他')
+			if(typeContain<0){
+				return `${assetType}占净比`
+			}else{
+				return assetType
+			}
 		}
 	}
 }
@@ -229,11 +239,13 @@ export default {
 	.title{
 		span{
 			padding: 0 30px;
+			display: inline-block;
 			&:first-child{
 				float: left;
 			}
 			&:last-child{
 				float: right;
+				margin-top: 4px;
 				font-size: $font-size-n;
 				color: $font-color-n;
 			}
@@ -282,7 +294,7 @@ export default {
 	}
 	.content-tip{
 		margin-top: 24px;
-		color: #999;
+		color: $font-color-s;
 		font-size: $font-size-n;
 		p{
 			line-height: 1.5;

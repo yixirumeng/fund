@@ -53,6 +53,7 @@ module.exports = {
         riskTestResult: path.resolve(__dirname, '../dist/riskTestResult.html'),
         fundNetList: path.resolve(__dirname, '../dist/fundNetList.html'),
         fundNoticeList: path.resolve(__dirname, '../dist/fundNoticeList.html'),
+        starFund: path.resolve(__dirname, '../dist/starFund.html'),
 
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),
