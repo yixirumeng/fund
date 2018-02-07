@@ -52,7 +52,6 @@ export default {
 				pageSize
 			}
 			getData(`fund/${this.innerCode}/history/bonus`, 'get', data).then((res) => {
-				console.log(res)
 				this.bonus = res.list
 				if(res.page.totalPage > 1){
 					for(let i=1; i<res.page.totalPage; i++){

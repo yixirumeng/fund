@@ -104,7 +104,6 @@ export default {
 		// 获取费率信息
 		getRate(){
 			getData(`fund/${this.innerCode}/detail/info`, 'get').then((res) => {
-				console.log(res)
 				this.affirmRate = res.affirmRate
 				this.applyRate = res.applyRate
 				this.redemptionRate = res.redemptionRate
@@ -113,6 +112,7 @@ export default {
 		// 获取交易信息
 		getTrade(){
 			getData(`fund/${this.innerCode}/base/info`, 'get').then((res) => {
+				console.log(res)
 				this.applyDealStatus = res.applyDealStatus
 				this.redeemDealStatus = res.redeemDealStatus
 				this.fixDealStatus = res.fixDealStatus

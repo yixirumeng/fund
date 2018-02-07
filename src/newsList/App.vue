@@ -9,7 +9,7 @@
 			<div class="content-lists" v-show="nowIndex==0">
 				<ul>
 					<li v-for="(info, index) in newsList" :key="index">
-						<a :href="'/newsContent.html?infoId='+info.id" class="lists-title" >
+						<a :href="`newsContent.html?infoId=${info.id}`" class="lists-title" >
 							<span class="title-detail no-wrap">{{info.title}}</span>
 							<span class="hot" v-if="index<3" :style="{'width': '48px', 'height': '20px', 'background-size': '48px 20px'}"></span>
 						</a>
@@ -22,9 +22,9 @@
 			<div class="content-lists" v-show="nowIndex==1">
 				<ul>
 					<li v-for="(info, index) in marketList" :key="index">
-						<a :href="'/newsContent.html?infoId='+info.id" class="lists-title">
+						<a :href="`newsContent.html?infoId=${info.id}`" class="lists-title">
 							<span class="title-detail no-wrap">{{info.title}}</span>
-							<span class="hot" v-if="index<3"></span>
+							<span class="hot" v-if="index<3" :style="{'width': '48px', 'height': '20px', 'background-size': '48px 20px'}"></span>
 						</a>
 						<div class="source">
 							<span>麟龙基金</span><span>{{info.publishTime}}</span>
@@ -140,7 +140,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '../common/styles/variables.scss';
-@import '../common/styles/mixin.scss';
 .content-sum{
 	.support-nav{
 		width: 100%;

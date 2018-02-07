@@ -4,9 +4,11 @@
 			<div class="result-title">您的风险等级：</div>
 			<img :src="riskResult" alt="风险测评结果" class="result-img">
 			<div class="result-msg">{{resultMsg}}</div>
-			<div class="result-info">建议选择基金<span>中高风险</span></div>
+			<div class="result-info">建议选择基金<span>{{riskType}}</span></div>
 			<div class="complete">完成</div>
-			<div class="restart" @click="restart">重新测评</div>
+			<div class="restart">
+				<a :href="`riskTest.html?phone=${phoneNumber}`">重新测评</a>
+			</div>
 			<div class="result-tips">
 				<p>重要提示：</p>
 				<p>以上信息仅供投资者参考，不作为投资者决策的依据。</p>
@@ -17,7 +19,7 @@
 
 <script>
 import riskResult from '@/common/images/riskResult.png'
-import {getData, getQueryString} from '@/common/js/api'
+import {getData, getQueryString, callAppType, depositPath} from '@/common/js/api'
 
 export default {
 	data(){
@@ -25,7 +27,8 @@ export default {
 			riskResult,
 			eligContent: '',
 			phoneNumber: '',
-			resultMsg: ''
+			resultMsg: '',
+			riskType: ''
 		}
 	},
 	created(){
@@ -35,15 +38,15 @@ export default {
 	methods: {
 		// 获取url参数
 		getAnswerContent(){
-			let newEligContent = getQueryString('answer')
-			this.eligContent = newEligContent
 			let newPhoneNumber = getQueryString('phone')
 			this.phoneNumber = newPhoneNumber
+			let newEligContent = getQueryString('answer')
+			this.eligContent = newEligContent
 		},
 		// 获取测试结果
 		getResult(){
-			let eligContent = '54:1|55:2|56:3|57:4|58:1|59:2|60:4|61:2|63:2'
-			let phoneNumber = '13840324361'
+			let phoneNumber = this.phoneNumber
+			let eligContent = this.eligContent
 			let data = {
 				username: phoneNumber,
 				elig_content: eligContent
@@ -51,11 +54,12 @@ export default {
 			getData('ufx/question/submit', 'post', data).then((res) => {
 				console.log(res)
 				this.resultMsg = res.invest_risk_tolerance_desc
+				this.riskType = res.ofund_risklevel_desc
 			})
 		},
-		// 重新测评跳转
-		restart(){
-			window.location.href = `${window.location.protocol}//${window.location.host}/riskTest.html?phone=${this.phoneNumber}`
+		// 重新测评按钮点击跳转
+		callRiskTest(){
+			callAppType('1', `${depositPath}riskTest.html?phone=${phoneNumber}`, '风险测评')
 		}
 	}
 }
@@ -106,6 +110,12 @@ export default {
 			font-size: $font-size-title;
 			color: $font-color-r;
 			margin-top: 36px;
+			a{
+				color: $font-color-r;
+				&:active{
+					color: $font-color-r;
+				}
+			}
 		}
 		.result-tips{
 			margin-top: 36px;

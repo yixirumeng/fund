@@ -8,7 +8,7 @@
 						{{nav}}
 					</li>
 				</ul>
-				<div :style="{position:'relative',width: '100%',height: '250px'}">
+				<div :style="{position:'relative',width: '96%',height: '250px',margin: '0 auto'}">
 					<div id="myChart" :style="{width: '100%',height: '300px', position: 'absolute', top: '-40px',left: '0', zIndex:'1'}"></div>
 				</div>
 				<div class="income-change">
@@ -66,7 +66,7 @@
 					<td>{{net.rangeDay}}</td>
 				</tr>
 			</table>
-			<a :href="`fundNetList.html?fundcode=${innerCode}`" class="show-more">点击查看更多</a>
+			<div class="show-more" @click="callFundNet">点击查看更多</div>
 		</div>
 		<div class="content content-separate">
 			<div class="info-nav">
@@ -90,16 +90,18 @@
 						</div>
 					</li>
 					<li>
-						<div class="archives-info">基金经理</div>
+						<div class="archives-info">
+							基金经理
+						</div>
 						<div class="archives-num">
 							{{fundInfo[2]}}
 						</div>
 					</li>
-					<li>
+					<li @click="callBonus">
 						<div class="archives-info">分红信息</div>
 						<div class="archives-num"></div>
 					</li>
-					<li>
+					<li @click="callSupport">
 						<div class="archives-info">基金持仓</div>
 						<div class="archives-num"></div>
 					</li>
@@ -114,18 +116,19 @@
 						</a>
 					</li>
 				</ul>
-				<a :href="`fundNoticeList.html?fundcode=${innerCode}`" class="show-more">点击查看更多</a>
+				<div class="show-more" @click="callFundNotice">点击查看更多</div>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import {getData, getQueryString} from '@/common/js/api'
+import {getData, getQueryString, callAppType, depositPath} from '@/common/js/api'
 import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
+import $ from 'jquery'
 
 var myChart
 
@@ -153,7 +156,9 @@ export default {
 			currentPage: 1,
 			pageSize: 10,
 			fundInfo: [],
-			notice: []
+			notice: [],
+			xData: [],
+			yData: []
 		}
 	},
 	created(){
@@ -162,12 +167,29 @@ export default {
 		this.getFundInfo()
 		this.getNet()
 		this.getAnnounce()
+		
 	},
 	mounted(){
 		myChart = echarts.init(document.getElementById('myChart'));
 		this.drawLine()
 	},
 	methods: {
+		// 基金净值点击更多跳转
+		callFundNet(){
+			callAppType('1', `${depositPath}fundNetList.html?innerCode=${this.innerCode}`, '基金净值')
+		},
+		// 基金公共点击更多跳转
+		callFundNotice(){
+			callAppType('1', `${depositPath}fundNoticeList.html?innerCode=${this.innerCode}`, '基金公告')
+		},
+		// 基金分红点击跳转
+		callBonus(){
+			callAppType('1', `${depositPath}bonus.html?innerCode=${this.innerCode}`, '分红信息')
+		},
+		// 基金持仓点击跳转
+		callSupport(){
+			callAppType('1', `${depositPath}support.html?innerCode=${this.innerCode}`, '基金持仓')
+		},
 		// 获取url参数值
 		changeUrl(){
 			let innerCode = getQueryString('innerCode')
@@ -181,22 +203,17 @@ export default {
 			this.dateRange = index + 1
 			this.drawLine()
 			let range, avg, order
+			this.rangeInfos.splice(0, this.rangeInfos.length)
 			if(index === 0){
-				this.rangeInfos.splice(0, this.rangeInfos.length)
 				this.rangeInfos = this.rangeData(this.rangeInfoSum.rangeOneMonth, this.rangeInfoSum.avgOneMonth, this.rangeInfoSum.orderOneMonth)
 			}else if(index === 1){
-				this.rangeInfos.splice(0, this.rangeInfos.length)
 				this.rangeInfos = this.rangeData(this.rangeInfoSum.rangeThreeMonth, this.rangeInfoSum.avgThreeMonth, this.rangeInfoSum.orderThreeMonth)
 			}else if(index === 2){
-				this.rangeInfos.splice(0, this.rangeInfos.length)
 				this.rangeInfos = this.rangeData(this.rangeInfoSum.rangeSixMonth, this.rangeInfoSum.avgSixMonth, this.rangeInfoSum.orderSixMonth)
 			}else if(index === 3){
-				this.rangeInfos.splice(0, this.rangeInfos.length)
 				this.rangeInfos = this.rangeData(this.rangeInfoSum.rangeThisYear, this.rangeInfoSum.avgThisYear, this.rangeInfoSum.orderThisYear)
 			}else if(index === 4){
-				this.rangeInfos.splice(0, this.rangeInfos.length)
 				this.rangeInfos = this.rangeData(this.rangeInfoSum.rangeThreeYear, this.rangeInfoSum.avgThreeYear, this.rangeInfoSum.orderThreeYear)
-				
 			}
 		},
 		// 基金信息、公告tab切换
@@ -207,9 +224,8 @@ export default {
 		// 获取累计收益栏目数据
 		getRangeData(){
 			getData(`fund/${this.innerCode}/net/range`, 'get').then((res)=>{
-				console.log(res)
 				this.rangeInfoSum = res
-
+				console.log(res)
 				this.rangeInfos.splice(0, this.rangeInfos.length)
 				this.rangeInfos = this.rangeData(res.rangeOneMonth, res.avgOneMonth, res.orderOneMonth)
 
@@ -268,10 +284,11 @@ export default {
 		},
 		// 生成图表
 		drawLine(){
-			let that = this;
-			if (myChart != null && myChart != "" && myChart != undefined) {
-				myChart.dispose();
-			}
+			let that = this
+			myChart.dispose()
+			// if (myChart != null && myChart != "" && myChart != undefined) {
+			// 	myChart.dispose()
+			// }
 			myChart = echarts.init(document.getElementById('myChart'));
             myChart.setOption({
                 tooltip : {
@@ -294,8 +311,6 @@ export default {
 						},
 						verticalAlign: 'bottom',
 						margin: 30,
-						// showMaxLabel: true,
-						// showMinLabel: false,
 						align: 'center'
 					},
                     axisLine: {
@@ -424,9 +439,9 @@ export default {
 				li{
 					float: left;
 					text-align: center;
-					margin-right: 30px;
+					margin-right: 20px;
 					&:nth-child(1){
-						width: 185px;
+						width: 200px;
 					}
 					&:nth-child(2){
 						width: 245px;
@@ -531,7 +546,7 @@ export default {
 }
 
 .content-bottom{
-	margin-top: 15px;
+	margin-top: 15px; 
 	padding: 0;
 }
 </style>

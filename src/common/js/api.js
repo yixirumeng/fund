@@ -5,6 +5,10 @@ const ajaxUrl = 'http://223.100.7.112:25010/fund-business/'
 
 const ajaxUrl1 = 'http://192.168.4.195:8080/'
 
+const ajaxUrl2 = 'https://172.16.250.10:25013/fund-business/'
+
+const ajaxUrl3 = 'https://223.100.7.112:25013/fund-business/'
+
 export function getData(url, method, data = null) {
     return axios({
         url: `${ajaxUrl1}${url}`,
@@ -14,9 +18,36 @@ export function getData(url, method, data = null) {
         if (res.data.code === 0) {
             return Promise.resolve(res.data.content)
         }
+    }).catch((error) => {
+        if (error) {
+            console.log(error)
+        }
     })
 }
 
+/**
+ * 安卓、IOS嵌入H5公共方法
+ * type{
+ *     case 1: // 跳转URL body中传URL
+ *     case 2: // ..转原生
+ *     case 3: // ..转原生
+ *     ...
+ * body: {'type':'1','body':'','Remarks':'备注','Reserve':'预留'}
+ */
+export function callAppType(type, body, remarks, reserve = '') {
+    let paramIOS = { 'type': type, 'body': body, 'remarks': remarks, 'reserve': reserve }
+    let paramAndroid = JSON.stringify(paramIOS)
+    try {
+        callAndroid.postMessageAndroid(paramAndroid)
+    } catch (error) {
+        window.webkit.messageHandlers.callApp.postMessage(paramIOS)
+    }
+}
+
+// 定义H5页面存放路径
+export const depositPath = ''
+
+// 获取url参数方法
 export function getQueryString(name) {
     let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
     let r = window.location.search.substr(1).match(reg);
@@ -26,16 +57,30 @@ export function getQueryString(name) {
     return null;
 }
 
-export function getData1(url, data = null) {
-    return (
-        $.ajax({
-            url,
-            method: 'GET',
-            data,
-            dataType: 'jsonp',
-            success: function(result) {
-                return Promise.resolve(result)
-            }
-        })
-    )
+// 更改跳转的新url方法
+export function getNewUrl(newPath) {
+    let currentUrl = window.location.origin + window.location.pathname
+    let urlArr = currentUrl.split('/')
+    urlArr.pop(urlArr.length - 1)
+    urlArr.push(newPath)
+    let newUrl = urlArr.join('/')
+    return newUrl
 }
+
+
+
+// export function getData(url, method, data = null) {
+//     return (
+//         $.ajax({
+//             url: `${ajaxUrl3}${url}`,
+//             method,
+//             data,
+//             dataType: 'json',
+//             success: function(result) {
+//                 if (result.code === 0) {
+//                     return Promise.resolve(result.content)
+//                 }
+//             }
+//         })
+//     )
+// }

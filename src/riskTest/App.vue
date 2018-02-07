@@ -5,7 +5,7 @@
 				<div class="question-number clearfix">
 					<span>{{currentNumber}}</span><span>/</span><span>{{totalNumber}}</span>
 				</div>
-				<div class="question-sum" v-for="(item, index) in questionList" :key="index" v-show="currentNumber === index+1">
+				<div class="question-details" v-for="(item, index) in questionList" :key="index" v-show="currentNumber === index+1">
 					<div class="question-title" >
 						{{item.question_content}}
 					</div>
@@ -22,7 +22,7 @@
 							{{errorMsg}}
 						</div>
 					</div>
-					<div class="submit-btn" v-show="currentNumber === totalNumber" @click="answerSubmit">
+					<div class="submit-btn" v-show="currentNumber === totalNumber" @click="callTestResult">
 						提交
 					</div>
 				</div>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {getData} from '@/common/js/api'
+import {getData, getQueryString, getNewUrl, callAppType, depositPath} from '@/common/js/api'
 
 export default {
 	data(){
@@ -43,19 +43,25 @@ export default {
 			questionList: null,
 			optionColorArr: [],
 			currentIndex: -1,
+			phone: '',
 			answerArr: [],
+			answer: '',
 			error: false,
 			errorMsg: ''
 		}
 	},
 	created(){
+		this.getPhone()
 		this.getQuestion()
 	},
 	methods: {
+		// 获取url手机号参数
+		getPhone(){
+			this.phone = getQueryString('phone')
+		},
 		// 获取题目信息
 		getQuestion(){
 			getData('ufx/question/list', 'post').then((res) => {
-				console.log(res)
 				this.totalNumber = res.length
 				this.questionList = res
 			})
@@ -70,7 +76,7 @@ export default {
 			this.errorMsg = ''
 		},
 		// 提交按钮事件，提交后页面跳转，错误信息提示
-		answerSubmit(){
+		callTestResult(){
 			if(this.answerArr.length !== this.totalNumber){
 				this.error = true
 				this.errorMsg = '您还有尚未作答的题目，请作答后再提交'
@@ -83,7 +89,10 @@ export default {
 					}
 					i === this.answerArr.length-1 ? this.answer += `${this.answerArr[i]}` : this.answer += `${this.answerArr[i]}|`
 				}
-				window.location.href = `${window.location.protocol}//${window.location.host}/riskTestResult.html?answer=${this.answer}&phone=13840324361`
+				
+				let newUrl = getNewUrl('riskTestResult.html')
+				window.location.href = `${newUrl}?phone=${this.phone}&answer=${this.answer}`
+				// callAppType('1', `${depositPath}riskTestResult.html?phone=${this.phone}&answer=${this.answer}`)
 			}
 		},
 		// 上一题按钮事件
@@ -105,7 +114,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../common/styles/variables.scss';
+@import '~styles/variables.scss';
 .invest-sum{
 	.invest{
 		.question-sum{
@@ -129,7 +138,7 @@ export default {
 					}
 				}
 			}
-			.question-sum{
+			.question-details{
 				ul{
 					margin-top: 100px;
 					li{
@@ -180,7 +189,7 @@ export default {
 				height: 80px;
 				line-height: 80px;
 				text-align: center;
-				background-image: url('../common/images/submit.png');
+				background-image: url('./submit.png');
 				background-size: 100% 100%;
 			}
 		}
