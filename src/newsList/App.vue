@@ -9,10 +9,10 @@
 			<div class="content-lists" v-show="nowIndex==0">
 				<ul>
 					<li v-for="(info, index) in newsList" :key="index">
-						<a :href="`newsContent.html?infoId=${info.id}`" class="lists-title" >
+						<div class="lists-title" @click="callContent(info.id)">
 							<span class="title-detail no-wrap">{{info.title}}</span>
 							<span class="hot" v-if="index<3" :style="{'width': '48px', 'height': '20px', 'background-size': '48px 20px'}"></span>
-						</a>
+						</div>
 						<div class="source">
 							<span>麟龙基金</span><span>{{info.publishTime}}</span>
 						</div>
@@ -22,10 +22,10 @@
 			<div class="content-lists" v-show="nowIndex==1">
 				<ul>
 					<li v-for="(info, index) in marketList" :key="index">
-						<a :href="`newsContent.html?infoId=${info.id}`" class="lists-title">
+						<div class="lists-title" @click="callContent(info.id)">
 							<span class="title-detail no-wrap">{{info.title}}</span>
 							<span class="hot" v-if="index<3" :style="{'width': '48px', 'height': '20px', 'background-size': '48px 20px'}"></span>
-						</a>
+						</div>
 						<div class="source">
 							<span>麟龙基金</span><span>{{info.publishTime}}</span>
 						</div>
@@ -39,7 +39,7 @@
 <script>
 import $ from 'jquery'
 import hot from '@/common/images/hot@2x.png'
-import {getData} from '@/common/js/api'
+import {getData, callAppType, depositPath} from '@/common/js/api'
 
 var sw = true
 
@@ -85,6 +85,7 @@ export default {
 				categoryId
 			}
 			getData('manage/info/0/summaryList/', 'get', data).then((res)=>{
+				console.log(res)
 				for(let i=0; i<res.list.length; i++){
 					this.newsList.push(res.list[i])
 				}
@@ -109,6 +110,10 @@ export default {
 				this.totalPage2 = Math.ceil(res.totleCount/pageSize)
 				sw = true
 			})
+		},
+		// 点击文章跳转详情
+		callContent(id){
+			callAppType('1', `${depositPath}newsContent.html?infoId=${id}`, '新闻内容')
 		},
 		// 滚动加载更多
 		moreInfoLoad(){

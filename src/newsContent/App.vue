@@ -49,12 +49,10 @@ export default {
 		},
 		// 对新闻内容文本样式重置
 		styleReset(){
-			$('.content-details').find('img').css({
+			$('.content-details img').css({
 				'margin': '0',
 				'display': 'block',
-				'width': '100%',
-				'word-break': 'break-all',
-				'word-wrap':'break-word'
+				'width': '100%'
 			})
 			$('.content-details span').css({
 				'display': 'block',
@@ -94,7 +92,23 @@ export default {
 				margin: 0 !important;
 			}
 		}
+		img{
+			display: block;
+			width: 100%;
+			margin: 0;
+		}
 	}
+	img{
+		display: block !important;
+		width: 100% !important;
+		margin: 0 !important;
+	}
+}
+
+img{
+	display: block !important;
+	width: 100% !important;
+	margin: 0 !important;
 }
 </style>
 

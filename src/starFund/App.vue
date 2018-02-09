@@ -6,7 +6,7 @@
 				<li>
 					<a href="">
 						<div>
-							<p>中融智选福萨</p>
+							<p>中融智选C</p>
 							<p>躁动行情下&nbsp;&nbsp;收益长虹</p>
 						</div>
 						<div>
@@ -18,36 +18,36 @@
 				<li>
 					<a href="">
 						<div>
-							<p>中融智选C</p>
-							<p>躁动行情下&nbsp;&nbsp;收益长虹</p>
+							<p>中融新经济C</p>
+							<p>均衡配置&nbsp;&nbsp;抗跌首选</p>
 						</div>
 						<div>
 							<p>46.39%</p>
-							<p>近六月收益</p>
+							<p>近一年收益</p>
 						</div>
 					</a>
 				</li>
 				<li>
 					<a href="">
 						<div>
-							<p>中融智选C</p>
-							<p>躁动行情下&nbsp;&nbsp;收益长虹</p>
+							<p>方正创新动力</p>
+							<p>业绩飘红&nbsp;&nbsp;领跑同业</p>
 						</div>
 						<div>
 							<p>19.01%</p>
-							<p>近六月收益</p>
+							<p>近一月收益</p>
 						</div>
 					</a>
 				</li>
 				<li>
 					<a href="">
 						<div>
-							<p>中融智选C</p>
-							<p>躁动行情下&nbsp;&nbsp;收益长虹</p>
+							<p>方正红利</p>
+							<p>大朗淘金&nbsp;&nbsp;历经考验</p>
 						</div>
 						<div>
 							<p>41.02%</p>
-							<p>近六月收益</p>
+							<p>近一年收益</p>
 						</div>
 					</a>
 				</li>
@@ -58,11 +58,32 @@
 
 <script>
 import starFund from '@/common/images/starFund1.png'
+import {getData} from '@/common/js/api'
 
 export default {
 	data(){
 		return {
-			starFund
+			starFund,
+			fundCode: ['004783', '001388', '730001', '730002']
+		}
+	},
+	created(){
+		this.getProfit()
+	},
+	methods: {
+		getProfit(){
+			getData(`fund/${this.fundCode[0]}/inner/code`, 'get').then((res)=>{
+				console.log(JSON.stringify(res)+'F')
+			})
+			getData(`fund/${this.fundCode[1]}/inner/code`, 'get').then((res)=>{
+				console.log(res+'S')
+			})
+			getData(`fund/${this.fundCode[2]}/inner/code`, 'get').then((res)=>{
+				console.log(res+'T')
+			})
+			getData(`fund/${this.fundCode[3]}/inner/code`, 'get').then((res)=>{
+				console.log(res+'TH')
+			})
 		}
 	}
 }

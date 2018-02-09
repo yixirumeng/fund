@@ -110,10 +110,10 @@
 			<div class="details-info" v-show="infoShow===1">
 				<ul>
 					<li v-for="(item, index) in notice" :key="index">
-						<a :href="item.filePath">
+						<div @click="sendUrl(item.filePath)">
 							<div class="notice-info no-wrap">{{item.noticeTitle}}</div>
 							<div class="notice-time">{{item.noticeDate}}</div>
-						</a>
+						</div>
 					</li>
 				</ul>
 				<div class="show-more" @click="callFundNotice">点击查看更多</div>
@@ -128,7 +128,6 @@ import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/line';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
-import $ from 'jquery'
 
 var myChart
 
@@ -174,22 +173,6 @@ export default {
 		this.drawLine()
 	},
 	methods: {
-		// 基金净值点击更多跳转
-		callFundNet(){
-			callAppType('1', `${depositPath}fundNetList.html?innerCode=${this.innerCode}`, '基金净值')
-		},
-		// 基金公共点击更多跳转
-		callFundNotice(){
-			callAppType('1', `${depositPath}fundNoticeList.html?innerCode=${this.innerCode}`, '基金公告')
-		},
-		// 基金分红点击跳转
-		callBonus(){
-			callAppType('1', `${depositPath}bonus.html?innerCode=${this.innerCode}`, '分红信息')
-		},
-		// 基金持仓点击跳转
-		callSupport(){
-			callAppType('1', `${depositPath}support.html?innerCode=${this.innerCode}`, '基金持仓')
-		},
 		// 获取url参数值
 		changeUrl(){
 			let innerCode = getQueryString('innerCode')
@@ -277,10 +260,31 @@ export default {
 		// 获取基金公告
 		getAnnounce(){
 			getData(`fund/${this.innerCode}/notice/0/list/${this.currentPage}/${this.pageSize}`, 'get').then((res) => {
+				console.log(res)
 				for(let i=0; i<5; i++){
 					this.notice.push(res.list[i])
 				}
 			})
+		},
+		// 基金净值点击更多跳转
+		callFundNet(){
+			callAppType('1', `${depositPath}fundNetList.html?innerCode=${this.innerCode}`, '基金净值')
+		},
+		// 基金公共点击更多跳转
+		callFundNotice(){
+			callAppType('1', `${depositPath}fundNoticeList.html?innerCode=${this.innerCode}`, '基金公告')
+		},
+		// 基金分红点击跳转
+		callBonus(){
+			callAppType('1', `${depositPath}bonus.html?innerCode=${this.innerCode}`, '分红信息')
+		},
+		// 基金持仓点击跳转
+		callSupport(){
+			callAppType('1', `${depositPath}support.html?innerCode=${this.innerCode}`, '基金持仓')
+		},
+		// 基金公告点击发送url
+		sendUrl(noticeUrl){
+			callAppType('21', noticeUrl, '基金公告')
 		},
 		// 生成图表
 		drawLine(){

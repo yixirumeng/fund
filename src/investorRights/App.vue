@@ -1,7 +1,7 @@
 <template>
 	<div class="invest-sum">
 		<div class="invest">
-			<h2 class="invest-title">证券投资基金投资人权益须知</h2>
+			<h2 class="invest-title">沈阳麟龙投资者权益须知</h2>
 			<p>尊敬的基金投资人：</p>
 			<p>基金投资在获取收益的同时存在投资风险。为了保护您的合法权益，请在投资基金前认真阅读以下内容：</p>
 			<p>一、基金的基本知识 </p>

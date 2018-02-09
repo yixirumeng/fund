@@ -185,6 +185,7 @@ export default {
 		// 获取持仓债券信息
 		getHeavyBond(){
 			getData(`fund/investment/${this.innerCode}/heavyBond`, 'get', this.paramsFormat()).then((res) => {
+				console.log(res)
 				this.heavyBond = res
 			})
 		},
@@ -197,7 +198,6 @@ export default {
 		// 获取资产配置信息
 		getAssetAllocation(){
 			getData(`fund/investment/${this.innerCode}/assetAllocation`, 'get', this.paramsFormat()).then((res) => {
-				console.log(res)
 				this.assetAllocation = res
 			})
 		},

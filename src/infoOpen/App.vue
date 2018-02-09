@@ -54,7 +54,7 @@ export default {
 				}
 				this.totalPage = Math.ceil(res.totleCount/this.pageSize)
 				swOpen = true
-			}).then(() => {
+			}).then(()=>{
 				this.styleReset()
 			})
 		},

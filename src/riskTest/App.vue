@@ -1,6 +1,6 @@
 <template>
 	<div class="invest-sum">
-		<div class="invest">
+		<div class="invest" v-show="totalNumber!==0">
 			<div class="question-sum">
 				<div class="question-number clearfix">
 					<span>{{currentNumber}}</span><span>/</span><span>{{totalNumber}}</span>
@@ -28,17 +28,20 @@
 				</div>
 			</div>
 		</div>
+		<img :src="loading" alt="加载中" class="loading" v-show="totalNumber===0">
 	</div>
 </template>
 
 <script>
-import {getData, getQueryString, getNewUrl, callAppType, depositPath} from '@/common/js/api'
+import {getData, getQueryString, callAppType, depositPath, getNewUrl} from '@/common/js/api'
+import loading from '@/common/images/loading.gif'
 
 export default {
 	data(){
 		return {
+			loading,
 			currentNumber: 1,
-			totalNumber: null,
+			totalNumber: 0,
 			questionContent: '',
 			questionList: null,
 			optionColorArr: [],
@@ -62,6 +65,7 @@ export default {
 		// 获取题目信息
 		getQuestion(){
 			getData('ufx/question/list', 'post').then((res) => {
+				console.log(res)
 				this.totalNumber = res.length
 				this.questionList = res
 			})
@@ -89,10 +93,8 @@ export default {
 					}
 					i === this.answerArr.length-1 ? this.answer += `${this.answerArr[i]}` : this.answer += `${this.answerArr[i]}|`
 				}
-				
-				let newUrl = getNewUrl('riskTestResult.html')
-				window.location.href = `${newUrl}?phone=${this.phone}&answer=${this.answer}`
-				// callAppType('1', `${depositPath}riskTestResult.html?phone=${this.phone}&answer=${this.answer}`)
+				// callAppType('1', `${depositPath}riskTestResult.html?phone=${this.phone}&answer=${this.answer}`, '风险测评结果')
+				window.location.href = getNewUrl(`riskTestResult.html?phone=${this.phone}&answer=${this.answer}`)
 			}
 		},
 		// 上一题按钮事件
@@ -104,6 +106,7 @@ export default {
 			if(typeof(this.answerArr[index]) != 'undefined'){
 				this.currentNumber === this.totalNumber ? this.currentNumber = this.totalNumber : this.currentNumber += 1
 				this.currentIndex = -1
+
 			}else{
 				this.error = true
 				this.errorMsg = '您还没有作答，请选择答案后再进行下一题'
