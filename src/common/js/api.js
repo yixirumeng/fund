@@ -1,5 +1,4 @@
 import axios from 'axios'
-import $ from 'jquery'
 
 const ajaxUrl = 'http://223.100.7.112:25010/fund-business/'
 
@@ -11,7 +10,7 @@ const ajaxUrl3 = 'https://223.100.7.112:25013/fund-business/'
 
 export function getData(url, method, data = null) {
     return axios({
-        url: `${ajaxUrl3}${url}`,
+        url: `${process.env.AjaxUrl}${url}`,
         method,
         params: data
     }).then((res) => {

@@ -10,7 +10,7 @@
 						{{item.question_content}}
 					</div>
 					<ul>
-						<li :class="{on: optionColorArr[index] === itemSection.option_no, on1: currentIndex === indexSection}" v-for="(itemSection, indexSection) in item.section" :key="indexSection" @click="collectPoint(index, itemSection.question_no, itemSection.option_no, indexSection)">
+						<li :class="{on: optionColorArr[index] === itemSection.option_no, on1: currentIndex === indexSection}" v-for="(itemSection, indexSection) in item.section" :key="indexSection" @click="collectPoint(index, itemSection.option_no, indexSection)">
 							{{itemSection.option_content}}
 						</li>
 					</ul>
@@ -65,16 +65,15 @@ export default {
 		// 获取题目信息
 		getQuestion(){
 			getData('ufx/question/list', 'post').then((res) => {
-				console.log(res)
 				this.totalNumber = res.length
 				this.questionList = res
 			})
 		},
 		// 得到答题结果并格式化
-		collectPoint(index, questionNo, optionNo, indexSection){
+		collectPoint(index, optionNo, indexSection){
 			this.currentIndex = indexSection
 			this.optionColorArr[index] = optionNo
-			let answerContent = `${questionNo}:${optionNo}`
+			let answerContent = `${index+1}:${optionNo}`
 			this.answerArr[index] = answerContent
 			this.error = false
 			this.errorMsg = ''

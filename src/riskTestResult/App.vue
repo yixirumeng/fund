@@ -62,7 +62,7 @@ export default {
 					console.log(res)
 					this.resultMsg = res.invest_risk_tolerance_desc
 					this.riskType = res.ofund_risklevel_desc
-					this.overdue = res.risk_enddate
+					this.overdue = res.submit_date
 					this.firstTest = false
 				})
 			}else if(newEligContent === null && type === null){
