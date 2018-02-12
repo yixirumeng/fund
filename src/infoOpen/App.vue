@@ -4,7 +4,7 @@
 			<li>
 				<div class="content">
 					<div class="title">{{item.title}}</div>
-					<div class="info-details" v-html="item.content">
+					<div class="info-details info-style-reset" v-html="item.content">
 					</div>
 					<!-- <div class="info-source">
 						{{item.publishMedia}}
@@ -54,26 +54,6 @@ export default {
 				}
 				this.totalPage = Math.ceil(res.totleCount/this.pageSize)
 				swOpen = true
-			}).then(()=>{
-				this.styleReset()
-			})
-		},
-		// 披露信息内容文本样式重置
-		styleReset(){
-			$(".info-details img").css({
-				'display': 'block',
-				'width': '100%'
-			})
-			$(".info-details table").css({
-				'display': 'block',
-				'width': '100%',
-				'margin': '0'
-			})
-			$(".info-details p").css({
-				'margin': '0',
-				'white-space': 'normal',
-				'word-break': 'break-all',
-				'word-wrap': 'break-word'
 			})
 		},
 		// 滚动加载更多
@@ -130,3 +110,22 @@ export default {
 }
 </style>
 
+<style lang="scss">
+.info-style-reset{
+	p{
+		margin: 0 !important;
+		white-space: normal !important;
+		word-break: break-all !important;
+		word-wrap: break-word !important;
+		img{
+			display: block !important;
+			width: 100% !important;
+		}
+		table{
+			display: block !important;
+			width: 100% !important;
+			margin: 0 !important;
+		}
+	}
+}
+</style>

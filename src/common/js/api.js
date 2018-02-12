@@ -11,7 +11,7 @@ const ajaxUrl3 = 'https://223.100.7.112:25013/fund-business/'
 
 export function getData(url, method, data = null) {
     return axios({
-        url: `${ajaxUrl1}${url}`,
+        url: `${ajaxUrl3}${url}`,
         method,
         params: data
     }).then((res) => {
@@ -60,14 +60,6 @@ export function getQueryString(name) {
     return null;
 }
 
-// 将utf8编码格式转换成中文方法
-export function tranUTF8(str) {
-    // return str.replace(/\\u([0-9a-f]{4})/gi, function(match, grp) {
-    //     return String.fromCharCode(parseInt(grp, 16));
-    // })
-    return unescape(str.replace(/&#x/g, '%u').replace(/\\u/g, '%u').replace(/;/g, ''));
-}
-
 // 更改跳转的新url方法
 export function getNewUrl(newPath) {
     let currentUrl = window.location.origin + window.location.pathname
@@ -76,19 +68,6 @@ export function getNewUrl(newPath) {
     urlArr.push(newPath)
     let newUrl = urlArr.join('/')
     return newUrl
-}
-
-// 日期格式化
-export function dateFormat(date) {
-    if (date) {
-        let dateYear = date.substr(0, 4)
-        let dateMonth = date.substr(4, 2)
-        let dateDay = date.substr(6, 2)
-        return `${dateYear}.${dateMonth}.${dateDay}`
-    } else {
-        return ''
-    }
-
 }
 
 // export function getData(url, method, data = null) {

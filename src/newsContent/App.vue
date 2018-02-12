@@ -5,7 +5,7 @@
 			<div class="source">
 				<span>{{publishMedia}}</span><span>{{publishTime}}</span>
 			</div>
-			<div class="content-details" v-html="content">
+			<div class="content-details content-style-reset" v-html="content">
 				
 			</div>
 		</div>
@@ -14,7 +14,6 @@
 
 <script>
 import {getData, getQueryString} from '@/common/js/api'
-import $ from 'jquery'
 
 export default {
 	data(){
@@ -43,28 +42,6 @@ export default {
 				this.publishMedia = res.publishMedia
 				this.publishTime = res.publishTime
 				this.content = res.content
-			}).then(()=>{
-				this.styleReset()
-			})
-		},
-		// 对新闻内容文本样式重置
-		styleReset(){
-			$('.content-details img').css({
-				'margin': '0',
-				'display': 'block',
-				'width': '100%'
-			})
-			$('.content-details span').css({
-				'display': 'block',
-				'width': '100%',
-				'word-break': 'break-all',
-				'word-wrap':'break-word'
-			})
-			$('.content-details em').css({
-				'display': 'block',
-				'width': '100%',
-				'word-break': 'break-all',
-				'word-wrap':'break-word'
 			})
 		}
 	}
@@ -85,30 +62,31 @@ export default {
 		color: $font-color-d;
 		line-height: 1.8;
 		text-align: justify;
-		p{
-			img{
-				display: block !important;
-				width: 100% !important;
-				margin: 0 !important;
-			}
-		}
-		img{
-			display: block;
-			width: 100%;
-			margin: 0;
-		}
-	}
-	img{
-		display: block !important;
-		width: 100% !important;
-		margin: 0 !important;
 	}
 }
+</style>
 
-img{
-	display: block !important;
-	width: 100% !important;
-	margin: 0 !important;
+<style lang="scss">
+.content-style-reset{
+	p{
+		img{
+			display: block !important;
+			width: 100% !important;
+			margin: 0 !important;
+		}
+		span{
+			display: block !important;
+			width: 100% !important;
+			word-break: break-all !important;
+			word-wrap: break-word !important;
+		}
+		em{
+			display: block !important;
+			width: 100% !important;
+			word-break: break-all !important;
+			word-wrap: break-word !important;
+		}
+	}
 }
 </style>
 
