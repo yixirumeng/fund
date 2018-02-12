@@ -443,9 +443,9 @@ export default {
 				li{
 					float: left;
 					text-align: center;
-					margin-right: 20px;
+					margin-right: 10px;
 					&:nth-child(1){
-						width: 200px;
+						width: 220px;
 					}
 					&:nth-child(2){
 						width: 245px;
