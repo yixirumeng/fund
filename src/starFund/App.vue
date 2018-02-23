@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="star" v-show="profit1 && profit2 && profit3 && profit4">
+		<div class="star" v-if="profitType(profit1) && profitType(profit2) && profitType(profit3) && profitType(profit4)">
 			<img :src="starFund" alt="明星基金">
 			<div class="star-fund">
 				<ul>
@@ -47,7 +47,7 @@
 				</ul>
 			</div>
 		</div>
-		<img :src="loading" alt="加载中" class="loading" v-show="!profit1 || !profit2 || !profit3 || !profit4">
+		<img :src="loading" alt="加载中" class="loading" v-else>
 	</div>
 </template>
 
@@ -121,6 +121,15 @@ export default {
 		},
 		callDetail4(){
 			callAppType('11', `${this.innerCode4}`, '中融鑫思路C')
+		},
+		profitType(profit){
+			if(parseInt(profit, 10) === 0){
+				return true
+			}else if(typeof profit !== 'undefined' && profit){
+				return true
+			}else{
+				return false
+			}
 		}
 	}
 }
@@ -171,6 +180,7 @@ export default {
 						font-size: 60px;
 						color: $font-color-r;
 						margin-bottom: 22px;
+						text-align: right;
 					}
 					p:last-child{
 						font-size: 24px;
