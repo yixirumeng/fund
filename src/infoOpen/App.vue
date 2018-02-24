@@ -1,7 +1,7 @@
 <template>
-	<div class="content-sum">
-		<ul v-for="(item, index) in contentList" :key="index">
-			<li>
+	<div class="content-sum contentSum-style-reset">
+		<ul>
+			<li v-for="(item, index) in contentList" :key="index">
 				<div class="content">
 					<div class="title">{{item.title}}</div>
 					<div class="info-details info-style-reset" v-html="item.content">
@@ -54,6 +54,7 @@ export default {
 				}
 				this.totalPage = Math.ceil(res.totleCount/this.pageSize)
 				swOpen = true
+				console.log(res)
 			})
 		},
 		// 滚动加载更多
@@ -117,15 +118,18 @@ export default {
 		white-space: normal !important;
 		word-break: break-all !important;
 		word-wrap: break-word !important;
-		img{
-			display: block !important;
-			width: 100% !important;
-		}
-		table{
-			display: block !important;
-			width: 100% !important;
-			margin: 0 !important;
-		}
+	}
+	img{
+		display: block !important;
+		width: 100% !important;
+	}
+	table{
+		display: block !important;
+		width: 100% !important;
+		margin: 0 !important;
+	}
+	span{
+		word-break: break-word !important;
 	}
 }
 </style>

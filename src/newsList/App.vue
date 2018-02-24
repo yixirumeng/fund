@@ -63,6 +63,7 @@ export default {
 	created(){
 		this.getNewsList()
 		this.getMarketList()
+		this.getTitleLists()
 	},
 	mounted(){
 		this.moreInfoLoad()
@@ -85,7 +86,6 @@ export default {
 				categoryId
 			}
 			getData('manage/info/0/summaryList/', 'get', data).then((res)=>{
-				console.log(res)
 				for(let i=0; i<res.list.length; i++){
 					this.newsList.push(res.list[i])
 				}
@@ -138,13 +138,18 @@ export default {
 			$(window).resize(() => {
 				this.moreInfoLoad()
 			})
+		},
+		getTitleLists(){
+			getData('manage/info/category', 'get').then((res) => {
+				console.log(res)
+			})
 		}
 	}
 }
 </script>
 
 <style lang="scss" scoped>
-@import '../common/styles/variables.scss';
+@import '~styles/variables.scss';
 .content-sum{
 	.support-nav{
 		width: 100%;
@@ -178,7 +183,7 @@ export default {
 					padding: 36px 0;
 					border-top: 1px solid $border-color;
 					.lists-title{
-						display: block;
+						line-height: 1.2;
 						font-size: 34px;
 						color: $font-color-d;
 						span{

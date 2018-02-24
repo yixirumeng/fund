@@ -53,7 +53,7 @@
 
 <script>
 import loading from '@/common/images/loading.gif'
-import starFund from '@/common/images/starFund1.png'
+import starFund from '@/common/images/starFund.jpg'
 import {getData, callAppType} from '@/common/js/api'
 
 export default {
@@ -123,9 +123,7 @@ export default {
 			callAppType('11', `${this.innerCode4}`, '中融鑫思路C')
 		},
 		profitType(profit){
-			if(parseInt(profit, 10) === 0){
-				return true
-			}else if(typeof profit !== 'undefined' && profit){
+			if(typeof profit === 'number'){
 				return true
 			}else{
 				return false

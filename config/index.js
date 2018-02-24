@@ -55,6 +55,7 @@ module.exports = {
         fundNoticeList: path.resolve(__dirname, '../dist/fundNoticeList.html'),
         starFund: path.resolve(__dirname, '../dist/starFund.html'),
         registerExplain: path.resolve(__dirname, '../dist/registerExplain.html'),
+        test: path.resolve(__dirname, '../dist/test.html'),
 
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),
