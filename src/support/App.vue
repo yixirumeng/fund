@@ -115,14 +115,14 @@ export default {
 			navs: ['持仓明细', '行业配置', '资产配置'],
 			nowIndex: 0,
 			detail: 0,
-			innerCode: null,
+			innerCode: '',
 			supportYear: '',
 			supportQuarter: '',
 			quarter: '',
-			heavyStocks: null,
-			heavyBond: null,
-			industryAllocation: null,
-			assetAllocation: null
+			heavyStocks: '',
+			heavyBond: '',
+			industryAllocation: '',
+			assetAllocation: ''
 		}
 	},
 	created(){

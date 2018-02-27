@@ -39,9 +39,6 @@ export default {
 		this.moreInfoLoad()
 		this.resizeInfoLoad()
 	},
-	components:{
-		echatsLine
-	},
 	methods: {
 		// 获取披露信息
 		getInfo(){

@@ -112,7 +112,6 @@ export default {
 		// 获取交易信息
 		getTrade(){
 			getData(`fund/${this.innerCode}/base/info`, 'get').then((res) => {
-				console.log(res)
 				this.applyDealStatus = res.applyDealStatus
 				this.redeemDealStatus = res.redeemDealStatus
 				this.fixDealStatus = res.fixDealStatus

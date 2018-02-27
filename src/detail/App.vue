@@ -13,7 +13,7 @@
 				</div>
 				<div class="income-change">
 					<ul class="clearfix">
-						<li><span>本基金</span><span>{{rangeInfos[0]}}</span></li>
+						<li><span>本基金</span><span :class="{'color-red': parseFloat(rangeInfos[0])>0, 'color-green': parseFloat(rangeInfos[0])<0}">{{rangeInfos[0]}}</span></li>
 						<li><span>同类平均</span><span :class="{'color-red': parseFloat(rangeInfos[1])>0, 'color-green': parseFloat(rangeInfos[1])<0}">{{rangeInfos[1]}}</span></li>
 						<li><span>同类排名</span><span>{{rangeInfos[2]}}</span></li>
 					</ul>
@@ -130,7 +130,7 @@ export default {
 	name: 'App',
 	data(){
 		return {
-			navs: ['近1月', '近3月', '近6月', '今年以来', '近3年'],
+			navs: ['近1月', '近3月', '近6月', '今年以来', '成立以来'],
 			infoNavs: ['基金档案', '基金公告'],
 			navSelect: 0,
 			infoNavSelect: 0,
