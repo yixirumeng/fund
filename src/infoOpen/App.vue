@@ -39,6 +39,9 @@ export default {
 		this.moreInfoLoad()
 		this.resizeInfoLoad()
 	},
+	components:{
+		echatsLine
+	},
 	methods: {
 		// 获取披露信息
 		getInfo(){
@@ -54,7 +57,6 @@ export default {
 				}
 				this.totalPage = Math.ceil(res.totleCount/this.pageSize)
 				swOpen = true
-				console.log(res)
 			})
 		},
 		// 滚动加载更多

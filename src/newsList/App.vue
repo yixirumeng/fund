@@ -127,9 +127,7 @@ export default {
 				let scrollH = $(window).scrollTop()
 				let screenH = $(window).height()
 				let bodyH = $(document).height()
-				console.log(1)
 				if(scrollH + screenH >= bodyH){
-					console.log(2)
 					if(this.sw && this.currentPage<this.totalPage){
 						this.sw = false
 						this.currentPage += 1

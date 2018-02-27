@@ -188,8 +188,9 @@ export default {
 			margin-top: 80px;
 			li{
 				float: left;
-				min-width: 220px;
-				margin-right: 10px;
+				// min-width: 220px;
+				// margin-right: 10px;
+				width: 33.3%;
 				text-align: center;
 				&:last-child{
 					margin-right: 0;
@@ -223,7 +224,7 @@ export default {
 		}
 		img{
 			display: block;
-			width: 690px;
+			width: 100%;
 			margin-top: 15px;
 		}
 		img + p{

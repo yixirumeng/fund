@@ -8,8 +8,8 @@
 						{{nav}}
 					</li>
 				</ul>
-				<div :style="{position:'relative',width: '96%',height: '250px',margin: '0 auto'}">
-					<div id="myChart" :style="{width: '100%',height: '300px', position: 'absolute', top: '-40px',left: '0', zIndex:'1'}"></div>
+				<div :style="{position: 'relative', height: '260px', width: '96%', margin: '0 auto'}">
+					<echarts-parts :width="'100%'" height="300" :x-data="xData" :y-data="yData"></echarts-parts>
 				</div>
 				<div class="income-change">
 					<ul class="clearfix">
@@ -124,12 +124,7 @@
 
 <script>
 import {getData, getQueryString, callAppType, depositPath} from '@/common/js/api'
-import echarts from 'echarts/lib/echarts';
-import 'echarts/lib/chart/line';
-import 'echarts/lib/component/tooltip';
-import 'echarts/lib/component/title';
-
-var myChart
+import echartsParts from '@/detail/echarts-parts'
 
 export default {
 	name: 'App',
@@ -162,15 +157,15 @@ export default {
 	},
 	created(){
 		this.changeUrl()
+		this.getEchartsData()
 		this.getRangeData()
 		this.getFundInfo()
 		this.getNet()
 		this.getAnnounce()
 		
 	},
-	mounted(){
-		myChart = echarts.init(document.getElementById('myChart'));
-		this.drawLine()
+	components: {
+		echartsParts
 	},
 	methods: {
 		// 获取url参数值
@@ -180,11 +175,23 @@ export default {
 				this.innerCode = innerCode
 			}
 		},
+		// 获取echarts数据
+		getEchartsData(){
+			getData(`fund/${this.innerCode}/${this.dateRange}/totalnet/list`, 'get').then((res)=>{
+				this.xData = []
+				this.yData = []
+				let l = res.netList.length
+				for(let i=0; i<l; i++){
+					this.xData.push(res.netList[i].netDate)
+					this.yData.push(res.netList[i].totalNet)
+				}
+			})
+		},
 		// 图表曲线tab切换
 		changeBg(index){
 			this.navSelect = index
 			this.dateRange = index + 1
-			this.drawLine()
+			this.getEchartsData()
 			let range, avg, order
 			this.rangeInfos.splice(0, this.rangeInfos.length)
 			if(index === 0){
@@ -207,8 +214,8 @@ export default {
 		// 获取累计收益栏目数据
 		getRangeData(){
 			getData(`fund/${this.innerCode}/net/range`, 'get').then((res)=>{
-				this.rangeInfoSum = res
 				console.log(res)
+				this.rangeInfoSum = res
 				this.rangeInfos.splice(0, this.rangeInfos.length)
 				this.rangeInfos = this.rangeData(res.rangeOneMonth, res.avgOneMonth, res.orderOneMonth)
 
@@ -260,7 +267,6 @@ export default {
 		// 获取基金公告
 		getAnnounce(){
 			getData(`fund/${this.innerCode}/notice/0/list/${this.currentPage}/${this.pageSize}`, 'get').then((res) => {
-				console.log(res)
 				for(let i=0; i<5; i++){
 					this.notice.push(res.list[i])
 				}
@@ -285,122 +291,6 @@ export default {
 		// 基金公告点击发送url
 		sendUrl(noticeUrl){
 			callAppType('21', noticeUrl, '基金公告')
-		},
-		// 生成图表
-		drawLine(){
-			let that = this
-			myChart.dispose()
-			// if (myChart != null && myChart != "" && myChart != undefined) {
-			// 	myChart.dispose()
-			// }
-			myChart = echarts.init(document.getElementById('myChart'));
-            myChart.setOption({
-                tooltip : {
-                    trigger: 'axis'
-                },
-                grid: {
-                    left: 60,
-                    right: 20
-                },
-                xAxis: {
-                    type : 'category',
-					boundaryGap : false,
-					minInterval: 0,
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#666',
-                            fontSize: '12px',
-                            fontFamily: 'Arial'
-						},
-						verticalAlign: 'bottom',
-						margin: 30,
-						align: 'center'
-					},
-                    axisLine: {
-                        lineStyle: {
-                            color: '#ddd'
-                        }
-					},
-                    splitLine: {
-                        show: true,
-                        lineStyle: {
-                            color: '#eee'
-                        }
-					},
-                    axisTick: {
-                        show: false
-                    },
-                    data: []
-                },
-                yAxis: {
-                    min: 'dataMin',
-                    axisLabel: {
-                        show: true,
-                        color: '#666',
-                        fontSize: '14px',
-                        fontFamily: 'Arial',
-                        margin: 10,
-                        formatter: function(value){
-                            return parseFloat(value).toFixed(4)
-                        }
-                    },
-                    axisLine: {
-                        show: false
-                    },
-                    splitLine: {
-                        show: true,
-                        lineStyle: {
-                            color: '#eee',
-                            type: 'dashed'
-                        }
-                    },
-                    axisTick: {
-                        show: false
-                    },
-                },
-                series: [{
-                    name: '',
-                    type: 'line',
-                    smooth: true,
-                    symbolSize: 4,
-                    itemStyle: {
-                        normal: {
-                            color: '#5b80fe'
-                        }
-                    },
-                    areaStyle: {
-                        normal: {
-                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                offset: 0,
-                                color: '#dee2ff'
-                            }, {
-                                offset: 1,
-                                color: '#fcfcfc'
-                            }])
-                        }
-                    },
-                    data: []
-                }]
-			})
-			getData(`fund/${this.innerCode}/${this.dateRange}/totalnet/list`, 'get').then((res)=>{
-				let netList = res.netList
-				let l = netList.length
-				let xData = []
-				let yData = []
-				for(let i=0; i<l; i++){
-					xData.push(netList[i].netDate)
-					yData.push(netList[i].totalNet)
-				}
-				myChart.setOption({
-					xAxis: {
-						data: xData
-					},
-					series: [{
-						data: yData
-					}]
-				})
-			})
 		}
 	}
 }
