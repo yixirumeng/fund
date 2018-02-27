@@ -30,7 +30,7 @@ module.exports = {
         fundNoticeList: './src/fundNoticeList/main.js',
         starFund: './src/starFund/main.js',
         registerExplain: './src/registerExplain/main.js',
-        test: './src/test/main.js'
+        beginner: './src/beginner/main.js'
     },
     output: {
         path: config.build.assetsRoot,

@@ -153,10 +153,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
             chunks: ['registerExplain']
         }),
         new HtmlWebpackPlugin({
-            filename: 'test.html',
+            filename: 'beginner.html',
             template: 'index1.html',
             inject: true,
-            chunks: ['test']
+            chunks: ['beginner']
         }),
         // copy custom static assets
         new CopyWebpackPlugin([{

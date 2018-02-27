@@ -1,33 +1,22 @@
 <template>
 	<div class="content-sum">
-		<ul class="support-nav clearfix">
-			<li v-for="(nav, index) in navs" :key="index"  @click="changeNav(index)">
-				<span :class="{on: nowIndex==index}">{{nav}}</span>
-			</li>
-		</ul>
+		<div class="news-title" ref="nav">
+			<ul ref="navSum" :class="[navs.length<3 ? 'nav-small' : 'nav-large', 'support-nav']">
+				<li v-for="(nav, index) in navs" :key="index"  @click="changeNav(index)">
+					<span :class="{on: nowIndex==index}">{{nav}}</span>
+				</li>
+			</ul>
+		</div>
 		<div class="content">
-			<div class="content-lists" v-show="nowIndex==0">
+			<div class="content-lists" v-for="(item, index) in navs" :key="index" v-show="nowIndex === index">
 				<ul>
 					<li v-for="(info, index) in newsList" :key="index">
 						<div class="lists-title" @click="callContent(info.id)">
-							<span class="title-detail no-wrap">{{info.title}}</span>
+							<span :class="[index<3 ? 'title-small' : 'title-large', 'no-wrap']">{{info.title}}</span>
 							<span class="hot" v-if="index<3" :style="{'width': '48px', 'height': '20px', 'background-size': '48px 20px'}"></span>
 						</div>
 						<div class="source">
-							<span>麟龙基金</span><span>{{info.publishTime}}</span>
-						</div>
-					</li>
-				</ul>
-			</div>
-			<div class="content-lists" v-show="nowIndex==1">
-				<ul>
-					<li v-for="(info, index) in marketList" :key="index">
-						<div class="lists-title" @click="callContent(info.id)">
-							<span class="title-detail no-wrap">{{info.title}}</span>
-							<span class="hot" v-if="index<3" :style="{'width': '48px', 'height': '20px', 'background-size': '48px 20px'}"></span>
-						</div>
-						<div class="source">
-							<span>麟龙基金</span><span>{{info.publishTime}}</span>
+							<span>{{info.publishMedia}}</span><span>{{info.publishTime}}</span>
 						</div>
 					</li>
 				</ul>
@@ -38,32 +27,25 @@
 
 <script>
 import $ from 'jquery'
+import BScroll from 'better-scroll'
 import hot from '@/common/images/hot@2x.png'
 import {getData, callAppType, depositPath} from '@/common/js/api'
-
-var sw = true
 
 export default {
 	data(){
 		return {
-			navs: ['基金新闻', '市场信息'],
+			navs: [],
 			nowIndex: 0,
 			hot,
-			currentPage1: 1,
-			currentPage2: 1,
+			currentPage: 1,
 			pageSize: 10,
-			categoryId1: 1,
-			categoryId2: 2,
-			totalPage1: null,
-			totalPage2: null,
+			totalPage: null,
 			newsList: [],
-			marketList: []
+			sw: true
 		}
 	},
 	created(){
-		this.getNewsList()
-		this.getMarketList()
-		this.getTitleLists()
+		this.getNewsTitle()
 	},
 	mounted(){
 		this.moreInfoLoad()
@@ -73,47 +55,71 @@ export default {
 		// 导航切换
 		changeNav(index){
 			this.nowIndex = index
-			$(window).scrollTop(0)
+			this.currentPage = 1
+			this.newsList = []
+			this.getLists()
 		},
-		// 获取基金新闻列表信息
-		getNewsList(){
-			let currentPage = this.currentPage1
-			let pageSize = this.pageSize
-			let categoryId = this.categoryId1
-			let data = {
-				currentPage,
-				pageSize,
-				categoryId
-			}
-			getData('manage/info/0/summaryList/', 'get', data).then((res)=>{
-				for(let i=0; i<res.list.length; i++){
-					this.newsList.push(res.list[i])
+		// 获取理财资讯标题
+		getNewsTitle(){
+			getData('manage/info/category', 'get').then((res) => {
+				let l
+				res.list.length>4 ? l = 4 : l = res.list.length
+				for(let i=0; i<l; i++){
+					let newTitle = this.titleFormat(res.list[i].category)
+					this.navs.push(newTitle)
 				}
-				this.totalPage1 = Math.ceil(res.totleCount/pageSize)
-				sw = true
+				this.$nextTick(() => {
+					this.scroll = new BScroll(this.$refs.nav, {
+						scrollX: true,
+						scrollY: false,
+						click: true
+					})
+				})
+				return res.list[0].id
+			}).then((res1) => {
+				let data = {
+					categoryId: res1,
+					currentPage: this.currentPage,
+					pageSize: this.pageSize
+				}
+				getData(`manage/info/0/summaryList/`, 'get', data).then((res2) => {
+					this.totalPage = res2.totleCount
+					let l = res2.list.length
+					for(let i=0; i<l; i++){
+						this.newsList.push(res2.list[i])
+					}
+				})
 			})
 		},
-		// 获取市场信息列表
-		getMarketList(){
-			let currentPage = this.currentPage2
-			let pageSize = this.pageSize
-			let categoryId = this.categoryId2
-			let data = {
-				currentPage,
-				pageSize,
-				categoryId
+		// 理财资讯标题格式处理
+		titleFormat(title){
+			if(title.length<4){
+				return title
+			}else{
+				let formatTitle = title.substr(0, 4)
+				return formatTitle
 			}
-			getData('manage/info/0/summaryList/', 'get', data).then((res)=>{
-				for(let i=0; i<res.list.length; i++){
-					this.marketList.push(res.list[i])
-				}
-				this.totalPage2 = Math.ceil(res.totleCount/pageSize)
-				sw = true
-			})
 		},
 		// 点击文章跳转详情
 		callContent(id){
 			callAppType('1', `${depositPath}newsContent.html?infoId=${id}`, '新闻内容')
+		},
+		// 获取文章列表
+		getLists(){
+			let data = {
+				categoryId: this.nowIndex + 1,
+				currentPage: this.currentPage,
+				pageSize: this.pageSize
+			}
+			getData(`manage/info/0/summaryList/`, 'get', data).then((res) => {
+				console.log(res)
+				this.totalPage = res.totleCount
+				let l = res.list.length
+				for(let i=0; i<l; i++){
+					this.newsList.push(res.list[i])
+				}
+				this.sw = true
+			})
 		},
 		// 滚动加载更多
 		moreInfoLoad(){
@@ -121,15 +127,13 @@ export default {
 				let scrollH = $(window).scrollTop()
 				let screenH = $(window).height()
 				let bodyH = $(document).height()
+				console.log(1)
 				if(scrollH + screenH >= bodyH){
-					if(sw && this.nowIndex===0 && this.currentPage1<this.totalPage1){
-						sw = false
-						this.currentPage1 += 1
-						this.getNewsList()
-					}else if(sw && this.nowIndex===1 && this.currentPage2<this.totalPage2){
-						sw = false
-						this.currentPage2 += 1
-						this.getMarketList()
+					console.log(2)
+					if(this.sw && this.currentPage<this.totalPage){
+						this.sw = false
+						this.currentPage += 1
+						this.getLists()
 					}
 				}
 			})
@@ -137,11 +141,6 @@ export default {
 		resizeInfoLoad(){
 			$(window).resize(() => {
 				this.moreInfoLoad()
-			})
-		},
-		getTitleLists(){
-			getData('manage/info/category', 'get').then((res) => {
-				console.log(res)
 			})
 		}
 	}
@@ -151,18 +150,35 @@ export default {
 <style lang="scss" scoped>
 @import '~styles/variables.scss';
 .content-sum{
+	.news-title{
+		width: 92%;
+		margin-left: 30px;
+		margin-right: 30px;
+		overflow: hidden;
+		height: 86px;
+	}
 	.support-nav{
-		width: 100%;
-		position: fixed;
-		top: 0;
 		background-color: $color-white;
 		font-size: $font-size-ll;
 		color: $font-color-d;
+		white-space: nowrap;
+		&.nav-small{
+			display: block;
+			li{
+				width: 50%;
+			}
+		}
+		&.nav-large{
+			display: inline-block;
+			li{
+				margin-left: 80px;
+				margin-right: 80px;
+			}
+		}
 		li{
-			width: 50%;
+			display: inline-block;
 			text-align: center;
-			float: left;
-			padding-top: 28px;
+			margin-top: 28px;
 			span{
 				display: inline-block;
 				padding-bottom: 22px;
@@ -177,7 +193,6 @@ export default {
 		margin: 0 30px;
 		padding-bottom: 0;
 		.content-lists{
-			margin-top: 84px;
 			ul{
 				li{
 					padding: 36px 0;
@@ -189,8 +204,11 @@ export default {
 						span{
 							display: inline-block;
 							vertical-align: middle;
-							&.title-detail{
+							&.title-small{
 								max-width: 580px;
+							}
+							&.title-large{
+								width: 100%
 							}
 							&.hot{
 								background-image: url('../common/images/new@2x.png');
@@ -206,4 +224,3 @@ export default {
 	}
 }
 </style>
-

@@ -1,6 +1,19 @@
+@import './variables.scss';
 @mixin bg-image($url) {
     background-image: url($url + "@2x.png");
     @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
         background-image: url($url + "@3x.png")
     }
+}
+
+@mixin title-bg($bgWidth, $bgUrl) {
+    width: $bgWidth;
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
+    font-size: 40px;
+    color: $color-white;
+    margin: 0 auto;
+    background-image: url($bgUrl + ".png");
+    background-size: contain;
 }

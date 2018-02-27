@@ -314,7 +314,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             chunks: ['manifest', 'vendor', 'registerExplain']
         }),
         new HtmlWebpackPlugin({
-            filename: config.build.test,
+            filename: config.build.beginner,
             template: 'index.html',
             inject: true,
             minify: {
@@ -326,7 +326,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             },
             // necessary to consistently work with multiple chunks via CommonsChunkPlugin
             chunksSortMode: 'dependency',
-            chunks: ['manifest', 'vendor', 'test']
+            chunks: ['manifest', 'vendor', 'beginner']
         }),
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),

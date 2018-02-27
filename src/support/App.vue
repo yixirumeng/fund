@@ -2,7 +2,9 @@
 	<div>
 		<div class="support-nav">
 			<ul class="clearfix">
-				<li v-for="(nav, index) in navs" :key="index" :class="{'nav-on': nowIndex==index}" @click="changeNav(index)">{{nav}}</li>
+				<li v-for="(nav, index) in navs" :key="index" @click="changeNav(index)">
+					<span :class="{'nav-on': nowIndex==index}">{{nav}}</span>
+				</li>
 			</ul>
 		</div>
 		<div v-show="detail===0">
@@ -223,12 +225,18 @@ export default {
 	padding: 0 30px;
 	ul{
 		li{
-			box-sizing: border-box;
 			float: left;
-			margin-right: 160px;
-			padding: 28px 0 22px;
+			width: 33.3%;
+			
+			&:nth-child(2){
+				text-align: center;
+			}
 			&:last-child{
-				margin-right: 0;
+				text-align: right;
+			}
+			span{
+				display: inline-block;
+				padding: 28px 0 22px;
 			}
 		}
 	}
