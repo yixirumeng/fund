@@ -64,7 +64,7 @@
 						<img :src="cost">
 					</li>
 					<li>
-						基金交易的手续费主要是<span class="cost-tips">申购费</span>和<span class="cost-tips">赎回费</span>。
+						基金交易的手续费主要是<span class="content-tips">申购费</span>和<span class="content-tips">赎回费</span>。
 					</li>
 				</ul>
 				<div class="content-tips">申购费</div>
@@ -165,7 +165,7 @@ export default {
 		color: #ffe23f;
 	}
 	.fund-mean{
-		margin-top: 588px;
+		margin-top: 570px;
 		h4{
 			@include title-bg(339px, '../common/images/beginner/title1');
 		}
@@ -189,7 +189,7 @@ export default {
 			li{
 				float: left;
 				min-width: 220px;
-				margin-right: 15px;
+				margin-right: 10px;
 				text-align: center;
 				&:last-child{
 					margin-right: 0;
@@ -308,7 +308,7 @@ export default {
 		text-align: center;
 		line-height: 90px;
 		letter-spacing: 4px;
-		margin-top: 30px;
+		margin-top: 20px;
 	}
 }
 
