@@ -13,7 +13,7 @@
 				</div>
 				<div class="income-change">
 					<ul class="clearfix">
-						<li><span>本基金</span><span :class="{'color-red': parseFloat(rangeInfos[0])>0, 'color-green': parseFloat(rangeInfos[0])<0}">{{rangeInfos[0]}}</span></li>
+						<li><span>本基金</span><span>{{rangeInfos[0]}}</span></li>
 						<li><span>同类平均</span><span :class="{'color-red': parseFloat(rangeInfos[1])>0, 'color-green': parseFloat(rangeInfos[1])<0}">{{rangeInfos[1]}}</span></li>
 						<li><span>同类排名</span><span>{{rangeInfos[2]}}</span></li>
 					</ul>
@@ -76,14 +76,14 @@
 			</div>
 			<div class="details-info" v-show="infoShow===0">
 				<ul>
-					<li>
+					<li @click="callInfo">
 						<div class="archives-info">基金信息</div>
 						<div class="archives-num">
 							最近规模：
 							{{fundInfo[0]}}
 						</div>
 					</li>
-					<li>
+					<li @click="callCompany">
 						<div class="archives-info">基金公司</div>
 						<div class="archives-num">
 							{{fundInfo[1]}}
@@ -214,7 +214,6 @@ export default {
 		// 获取累计收益栏目数据
 		getRangeData(){
 			getData(`fund/${this.innerCode}/net/range`, 'get').then((res)=>{
-				console.log(res)
 				this.rangeInfoSum = res
 				this.rangeInfos.splice(0, this.rangeInfos.length)
 				this.rangeInfos = this.rangeData(res.rangeOneMonth, res.avgOneMonth, res.orderOneMonth)
@@ -276,7 +275,7 @@ export default {
 		callFundNet(){
 			callAppType('1', `${depositPath}fundNetList.html?innerCode=${this.innerCode}`, '基金净值')
 		},
-		// 基金公共点击更多跳转
+		// 基金公告点击更多跳转
 		callFundNotice(){
 			callAppType('1', `${depositPath}fundNoticeList.html?innerCode=${this.innerCode}`, '基金公告')
 		},
@@ -291,6 +290,14 @@ export default {
 		// 基金公告点击发送url
 		sendUrl(noticeUrl){
 			callAppType('21', noticeUrl, '基金公告')
+		},
+		// 基金信息点击跳转
+		callInfo(){
+			callAppType('12', '', '基金信息')
+		},
+		// 基金公司点击跳转
+		callCompany(){
+			callAppType('13', '', '基金公司')
 		}
 	}
 }

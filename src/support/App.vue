@@ -187,7 +187,6 @@ export default {
 		// 获取持仓债券信息
 		getHeavyBond(){
 			getData(`fund/investment/${this.innerCode}/heavyBond`, 'get', this.paramsFormat()).then((res) => {
-				console.log(res)
 				this.heavyBond = res
 			})
 		},

@@ -1,13 +1,5 @@
 import axios from 'axios'
 
-const ajaxUrl = 'http://223.100.7.112:25010/fund-business/'
-
-const ajaxUrl1 = 'http://192.168.4.195:8080/'
-
-const ajaxUrl2 = 'https://172.16.250.10:25013/fund-business/'
-
-const ajaxUrl3 = 'https://223.100.7.112:25013/fund-business/'
-
 export function getData(url, method, data = null) {
     return axios({
         url: `${process.env.AjaxUrl}${url}`,
@@ -30,6 +22,8 @@ export function getData(url, method, data = null) {
  *     case 0: 关闭当前页面
  *     case 1: 跳转同一服务器URL {'type':'11','body':'url','Remarks':'title','Reserve':'预留'}
  *     case 11: 跳转基金详情 {'type':'11','body':'innercode','Remarks':'基金名','Reserve':'预留'}
+ *     case 12: 跳转基金信息 {'type':'12','body':'','Remarks':'基金信息','Reserve':'预留'}
+ *     case 13: 跳转基金公司 {'type':'13','body':'','Remarks':'基金公司','Reserve':'预留'}
  *     case 21: 跳转到其他服务器文件类URL {'type':'21','body':'完整的url','Remarks':'基金名','Reserve':'预留'}
  *     ...
  * body: {'type':'1','body':'','Remarks':'备注','Reserve':'预留'}

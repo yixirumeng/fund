@@ -59,7 +59,6 @@ export default {
 					elig_content: newEligContent
 				}
 				getData('ufx/question/submit', 'post', data).then((res) => {
-					console.log(res)
 					this.resultMsg = res.invest_risk_tolerance_desc
 					this.riskType = res.ofund_risklevel_desc
 					this.overdue = res.submit_date

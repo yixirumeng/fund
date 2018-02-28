@@ -15,13 +15,12 @@
 					<td>{{item.rangeDay}}</td>
 				</tr>
 			</table>
-			<div class="show-more" v-show="showMore" @click="clickShowMore">点击查看更多</div>
+			<div class="show-more" v-show="showMoreBtn" @click="clickShowMore">点击查看更多</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import $ from 'jquery'
 import {getData, getQueryString} from '@/common/js/api'
 
 export default {
@@ -32,7 +31,8 @@ export default {
 			pageSize: 10,
 			totalPage: null,
 			fondNet: [],
-			showMore: true
+			showMore: true,
+			showMoreBtn: true
 		}
 	},
 	created(){
@@ -59,6 +59,7 @@ export default {
 				pageSize
 			}
 			getData(`fund/${this.innerCode}/history/net`, 'get', data).then((res) => {
+				this.showMore = true
 				this.totalPage = res.page.totalPage
 				for(let i=0; i<res.list.length; i++){
 					this.fondNet.push(res.list[i])
@@ -67,27 +68,28 @@ export default {
 		},
 		// 点击查看更多
 		clickShowMore(){
+			this.showMoreBtn = false
 			this.currentPage += 1
 			this.getNet()
-			this.showMore = false
 			this.moreInfoLoad()
 		},
 		// 页面滚动，显示更多数据
 		moreInfoLoad(){
-			$(window).scroll(()=>{
-				let scrollH = $(window).scrollTop()
-				let screenH = $(window).height()
-				let bodyH = $(document).height()
-				if((scrollH + screenH >= bodyH) && (this.currentPage <= this.totalPage)){
+			window.onscroll = () => {
+				let scrollH = document.documentElement.scrollTop || document.body.scrollTop,
+					screenH = document.documentElement.clientHeight,
+					bodyH = document.body.clientHeight
+				if(this.showMore && (scrollH + screenH >= bodyH) && (this.currentPage < this.totalPage)){
+					this.showMore = false
 					this.currentPage += 1
 					this.getNet()
 				}
-			})
+			}
 		},
 		resizeInfoLoad(){
-			$(window).resize(() => {
+			window.onresize = () => {
 				this.moreInfoLoad()
-			})
+			}
 		}
 	}
 }

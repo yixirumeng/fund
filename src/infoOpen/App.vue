@@ -20,16 +20,15 @@
 
 <script>
 import {getData} from '@/common/js/api'
-import $ from 'jquery'
 
-var swOpen = true
 export default {
 	data(){
 		return {
 			currentPage: 1,
 			pageSize: 10,
 			contentList: [],
-			totalPage: null
+			totalPage: null,
+			showMore: true
 		}
 	},
 	created(){
@@ -53,28 +52,26 @@ export default {
 					this.contentList.push(res.list[i])
 				}
 				this.totalPage = Math.ceil(res.totleCount/this.pageSize)
-				swOpen = true
+				this.showMore = true
 			})
 		},
 		// 滚动加载更多
 		moreInfoLoad(){
-			$(window).scroll(()=>{
-				let scrollH = $(window).scrollTop()
-				let screenH = $(window).height()
-				let bodyH = $(document).height()
-				if(scrollH + screenH >= bodyH){
-					if(swOpen && this.currentPage<this.totalPage){
-						swOpen = false
-						this.currentPage += 1
-						this.getInfo()
-					}
+			window.onscroll = () => {
+				let scrollH = document.documentElement.scrollTop || document.body.scrollTop,
+					screenH = document.documentElement.clientHeight,
+					bodyH = document.body.clientHeight
+				if(this.showMore && (scrollH + screenH) >= bodyH && this.currentPage < this.totalPage){
+					this.showMore = false
+					this.currentPage += 1
+					this.getInfo()
 				}
-			})
+			}
 		},
 		resizeInfoLoad(){
-			$(window).resize(() => {
+			window.onresize = () => {
 				this.moreInfoLoad()
-			})
+			}
 		}
 	}
 }

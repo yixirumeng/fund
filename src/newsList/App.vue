@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import $ from 'jquery'
 import BScroll from 'better-scroll'
 import hot from '@/common/images/hot@2x.png'
 import {getData, callAppType, depositPath} from '@/common/js/api'
@@ -41,7 +40,7 @@ export default {
 			pageSize: 10,
 			totalPage: null,
 			newsList: [],
-			sw: true
+			showMore: true
 		}
 	},
 	created(){
@@ -77,18 +76,7 @@ export default {
 				})
 				return res.list[0].id
 			}).then((res1) => {
-				let data = {
-					categoryId: res1,
-					currentPage: this.currentPage,
-					pageSize: this.pageSize
-				}
-				getData(`manage/info/0/summaryList/`, 'get', data).then((res2) => {
-					this.totalPage = res2.totleCount
-					let l = res2.list.length
-					for(let i=0; i<l; i++){
-						this.newsList.push(res2.list[i])
-					}
-				})
+				this.getLists(res1)
 			})
 		},
 		// 理财资讯标题格式处理
@@ -105,41 +93,40 @@ export default {
 			callAppType('1', `${depositPath}newsContent.html?infoId=${id}`, '新闻内容')
 		},
 		// 获取文章列表
-		getLists(){
+		getLists(categoryId){
 			let data = {
-				categoryId: this.nowIndex + 1,
+				categoryId,
 				currentPage: this.currentPage,
 				pageSize: this.pageSize
 			}
 			getData(`manage/info/0/summaryList/`, 'get', data).then((res) => {
-				console.log(res)
-				this.totalPage = res.totleCount
+				this.totalPage = Math.ceil(res.totleCount/this.pageSize)
 				let l = res.list.length
 				for(let i=0; i<l; i++){
 					this.newsList.push(res.list[i])
 				}
-				this.sw = true
+				this.showMore = true
 			})
 		},
 		// 滚动加载更多
 		moreInfoLoad(){
-			$(window).scroll(()=>{
-				let scrollH = $(window).scrollTop()
-				let screenH = $(window).height()
-				let bodyH = $(document).height()
+			window.onscroll = () => {
+				let scrollH = document.documentElement.scrollTop || document.body.scrollTop
+				let screenH = document.documentElement.clientHeight
+				let bodyH = document.body.clientHeight
 				if(scrollH + screenH >= bodyH){
-					if(this.sw && this.currentPage<this.totalPage){
-						this.sw = false
+					if(this.showMore && this.currentPage<this.totalPage){
+						this.showMore = false
 						this.currentPage += 1
-						this.getLists()
+						this.getLists(this.nowIndex+1)
 					}
 				}
-			})
+			}
 		},
 		resizeInfoLoad(){
-			$(window).resize(() => {
+			window.onresize = () => {
 				this.moreInfoLoad()
-			})
+			}
 		}
 	}
 }

@@ -3,22 +3,19 @@
 		<div class="content">
 			<div class="details-info">
 				<ul>
-					<li v-for="(item, index) in notice" :key="index">
-						<a :href="item.filePath">
-							<div class="notice-info no-wrap">{{item.noticeTitle}}</div>
-							<div class="notice-time">{{item.noticeDate}}</div>
-						</a>
+					<li v-for="(item, index) in notice" :key="index" @click="sendUrl(item.filePath)">
+						<div class="notice-info no-wrap">{{item.noticeTitle}}</div>
+						<div class="notice-time">{{item.noticeDate}}</div>
 					</li>
 				</ul>
 			</div>
-			<div class="show-more" v-show="showMore" @click="clickShowMore">点击查看更多</div>
+			<div class="show-more" v-show="showMoreBtn" @click="clickShowMore">点击查看更多</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import $ from 'jquery'
-import {getData, getQueryString} from '@/common/js/api'
+import {getData, getQueryString, callAppType} from '@/common/js/api'
 
 export default {
 	data(){
@@ -28,7 +25,8 @@ export default {
 			currentPage: 1,
 			pageSize: 10,
 			totalPage: null,
-			showMore: true
+			showMore: true,
+			showMoreBtn: true
 		}
 	},
 	created(){
@@ -49,36 +47,40 @@ export default {
 		// 获取公告信息
 		getNotice(){
 			getData(`fund/${this.innerCode}/notice/0/list/${this.currentPage}/${this.pageSize}`, 'get').then((res) => {
-				console.log(res)
+				this.showMore = true
 				this.totalPage = res.page.totalPage
 				for(let i=0; i<res.list.length; i++){
 					this.notice.push(res.list[i])
 				}
 			})
 		},
+		// 基金公告点击发送url
+		sendUrl(noticeUrl){
+			callAppType('21', noticeUrl, '基金公告')
+		},
 		// 点击查看更多
 		clickShowMore(){
+			this.showMoreBtn = false
 			this.currentPage += 1
 			this.getNotice()
-			this.showMore = false
 			this.moreInfoLoad()
 		},
-		// 页面滚动，显示更多数据
 		moreInfoLoad(){
-			$(window).scroll(()=>{
-				let scrollH = $(window).scrollTop()
-				let screenH = $(window).height()
-				let bodyH = $(document).height()
-				if((scrollH + screenH >= bodyH) && (this.currentPage <= this.totalPage)){
+			window.onscroll = () => {
+				let scrollH = document.documentElement.scrollTop || document.body.scrollTop,
+					screenH = document.documentElement.clientHeight,
+					bodyH = document.body.clientHeight
+				if(this.showMore && (scrollH + screenH >= bodyH) && (this.currentPage < this.totalPage)){
+					this.showMore = false
 					this.currentPage += 1
 					this.getNotice()
 				}
-			})
+			}
 		},
 		resizeInfoLoad(){
-			$(window).resize(() => {
+			window.onresize = () => {
 				this.moreInfoLoad()
-			})
+			}
 		}
 	}
 }
