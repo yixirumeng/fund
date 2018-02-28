@@ -56,6 +56,8 @@ module.exports = {
         starFund: path.resolve(__dirname, '../dist/starFund.html'),
         registerExplain: path.resolve(__dirname, '../dist/registerExplain.html'),
         beginner: path.resolve(__dirname, '../dist/beginner.html'),
+        about: path.resolve(__dirname, '../dist/about.html'),
+        tradeTips: path.resolve(__dirname, '../dist/tradeTips.html'),
 
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),
