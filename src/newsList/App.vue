@@ -27,7 +27,6 @@
 
 <script>
 import BScroll from 'better-scroll'
-import hot from '@/common/images/hot@2x.png'
 import {getData, callAppType, depositPath} from '@/common/js/api'
 
 export default {
@@ -35,7 +34,6 @@ export default {
 		return {
 			navs: [],
 			nowIndex: 0,
-			hot,
 			currentPage: 1,
 			pageSize: 10,
 			totalPage: null,

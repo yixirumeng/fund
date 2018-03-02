@@ -1,10 +1,13 @@
 import axios from 'axios'
 
-export function getData(url, method, data = null) {
+export function getData(url, method, data = null, token = '') {
     return axios({
         url: `${process.env.AjaxUrl}${url}`,
         method,
-        params: data
+        params: data,
+        headers: {
+            'AccessToken': token
+        }
     }).then((res) => {
         if (res.data.code === 0) {
             return Promise.resolve(res.data.content)
@@ -21,9 +24,10 @@ export function getData(url, method, data = null) {
  * type{
  *     case 0: 关闭当前页面
  *     case 1: 跳转同一服务器URL {'type':'11','body':'url','Remarks':'title','Reserve':'预留'}
- *     case 11: 跳转基金详情 {'type':'11','body':'innercode','Remarks':'基金名','Reserve':'预留'}
- *     case 12: 跳转基金信息 {'type':'12','body':'','Remarks':'基金信息','Reserve':'预留'}
- *     case 13: 跳转基金公司 {'type':'13','body':'','Remarks':'基金公司','Reserve':'预留'}
+ *     case 11: 跳转基金详情 {'type':'11','body':'innerCode','Remarks':'基金名','Reserve':'预留'}
+ *     case 12: 跳转基金信息 {'type':'12','body':'innerCode','Remarks':'基金信息','Reserve':'预留'}
+ *     case 13: 跳转基金公司 {'type':'13','body':'innerCode','Remarks':'基金公司','Reserve':'预留'}
+ *     case 14: 跳转基金经理 {'type':'14','body':'personalCode','Remarks':'基金经理','Reserve':'预留'}
  *     case 21: 跳转到其他服务器文件类URL {'type':'21','body':'完整的url','Remarks':'基金名','Reserve':'预留'}
  *     ...
  * body: {'type':'1','body':'','Remarks':'备注','Reserve':'预留'}

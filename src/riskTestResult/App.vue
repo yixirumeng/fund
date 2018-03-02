@@ -35,7 +35,8 @@ export default {
 			riskType: '',
 			overdue: '',
 			firstTest: true,
-			testUrl: ''
+			testUrl: '',
+			token: ''
 		}
 	},
 	created(){
@@ -43,22 +44,22 @@ export default {
 	},
 	computed: {
 		newJumpUrl(){
-			return getNewUrl(`riskTest.html?phone=${this.phoneNumber}`)
+			return getNewUrl(`${depositPath}riskTest.html?token=${this.token}&phone=${this.phoneNumber}`)
 		}
 	},
 	methods: {
 		// 获取url参数，并对参数进行判断
 		getAnswerContent(){
-			let newPhoneNumber = getQueryString('phone')
-			this.phoneNumber = newPhoneNumber
+			this.token = getQueryString('token')
+			this.phoneNumber = getQueryString('phone')
 			let newEligContent = getQueryString('answer')
 			let type = getQueryString('type')
 			if(newEligContent !== null && type === null){
 				let data = {
-					username: newPhoneNumber,
+					username: this.phoneNumber,
 					elig_content: newEligContent
 				}
-				getData('ufx/question/submit', 'post', data).then((res) => {
+				getData('ufx/question/submit', 'post', data, this.token).then((res) => {
 					this.resultMsg = res.invest_risk_tolerance_desc
 					this.riskType = res.ofund_risklevel_desc
 					this.overdue = res.submit_date
@@ -77,7 +78,7 @@ export default {
 		},
 		// 重新测评按钮点击跳转
 		callRiskTest(){
-			callAppType('1', `${depositPath}riskTest.html?phone=${this.phoneNumber}`, '风险测评')
+			callAppType('1', `${depositPath}riskTest.html?token=${this.token}&phone=${this.phoneNumber}`, '风险测评')
 		},
 		// 点击完成，关闭当前页面，跳转原生app
 		closePage(){

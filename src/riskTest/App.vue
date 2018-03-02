@@ -10,7 +10,7 @@
 						{{item.question_content}}
 					</div>
 					<ul>
-						<li :class="{on: optionColorArr[index] === itemSection.option_no, on1: currentIndex === indexSection}" v-for="(itemSection, indexSection) in item.section" :key="indexSection" @click="collectPoint(index, itemSection.option_no, indexSection)">
+						<li :class="{on: optionColorArr[index] === itemSection.option_no, on1: currentIndex === indexSection}" v-for="(itemSection, indexSection) in item.section" :key="indexSection" @click="collectPoint(index, itemSection.question_no, itemSection.option_no, indexSection)">
 							{{itemSection.option_content}}
 						</li>
 					</ul>
@@ -47,6 +47,7 @@ export default {
 			optionColorArr: [],
 			currentIndex: -1,
 			phone: '',
+			token: '',
 			answerArr: [],
 			answer: '',
 			error: false,
@@ -54,26 +55,27 @@ export default {
 		}
 	},
 	created(){
-		this.getPhone()
+		this.getParams()
 		this.getQuestion()
 	},
 	methods: {
-		// 获取url手机号参数
-		getPhone(){
+		// 获取token、phone参数
+		getParams(){
+			this.token = getQueryString('token')
 			this.phone = getQueryString('phone')
 		},
 		// 获取题目信息
 		getQuestion(){
-			getData('ufx/question/list', 'post').then((res) => {
+			getData('ufx/question/list', 'post', '', this.token).then((res) => {
 				this.totalNumber = res.length
 				this.questionList = res
 			})
 		},
 		// 得到答题结果并格式化
-		collectPoint(index, optionNo, indexSection){
+		collectPoint(index, questionNo, optionNo, indexSection){
 			this.currentIndex = indexSection
 			this.optionColorArr[index] = optionNo
-			let answerContent = `${index+1}:${optionNo}`
+			let answerContent = `${questionNo}:${optionNo}`
 			this.answerArr[index] = answerContent
 			this.error = false
 			this.errorMsg = ''
@@ -93,7 +95,7 @@ export default {
 					i === this.answerArr.length-1 ? this.answer += `${this.answerArr[i]}` : this.answer += `${this.answerArr[i]}|`
 				}
 				// callAppType('1', `${depositPath}riskTestResult.html?phone=${this.phone}&answer=${this.answer}`, '风险测评结果')
-				window.location.href = getNewUrl(`riskTestResult.html?phone=${this.phone}&answer=${this.answer}`)
+				window.location.href = getNewUrl(`riskTestResult.html?token=${this.token}&phone=${this.phone}&answer=${this.answer}`)
 			}
 		},
 		// 上一题按钮事件

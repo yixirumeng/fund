@@ -93,8 +93,10 @@
 						<div class="archives-info">
 							基金经理
 						</div>
-						<div class="archives-num">
-							{{fundInfo[2]}}
+						<div class="archives-manager">
+							<span v-for="(item, index) in managerName" :key="index" @click="callManager(item.personalCode)">
+								{{item.managerName}}
+							</span>
 						</div>
 					</li>
 					<li @click="callBonus">
@@ -152,7 +154,8 @@ export default {
 			fundInfo: [],
 			notice: [],
 			xData: [],
-			yData: []
+			yData: [],
+			managerName: null
 		}
 	},
 	created(){
@@ -259,8 +262,8 @@ export default {
 			getData(`fund/${this.innerCode}/detail/info`, 'get').then((res) => {
 				let netAsset = res.abbrNetAsset
 				let fundManger = res.abbrFundManager
-				let managerName = res.managerList[0].managerName
-				this.fundInfo.push(netAsset, fundManger, managerName)
+				this.fundInfo.push(netAsset, fundManger)
+				this.managerName = res.managerList
 			})
 		},
 		// 获取基金公告
@@ -293,11 +296,15 @@ export default {
 		},
 		// 基金信息点击跳转
 		callInfo(){
-			callAppType('12', '', '基金信息')
+			callAppType('12', `${this.innerCode}`, '基金信息')
 		},
 		// 基金公司点击跳转
 		callCompany(){
-			callAppType('13', '', '基金公司')
+			callAppType('13', `${this.innerCode}`, '基金公司')
+		},
+		// 基金经理点击跳转
+		callManager(personalCode){
+			callAppType('14', `${personalCode}`, '基金经理')
 		}
 	}
 }
@@ -426,6 +433,15 @@ export default {
 						height: 19px;
 						@include bg-image('../common/images/arrow');
 						background-repeat: no-repeat;
+					}
+				}
+				.archives-manager{
+					float: right;
+					color: $font-color-d;
+					margin-right: 24px;
+					span{
+						color: #1998CF;
+						margin-left: 16px;
 					}
 				}
 				.notice-info{
