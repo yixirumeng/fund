@@ -170,6 +170,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
             inject: true,
             chunks: ['tradeTips']
         }),
+        new HtmlWebpackPlugin({
+            filename: 'bankDebit.html',
+            template: 'index1.html',
+            inject: true,
+            chunks: ['bankDebit']
+        }),
         // copy custom static assets
         new CopyWebpackPlugin([{
             from: path.resolve(__dirname, '../static'),

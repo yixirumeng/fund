@@ -58,6 +58,7 @@ module.exports = {
         beginner: path.resolve(__dirname, '../dist/beginner.html'),
         about: path.resolve(__dirname, '../dist/about.html'),
         tradeTips: path.resolve(__dirname, '../dist/tradeTips.html'),
+        bankDebit: path.resolve(__dirname, '../dist/bankDebit.html'),
 
         // Paths
         assetsRoot: path.resolve(__dirname, '../dist'),

@@ -304,7 +304,7 @@ export default {
 		},
 		// 基金经理点击跳转
 		callManager(personalCode){
-			callAppType('14', `${personalCode}`, '基金经理')
+			callAppType('14', personalCode, '基金经理')
 		}
 	}
 }

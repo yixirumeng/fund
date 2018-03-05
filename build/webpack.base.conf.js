@@ -32,7 +32,8 @@ module.exports = {
         registerExplain: './src/registerExplain/main.js',
         beginner: './src/beginner/main.js',
         about: './src/about/main.js',
-        tradeTips: './src/tradeTips/main.js'
+        tradeTips: './src/tradeTips/main.js',
+        bankDebit: './src/bankDebit/main.js'
     },
     output: {
         path: config.build.assetsRoot,
