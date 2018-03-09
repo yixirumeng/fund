@@ -68,18 +68,15 @@ export default {
                             fontSize: '12px',
                             fontFamily: 'Arial'
                         },
-                        margin: 20
+                        margin: 14
                     },
                     axisLine: {
                         lineStyle: {
-                            color: '#ddd'
+                            color: '#c4c4d2'
                         }
                     },
                     splitLine: {
-                        show: true,
-                        lineStyle: {
-                            color: '#eee'
-                        }
+                        show: false,
                     },
                     axisTick: {
                         show: false
@@ -99,12 +96,16 @@ export default {
                         }
                     },
                     axisLine: {
-                        lineStyle: {
-                            color: '#ddd'
-                        }
+                        show: false
+                        // lineStyle: {
+                        //     color: '#ddd'
+                        // }
                     },
                     splitLine: {
-                        show: false
+                        show: true,
+                        lineStyle: {
+                            color: '#eeeff1'
+                        }
                     },
                     axisTick: {
                         show: false
@@ -117,7 +118,11 @@ export default {
                     symbolSize: 4,
                     itemStyle: {
                         normal: {
-                            color: '#5b80fe'
+                            color: '#5b80fe',
+                            lineStyle: {
+                                color: '#5b80fe',
+                                width: 1
+                            }
                         }
                     },
                     areaStyle: {

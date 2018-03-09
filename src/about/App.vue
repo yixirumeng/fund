@@ -23,8 +23,9 @@ export default {
 <style lang="scss" scoped>
 @import '../common/styles/variables.scss';
 .content{
+	color: $font-color-d;
 	.logo{
-		margin: 60px auto;
+		margin: 60px auto 54px;
 		background-image: url("../common/images/logo.png");
 	}
 	&>p{

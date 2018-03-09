@@ -8,7 +8,7 @@ body {
 
 .title {
     padding: 25px 0;
-    // font-weight: bold;
+    font-weight: bold;
     color: $font-color-d;
     font-size: $font-size-ll;
 }
@@ -51,7 +51,7 @@ body {
 }
 
 .nav-on {
-    border-bottom: 6px solid $font-color-r;
+    border-bottom: 7px solid $font-color-r;
     color: $font-color-r;
 }
 
@@ -84,9 +84,11 @@ body {
 .invest-table {
     width: 100%;
     border: 1px solid $invest-border-color;
+    /*no*/
     margin: 30px 0;
     tr {
         border: 1px solid $invest-border-color;
+        /*no*/
         &:first-child {
             background-color: $invest-table-bg;
             text-align: center;
@@ -98,6 +100,7 @@ body {
         }
         td {
             border: 1px solid $invest-border-color;
+            /*no*/
             vertical-align: top;
             font-size: $font-size-l;
             line-height: 1.5;
@@ -110,8 +113,8 @@ body {
 .show-more {
     text-align: center;
     font-size: $font-size-l;
-    padding: 16px 0;
-    color: #1998CF;
+    padding: 30px 0;
+    color: $font-color-d;
     letter-spacing: 2px;
     display: block;
 }

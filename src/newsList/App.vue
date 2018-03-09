@@ -2,8 +2,8 @@
 	<div class="content-sum">
 		<div class="news-title" ref="nav">
 			<ul ref="navSum" :class="[navs.length<3 ? 'nav-small' : 'nav-large', 'support-nav']">
-				<li v-for="(nav, index) in navs" :key="index"  @click="changeNav(index)">
-					<span :class="{on: nowIndex==index}">{{nav}}</span>
+				<li v-for="(nav, index) in navs" :key="index"  @click="changeNav(index, nav.id)">
+					<span :class="{on: nowIndex==index}">{{titleFormat(nav.category)}}</span>
 				</li>
 			</ul>
 		</div>
@@ -50,20 +50,18 @@ export default {
 	},
 	methods:{
 		// 导航切换
-		changeNav(index){
+		changeNav(index, categoryId){
 			this.nowIndex = index
 			this.currentPage = 1
 			this.newsList = []
-			this.getLists()
+			this.getLists(categoryId)
 		},
 		// 获取理财资讯标题
 		getNewsTitle(){
 			getData('manage/info/category', 'get').then((res) => {
-				let l
-				res.list.length>4 ? l = 4 : l = res.list.length
+				let l = res.list.length>4 ? 4 : res.list.length
 				for(let i=0; i<l; i++){
-					let newTitle = this.titleFormat(res.list[i].category)
-					this.navs.push(newTitle)
+					this.navs.push(res.list[i])
 				}
 				this.$nextTick(() => {
 					this.scroll = new BScroll(this.$refs.nav, {
@@ -144,6 +142,7 @@ export default {
 		background-color: $color-white;
 		font-size: $font-size-ll;
 		color: $font-color-d;
+		border-bottom: 1px solid $border-color; /*no*/
 		white-space: nowrap;
 		&.nav-small{
 			display: block;
@@ -165,6 +164,7 @@ export default {
 			span{
 				display: inline-block;
 				padding-bottom: 22px;
+				font-weight: 600;
 				&.on{
 					border-bottom: 6px solid $font-color-r;
 					color: $font-color-r;
@@ -179,7 +179,10 @@ export default {
 			ul{
 				li{
 					padding: 36px 0;
-					border-top: 1px solid $border-color;
+					border-top: 1px solid $border-color; /*no*/
+					&:first-child{
+						border-top: none;
+					}
 					.lists-title{
 						line-height: 1.2;
 						font-size: 34px;

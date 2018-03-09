@@ -55,6 +55,8 @@ export default {
 		font-size: 46px;
 		padding: 30px 0 36px;
 		line-height: 1.5;
+		font-weight: normal;
+		text-align: justify;
 	}
 	.content-details{
 		margin-top: 50px;
@@ -69,6 +71,7 @@ export default {
 <style lang="scss">
 .content-style-reset{
 	p{
+		line-height: 1.6;
 		img{
 			display: block !important;
 			width: 100% !important;

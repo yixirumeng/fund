@@ -128,14 +128,14 @@ export default {
 	margin-top: 15px;
 	.content{
 		.title{
-			border-bottom: 1px solid $border-color;
+			border-bottom: 1px solid $border-color; /*no*/
 		}
 		.content-table{
-			border: 1px solid $border-color;
+			border: 1px solid $border-color; /*no*/
 			margin-top: 26px;
 			td {
-				border: 1px solid $border-color;
-				padding-left: 20px;
+				border: 1px solid $border-color; /*no*/
+				padding: 20px 0 20px 20px;
 				&:first-child{
 					width: 70%;
 				}
@@ -151,7 +151,7 @@ export default {
 		.business-info{
 			li{
 				padding: 24px 0;
-				border-bottom: 1px solid $border-color;
+				border-bottom: 1px solid $border-color; /*no*/
 				&:last-child{
 					border-bottom: none;
 				}

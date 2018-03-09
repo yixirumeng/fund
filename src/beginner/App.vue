@@ -87,7 +87,7 @@
 				<p class="content-tips">现在就开启财富之旅吧！</p>
 			</div>
 			<img :src="gift" class="gift">
-			<div class="buy" @click="closePage">
+			<div class="buy" @click="jumpToPage">
 				赶紧去购买
 			</div>
 		</div>
@@ -136,8 +136,8 @@ export default {
 		}
 	},
 	methods: {
-		closePage(){
-			callAppType('0', '', '关闭页面')
+		jumpToPage(){
+			callAppType('15', '', '跳转我的或注册页')
 		}
 	}
 }

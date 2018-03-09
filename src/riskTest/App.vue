@@ -121,9 +121,10 @@ export default {
 @import '~styles/variables.scss';
 .invest-sum{
 	.invest{
+		padding-top: 50px;
 		.question-sum{
-			margin-left: 20px;
 			.question-number{
+				padding-left: 20px;
 				color: $font-color-s;
 				span{
 					display: block;
@@ -144,15 +145,16 @@ export default {
 			}
 			.question-details{
 				ul{
-					margin-top: 100px;
+					margin-top: 85px;
 					li{
-						padding: 50px 0;
-						border-bottom: 1px solid $border-color;
+						padding: 50px 0 50px 20px;
+						border-bottom: 1px solid $invest-table-bg;
 						font-size: $font-size-title;
 						color: $font-color-d;
 						line-height: 1.5;
+						position: relative;
 						&:first-child{
-							border-top: 1px solid $border-color;
+							border-top: 1px solid $invest-table-bg;
 						}
 						&.on{
 							background-color: rgba(254, 54, 80, .05);
@@ -164,7 +166,8 @@ export default {
 				}
 			}
 			.question-title{
-				margin-top: 45px;
+				margin-top: 30px;
+				padding-left: 20px;
 				color: $font-color-r;
 				font-size: 40px;
 				line-height: 1.5;

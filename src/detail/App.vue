@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="content">
-			<h2 class="title">累计收益</h2>
+			<h2 class="title income-title">{{incomeTitle}}</h2>
 			<div class="income-chart">
 				<ul class="chart-nav clearfix">
 					<li v-for="(nav, index) in navs" :key="index" :class="{on: navSelect==index}" @click="changeBg(index)">
@@ -13,7 +13,7 @@
 				</div>
 				<div class="income-change">
 					<ul class="clearfix">
-						<li><span>本基金</span><span>{{rangeInfos[0]}}</span></li>
+						<li><span>本基金</span><span :class="{'color-red': parseFloat(rangeInfos[0])>0, 'color-green': parseFloat(rangeInfos[0])<0}">{{rangeInfos[0]}}</span></li>
 						<li><span>同类平均</span><span :class="{'color-red': parseFloat(rangeInfos[1])>0, 'color-green': parseFloat(rangeInfos[1])<0}">{{rangeInfos[1]}}</span></li>
 						<li><span>同类排名</span><span>{{rangeInfos[2]}}</span></li>
 					</ul>
@@ -44,29 +44,48 @@
 						<td v-for="(item, index) in rangeInfoList.rangeInfoThisYear" :key="index" :class="{'color-red': parseFloat(item)>0, 'color-green': parseFloat(item)<0}">{{item}}</td>
 					</tr>
 					<tr>
-						<td>近3年</td>
+						<td>成立以来</td>
 						<td v-for="(item, index) in rangeInfoList.rangeInfoThreeYear" :key="index" :class="{'color-red': parseFloat(item)>0, 'color-green': parseFloat(item)<0}">{{item}}</td>
 					</tr>
 				</table>
 			</div>
 		</div>
 		<div class="content content-bottom">
-			<h2 class="title">基金净值</h2>
-			<table class="content-table">
-				<tr>
-					<td>日期</td>
-					<td>单位净值</td>
-					<td>累计净值</td>
-					<td>日涨幅</td>
-				</tr>
-				<tr v-for="(net, index) in netInfos" :key="index">
-					<td>{{net.netDate}}</td>
-					<td>{{net.unitNet}}</td>
-					<td>{{net.totalNet}}</td>
-					<td>{{net.rangeDay}}</td>
-				</tr>
-			</table>
-			<div class="show-more" @click="callFundNet">点击查看更多</div>
+			<div v-if="fundType === 0">
+				<h2 class="title">基金净值</h2>
+				<table class="content-table">
+					<tr>
+						<td>日期</td>
+						<td>单位净值</td>
+						<td>累计净值</td>
+						<td>日涨幅</td>
+					</tr>
+					<tr v-for="(net, index) in netInfos" :key="index">
+						<td>{{net.netDate}}</td>
+						<td>{{net.unitNet | netFormat}}</td>
+						<td>{{net.totalNet | netFormat}}</td>
+						<td>{{net.rangeDay | netFormat}}%</td>
+					</tr>
+				</table>
+				<div class="show-more" @click="callFundNet">点击查看更多</div>
+			</div>
+			<div v-if="fundType === 1">
+				<h2 class="title">历史收益</h2>
+				<table class="content-table">
+					<tr>
+						<td>日期</td>
+						<td>七日年化</td>
+						<td>万份收益</td>
+					</tr>
+					<tr v-for="(profit, index) in historyProfit" :key="index">
+						<td>{{profit.accrualDate}}</td>
+						<td>{{profit.SevenDaysYield | netFormat | percentFormat}}</td>
+						<td>{{profit.tenThousandAccrual | netFormat}}</td>
+					</tr>
+				</table>
+				<div class="show-more" @click="callFundNet">点击查看更多</div>
+			</div>
+			
 		</div>
 		<div class="content content-separate">
 			<div class="info-nav">
@@ -132,12 +151,14 @@ export default {
 	name: 'App',
 	data(){
 		return {
+			incomeTitle: '',
 			navs: ['近1月', '近3月', '近6月', '今年以来', '成立以来'],
 			infoNavs: ['基金档案', '基金公告'],
 			navSelect: 0,
 			infoNavSelect: 0,
 			infoShow: 0,
 			innerCode: '',
+			fundType: null,
 			dateRange: 1,
 			rangeInfoSum: null,
 			rangeInfos: [],
@@ -149,6 +170,7 @@ export default {
 				rangeInfoThreeYear: []
 			},
 			netInfos: [],
+			historyProfit: [],
 			currentPage: 1,
 			pageSize: 10,
 			fundInfo: [],
@@ -165,7 +187,6 @@ export default {
 		this.getFundInfo()
 		this.getNet()
 		this.getAnnounce()
-		
 	},
 	components: {
 		echartsParts
@@ -173,27 +194,35 @@ export default {
 	methods: {
 		// 获取url参数值
 		changeUrl(){
-			let innerCode = getQueryString('innerCode')
-			if(innerCode){
-				this.innerCode = innerCode
-			}
+			this.innerCode = getQueryString('innerCode')
+			this.fundType = Number(getQueryString('fundType'))
 		},
 		// 获取echarts数据
 		getEchartsData(){
 			getData(`fund/${this.innerCode}/${this.dateRange}/totalnet/list`, 'get').then((res)=>{
 				this.xData = []
 				this.yData = []
-				let l = res.netList.length
-				for(let i=0; i<l; i++){
-					this.xData.push(res.netList[i].netDate)
-					this.yData.push(res.netList[i].totalNet)
-				}
+				if(this.fundType === 0){
+					this.incomeTitle = '累计收益'
+					let netL = res.netList.length
+					for(let i=0; i<netL; i++){
+						this.xData.push(res.netList[i].netDate)
+						this.yData.push(res.netList[i].totalNet)
+					}
+				}else if(this.fundType === 1){
+					this.incomeTitle = '七日年化'
+					let profitL = res.profitList.length
+					for(let j=0; j<profitL; j++){
+						this.xData.push(res.profitList[j].netDate)
+						this.yData.push(res.profitList[j].sevenDaysYield)
+					}
+				}	
 			})
 		},
 		// 图表曲线tab切换
 		changeBg(index){
 			this.navSelect = index
-			this.dateRange = index + 1
+			index<3 ? this.dateRange = index + 1 : this.dateRange = index + 2
 			this.getEchartsData()
 			let range, avg, order
 			this.rangeInfos.splice(0, this.rangeInfos.length)
@@ -221,42 +250,56 @@ export default {
 				this.rangeInfos.splice(0, this.rangeInfos.length)
 				this.rangeInfos = this.rangeData(res.rangeOneMonth, res.avgOneMonth, res.orderOneMonth)
 
-				this.rangeInfoList.rangeInfoOne = this.rangeDataNew(res.rangeOneMonth, res.avgOneMonth, res.orderOneMonth, res.orderOneMonthCount)
-				this.rangeInfoList.rangeInfoThree = this.rangeDataNew(res.rangeThreeMonth, res.avgThreeMonth, res.orderThreeMonth, res.orderThreeMonthCount)
-				this.rangeInfoList.rangeInfoSix = this.rangeDataNew(res.rangeSixMonth, res.avgSixMonth, res.orderSixMonth, res.orderSixMonthCount)
-				this.rangeInfoList.rangeInfoThisYear = this.rangeDataNew(res.rangeThisYear, res.avgThisYear, res.orderThisYear, res.orderThisYearCount)
-				this.rangeInfoList.rangeInfoThreeYear = this.rangeDataNew(res.rangeThreeYear, res.avgThreeYear, res.orderThreeYear, res.orderThreeYearCount)
+				this.rangeInfoList.rangeInfoOne = this.rangeData(res.rangeOneMonth, res.avgOneMonth, res.orderOneMonth, res.orderOneMonthCount)
+				this.rangeInfoList.rangeInfoThree = this.rangeData(res.rangeThreeMonth, res.avgThreeMonth, res.orderThreeMonth, res.orderThreeMonthCount)
+				this.rangeInfoList.rangeInfoSix = this.rangeData(res.rangeSixMonth, res.avgSixMonth, res.orderSixMonth, res.orderSixMonthCount)
+				this.rangeInfoList.rangeInfoThisYear = this.rangeData(res.rangeThisYear, res.avgThisYear, res.orderThisYear, res.orderThisYearCount)
+				this.rangeInfoList.rangeInfoThreeYear = this.rangeData(res.rangeThreeYear, res.avgThreeYear, res.orderThreeYear, res.orderThreeYearCount)
 			})
 		},
 		// 格式化区间报告、同类平均、同类排名
-		rangeData(range, avg, order){
+		rangeData(range, avg, order, orderCount=''){
 			let newRange = range ? `${range}%` : '-'
 			let newAvg = avg ? avg>0 ? `+${avg}%` : `${avg}%` : '-'
-			let newOrder = order ? `${order}` : '-'
-			return [newRange, newAvg, newOrder]
-		},
-		rangeDataNew(range, avg, order, orderCount){
-			let newRange = range ? range>0 ? `+${range}%` : `${range}%` : '-'
-			let newAvg = avg ? avg>0 ? `+${avg}%` : `${avg}%` : '-'
-			let newOrder = order ? `${order}/${orderCount}` : '-'
-			return [newRange, newAvg, newOrder]
-		},
-		// 获取基金净值
-		getNet(){
-			let currentPage = this.currentPage
-			let pageSize = this.pageSize
-			let data = {
-				currentPage,
-				pageSize
+			let newOrder
+			if(orderCount === ''){
+				newOrder = order ? `${order}` : '-'
+			}else{
+				newOrder = order ? `${order}/${orderCount}` : '-'
 			}
-			getData(`fund/${this.innerCode}/history/net`, 'get', data).then((res) => {
-				let l = res.list.length
-				for(let i=0; i<l; i++){
-					this.netInfos.push(res.list[i])
-				}
-
-			})
+			return [newRange, newAvg, newOrder]
 		},
+		// 获取基金净值、历史收益
+		getNet(){
+			let data = {
+				currentPage: this.currentPage,
+				pageSize: this.pageSize
+			}
+			if(this.fundType === 0){
+				getData(`fund/${this.innerCode}/history/net`, 'get', data).then((res) => {
+					let netL = res.list.length
+					for(let i=0; i<netL; i++){
+						this.netInfos.push(res.list[i])
+					}
+				})
+			}else if(this.fundType === 1){
+				getData(`fund/${this.innerCode}/history/accrual`, 'get', data).then((res) => {
+					console.log(res)
+					let profitL = res.list.length
+					for(let j=0; j<profitL; j++){
+						this.historyProfit.push(res.list[j])
+					}
+				})
+			}
+		},
+		// 净值、收益格式化
+		// netFormat(net){
+		// 	if(net === null){
+		// 		return '--'
+		// 	}else{
+		// 		return net
+		// 	}
+		// },
 		// 获取基金信息
 		getFundInfo(){
 			getData(`fund/${this.innerCode}/detail/info`, 'get').then((res) => {
@@ -284,7 +327,7 @@ export default {
 		},
 		// 基金分红点击跳转
 		callBonus(){
-			callAppType('1', `${depositPath}bonus.html?innerCode=${this.innerCode}`, '分红信息')
+			callAppType('1', `${depositPath}bonus.html?innerCode=${this.innerCode}`, '分红明细')
 		},
 		// 基金持仓点击跳转
 		callSupport(){
@@ -304,7 +347,23 @@ export default {
 		},
 		// 基金经理点击跳转
 		callManager(personalCode){
-			callAppType('14', personalCode, '基金经理')
+			callAppType('14', `${personalCode}`, '基金经理')
+		}
+	},
+	filters: {
+		netFormat(net){
+			if(net === null){
+				return '--'
+			}else{
+				return net
+			}
+		},
+		percentFormat(value){
+			if(value === '--'){
+				return '--'
+			}else{
+				return `${value}%`
+			}
 		}
 	}
 }
@@ -319,6 +378,9 @@ export default {
 	font-size: $font-size-n;
 	.title{
 		padding-left: 30px;
+		&.income-title{
+			height: 80px;
+		}
 	}
 	.income-chart{
 		position: relative;
@@ -361,9 +423,9 @@ export default {
 					&:before{
 						content: "";
 						display: inline-block;
-						width: 8px;
-						height: 8px;
-						border-radius: 4px;
+						width: 4px; /*no*/
+						height: 4px; /*no*/
+						border-radius: 100%;
 						background: $font-color-r;
 						vertical-align: middle;
 						margin-right: 10px;
@@ -393,6 +455,13 @@ export default {
 	}
 	.income-info{
 		margin-top: 35px;
+		// .content-table{
+		// 	tr{
+		// 		td:last-child{
+		// 			color: $font-color-n !important;
+		// 		}
+		// 	}
+		// }
 	}
 	.info-nav{
 		font-size: $font-size-ll;
@@ -405,10 +474,10 @@ export default {
 		}
 	}
 	.details-info{
-		margin-top: 15px;
+		border-top: 1px solid $border-color;
 		ul{
 			li{
-				padding: 20px 0;
+				padding: 30px 0;
 				border-bottom: 1px solid $border-color;
 				a{
 					display: block;
@@ -429,10 +498,12 @@ export default {
 						display: inline-block;
 						vertical-align: middle;
 						margin-left: 20px;
-						width: 11px;
-						height: 19px;
-						@include bg-image('../common/images/arrow');
+						width: 5px; /* no */
+						height: 9px; /* no */
+						// @include bg-image('../common/images/arrow');
 						background-repeat: no-repeat;
+						background-image: url("../common/images/arrow@2x.png");
+						background-size: 100% 100%;
 					}
 				}
 				.archives-manager{
@@ -465,5 +536,17 @@ export default {
 .content-bottom{
 	margin-top: 15px; 
 	padding: 0;
+	.content-table{
+		tr{
+			&:first-child{
+				td{
+					padding: 24px 0;
+				}
+			}
+			td{
+				padding: 30px 0;
+			}
+		}
+	}
 }
 </style>

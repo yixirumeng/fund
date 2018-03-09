@@ -10,9 +10,9 @@
 		<div v-show="detail===0">
 			<div class="content-sum">
 				<h2 class="title clearfix">
-					<span>重度持仓</span><span>{{supportYear}}年第{{supportQuarter}}季度</span>
+					<span>重仓股票</span><span>{{supportYear}}年第{{supportQuarter}}季度</span>
 				</h2>
-				<table class="content-table">
+				<table class="content-table content-table2">
 					<tr>
 						<td>股票名称</td>
 						<td>持仓占比</td>
@@ -32,7 +32,7 @@
 				<h2 class="title clearfix">
 					<span>持仓债券</span><span>{{supportYear}}年第{{supportQuarter}}季度</span>
 				</h2>
-				<table class="content-table">
+				<table class="content-table content-table2">
 					<tr>
 						<td>股票名称</td>
 						<td>持仓占比</td>
@@ -55,7 +55,7 @@
 					<span>配置详情</span><span>{{supportYear}}年第{{supportQuarter}}季度</span>
 				</h2>
 				<div class="content">
-					<table class="content-table content-table1">
+					<table class="content-table content-table1 content-top">
 						<tr>
 							<td>行业类别</td>
 							<td>市值(万元)</td>
@@ -82,7 +82,7 @@
 					<span>配置详情</span><span>{{supportYear}}年第{{supportQuarter}}季度</span>
 				</h2>
 				<div class="content">
-					<table class="content-table">
+					<table class="content-table content-top">
 						<tr>
 							<td>项目</td>
 							<td>数据</td>
@@ -265,10 +265,11 @@ export default {
 		margin: 0 30px;
 	}
 	.content-table{
-		border: 1px solid $border-color;
-		margin-top: 26px;
+		font-size: $font-size-l;
+		border: 1px solid $invest-table-bg;
+		margin-top: 8px;
 		tr{
-			border: 1px solid $border-color;
+			border: 1px solid $invest-table-bg;
 			td {
 				padding-left: 30px;
 				p{
@@ -298,6 +299,19 @@ export default {
 				}
 			}
 		}
+	}
+	.content-table2{
+		tr{
+			&:first-child td{
+				padding: 24px 0 24px 30px;
+			}
+			td{
+				padding: 36px 0 42px 30px;
+			}
+		}
+	}
+	.content-top{
+		margin-top: 26px;
 	}
 	.content-tip{
 		margin-top: 24px;

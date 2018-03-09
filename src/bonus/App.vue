@@ -82,7 +82,7 @@ export default {
 	}
 	.content-table{
 		text-align: center;
-		border-top: 1px solid $border-color;
+		border-top: 1px solid $invest-table-bg;
 		.obvious{
 			color: #f7b709;
 		}

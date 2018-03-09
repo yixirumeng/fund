@@ -7,7 +7,7 @@
 				{{resultMsg}}
 			</div>
 			<div class="result-info">建议选择基金<span>{{riskType}}</span></div>
-			<div class="result-info" v-show="!firstTest">上次测评过期日期<span>{{overdue}}</span></div>
+			<div class="result-info" v-show="!firstTest">上次测评日期<span>{{overdue}}</span></div>
 			<a class="complete" :href="newJumpUrl" v-show="firstTest">开始测评</a>
 			<div class="complete" @click="closePage" v-show="!firstTest">完成</div>
 			<div class="restart" v-show="!firstTest">
@@ -97,21 +97,19 @@ export default {
 .invest-sum{
 	.invest{
 		font-size: $font-size-l;
-		.result-title{
-			margin-top: 20px;
-		}
+		padding-top: 55px;
 		.result-img{
 			display: block;
-			width: 486px;
-			height: 366px;
-			margin: 80px auto 75px;
+			width: 409px;
+			height: 308px;
+			margin: 40px auto 75px;
 		}
 		.result-msg{
 			font-size: 80px;
 			color: $font-color-r;
 			margin-bottom: 55px;
 			text-align: center;
-			font-weight: bold;
+			font-weight: 600;
 			letter-spacing: 10px;
 		}
 		.result-info{

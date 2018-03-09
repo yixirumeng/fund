@@ -1,8 +1,10 @@
 import axios from 'axios'
+import loading from '../images/loading.gif'
 
 export function getData(url, method, data = null, token = '') {
     return axios({
-        url: `${process.env.AjaxUrl}${url}`,
+        // url: `${process.env.AjaxUrl}${url}`,
+        url: `https://223.100.7.112:25013/fund-business/${url}`,
         method,
         params: data,
         headers: {
@@ -19,15 +21,30 @@ export function getData(url, method, data = null, token = '') {
     })
 }
 
+function showLoading() {
+    let bodyNode = document.querySelector('body')
+    let imgNode = document.createElement('img')
+    imgNode.setAttribute('src', loading)
+    imgNode.className = "loading"
+    bodyNode.appendChild(imgNode)
+}
+
+function hideLoading() {
+    let bodyNode = document.querySelector('body')
+    let loading = document.querySelector('.loading')
+    bodyNode.removeChild(loading)
+}
+
 /**
  * 安卓、IOS嵌入H5公共方法
  * type{
  *     case 0: 关闭当前页面
  *     case 1: 跳转同一服务器URL {'type':'11','body':'url','Remarks':'title','Reserve':'预留'}
- *     case 11: 跳转基金详情 {'type':'11','body':'innerCode','Remarks':'基金名','Reserve':'预留'}
+ *     case 11: 跳转基金详情 {'type':'11','body':'innerCode','Remarks':'基金名','Reserve':'货币类型，0为非货币型，1为货币型'}
  *     case 12: 跳转基金信息 {'type':'12','body':'innerCode','Remarks':'基金信息','Reserve':'预留'}
  *     case 13: 跳转基金公司 {'type':'13','body':'innerCode','Remarks':'基金公司','Reserve':'预留'}
  *     case 14: 跳转基金经理 {'type':'14','body':'personalCode','Remarks':'基金经理','Reserve':'预留'}
+ *     case 15: 跳转我的页面（未登录跳转注册页面） {'type':'15','body':'','Remarks':'跳转我的或注册页面','Reserve':'预留'}
  *     case 21: 跳转到其他服务器文件类URL {'type':'21','body':'完整的url','Remarks':'基金名','Reserve':'预留'}
  *     ...
  * body: {'type':'1','body':'','Remarks':'备注','Reserve':'预留'}
