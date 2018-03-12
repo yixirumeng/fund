@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="content-sum">
-			<table class="content-table">
+			<table class="content-table" v-if="fundType === 0">
 				<tr>
 					<td>日期</td>
 					<td>单位净值</td>
@@ -13,6 +13,18 @@
 					<td>{{item.unitNet}}</td>
 					<td>{{item.totalNet}}</td>
 					<td>{{item.rangeDay}}</td>
+				</tr>
+			</table>
+			<table class="content-table" v-if="fundType === 1">
+				<tr>
+					<td>日期</td>
+					<td>七日年化</td>
+					<td>万份收益</td>
+				</tr>
+				<tr v-for="(item, index) in historyProfit" :key="index">
+					<td>{{item.accrualDate}}</td>
+					<td>{{item.SevenDaysYield | netFormat | percentFormat}}</td>
+					<td>{{item.tenThousandAccrual | netFormat}}</td>
 				</tr>
 			</table>
 			<div class="show-more" v-show="showMoreBtn" @click="clickShowMore">点击查看更多</div>
@@ -27,10 +39,12 @@ export default {
 	data(){
 		return {
 			innerCode: '',
+			fundType: '',
 			currentPage: 1,
 			pageSize: 10,
 			totalPage: null,
 			fondNet: [],
+			historyProfit: [],
 			showMore: true,
 			showMoreBtn: true
 		}
@@ -45,26 +59,35 @@ export default {
 	methods: {
 		// 获取url参数值
 		changeUrl(){
-			let innerCode = getQueryString('innerCode')
-			if(innerCode){
-				this.innerCode = innerCode
-			}
+			this.innerCode = getQueryString('innerCode')
+			this.fundType = Number(getQueryString('fundType'))
 		},
 		// 获取基金净值
 		getNet(){
-			let currentPage = this.currentPage
-			let pageSize = this.pageSize
 			let data = {
-				currentPage,
-				pageSize
+				currentPage: this.currentPage,
+				pageSize: this.pageSize
 			}
-			getData(`fund/${this.innerCode}/history/net`, 'get', data).then((res) => {
-				this.showMore = true
-				this.totalPage = res.page.totalPage
-				for(let i=0; i<res.list.length; i++){
-					this.fondNet.push(res.list[i])
-				}
-			})
+			if(this.fundType === 0){
+				getData(`fund/${this.innerCode}/history/net`, 'get', data).then((res) => {
+					this.showMore = true
+					let netL = res.list.length
+					this.totalPage = res.page.totalPage
+					for(let i=0; i<netL; i++){
+						this.fondNet.push(res.list[i])
+					}
+				})
+			}else if(this.fundType === 1){
+				getData(`fund/${this.innerCode}/history/accrual`, 'get', data).then((res) => {
+					this.showMore = true
+					let profitL = res.list.length
+					this.totalPage = res.page.totalPage
+					for(let j=0; j<profitL; j++){
+						this.historyProfit.push(res.list[j])
+					}
+				})
+			}
+			
 		},
 		// 点击查看更多
 		clickShowMore(){
@@ -89,6 +112,22 @@ export default {
 		resizeInfoLoad(){
 			window.onresize = () => {
 				this.moreInfoLoad()
+			}
+		}
+	},
+	filters: {
+		netFormat(net){
+			if(net === null){
+				return '--'
+			}else{
+				return net
+			}
+		},
+		percentFormat(value){
+			if(value === '--'){
+				return '--'
+			}else{
+				return `${value}%`
 			}
 		}
 	}
