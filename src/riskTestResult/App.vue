@@ -7,7 +7,7 @@
 				{{resultMsg}}
 			</div>
 			<div class="result-info">建议选择基金<span>{{riskType}}</span></div>
-			<div class="result-info" v-show="!firstTest">上次测评日期<span>{{overdue}}</span></div>
+			<div class="result-info" v-show="!firstTest">上次测评日期<span class="result-info-time">{{overdue}}</span></div>
 			<a class="complete" :href="newJumpUrl" v-show="firstTest">开始测评</a>
 			<div class="complete" @click="closePage" v-show="!firstTest">完成</div>
 			<div class="restart" v-show="!firstTest">
@@ -60,10 +60,14 @@ export default {
 					elig_content: newEligContent
 				}
 				getData('ufx/question/submit', 'post', data, this.token).then((res) => {
-					this.resultMsg = res.invest_risk_tolerance_desc
-					this.riskType = res.ofund_risklevel_desc
-					this.overdue = res.submit_date
-					this.firstTest = false
+					if(res.code === 1003){
+						callAppType('31', `${res.message}`, '')
+					}else{
+						this.resultMsg = res.invest_risk_tolerance_desc
+						this.riskType = res.ofund_risklevel_desc
+						this.overdue = res.submit_date
+						this.firstTest = false
+					}
 				})
 			}else if(newEligContent === null && type === null){
 				this.resultMsg = '尚未测评'
@@ -118,6 +122,9 @@ export default {
 			span{
 				padding-left: 26px;
 				color: $font-color-r;
+				&.result-info-time{
+					color: $font-color-n;
+				}
 			}
 		}
 		.complete{
@@ -147,6 +154,7 @@ export default {
 		.result-tips{
 			margin-top: 45px;
 			color: $font-color-s;
+			font-size: $font-size-n;
 			p{
 				line-height: 1.8;
 				&.risk-explain{

@@ -137,6 +137,7 @@ export default {
 		margin-right: 30px;
 		overflow: hidden;
 		height: 86px;
+		border-bottom: 1px solid $border-color; /*no*/
 	}
 	.support-nav{
 		background-color: $color-white;
@@ -179,10 +180,7 @@ export default {
 			ul{
 				li{
 					padding: 36px 0;
-					border-top: 1px solid $border-color; /*no*/
-					&:first-child{
-						border-top: none;
-					}
+					border-bottom: 1px solid $border-color; /*no*/
 					.lists-title{
 						line-height: 1.2;
 						font-size: 34px;

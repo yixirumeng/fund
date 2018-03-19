@@ -35,6 +35,7 @@
 <script>
 import {getData, getQueryString, callAppType, depositPath, getNewUrl} from '@/common/js/api'
 import loading from '@/common/images/loading.gif'
+import axios from 'axios'
 
 export default {
 	data(){
@@ -67,8 +68,12 @@ export default {
 		// 获取题目信息
 		getQuestion(){
 			getData('ufx/question/list', 'post', '', this.token).then((res) => {
-				this.totalNumber = res.length
-				this.questionList = res
+				if(res.code === 1003){
+					callAppType('31', `${res.message}`, '')
+				}else{
+					this.totalNumber = res.length
+					this.questionList = res
+				}
 			})
 		},
 		// 得到答题结果并格式化
@@ -94,6 +99,7 @@ export default {
 					}
 					i === this.answerArr.length-1 ? this.answer += `${this.answerArr[i]}` : this.answer += `${this.answerArr[i]}|`
 				}
+				
 				// callAppType('1', `${depositPath}riskTestResult.html?phone=${this.phone}&answer=${this.answer}`, '风险测评结果')
 				window.location.href = getNewUrl(`riskTestResult.html?token=${this.token}&phone=${this.phone}&answer=${this.answer}`)
 			}

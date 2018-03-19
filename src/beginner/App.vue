@@ -155,6 +155,10 @@ export default {
 		display: block;
 		width: 100%;
 	}
+	// width: 100%;
+	// height: 5031px;
+	// background-image: url('../common/images/beginner/bg123.jpg');
+	// background-size: 100% 5031px;
 }
 
 .beginner-middle{
@@ -165,7 +169,7 @@ export default {
 		color: #ffe23f;
 	}
 	.fund-mean{
-		margin-top: 570px;
+		padding-top: 570px;
 		h4{
 			@include title-bg(339px, '../common/images/beginner/title1');
 		}
@@ -212,7 +216,7 @@ export default {
 		}
 	}
 	.fund-reason{
-		margin-top: 110px;
+		margin-top: 100px;
 		h4{
 			@include title-bg(412px, '../common/images/beginner/title3');
 		}
@@ -287,12 +291,17 @@ export default {
 	}
 	.fund-intro{
 		text-align: center;
+		p{
+			text-shadow: 5px 5px 16px rgba(50, 92, 255, .24);
+			font-weight: 600;
+		}
 		p:first-child{
 			margin-top: 35px;
 		}
 		p:last-child{
-			margin-top: 15px;
+			margin-top: 20px;
 			font-size: 36px;
+			
 		}
 	}
 	.gift{

@@ -62,6 +62,7 @@ export default {
 			loading,
 			starFund,
 			fundCode: ['001739', '001388', '730001', '002297'],
+			fundType: ['0', '0', '0', '0'],
 			innerCode1: '',
 			innerCode2: '',
 			innerCode3: '',
@@ -69,11 +70,7 @@ export default {
 			profit1: '',
 			profit2: '',
 			profit3: '',
-			profit4: '',
-			fundType1: '',
-			fundType2: '',
-			fundType3: '',
-			fundType4: ''
+			profit4: ''
 		}
 	},
 	created(){
@@ -86,12 +83,10 @@ export default {
 				this.innerCode1 = res
 				return res
 			}).then((res1)=>{
-				let getFundType = getData(`fund/${res1}/base/info`, 'get'),
-					getFundData = getData(`fund/${res1}/net/range`, 'get')
-				return Promise.all([getFundType, getFundData])
+				let getFundData = getData(`fund/${res1}/net/range`, 'get')
+				return getFundData
 			}).then((res2)=>{
-				this.profit1 = res2[1].rangeSixMonth
-				this.fundType1 = Number(res2[0].fundTypeCode) === 2 ? 1 : 0
+				this.profit1 = res2.rangeSixMonth
 			})
 
 			// 获取第二支基金信息和数据
@@ -99,12 +94,10 @@ export default {
 				this.innerCode2 = res
 				return res
 			}).then((res1)=>{
-				let getFundType = getData(`fund/${res1}/base/info`, 'get'),
-					getFundData = getData(`fund/${res1}/net/range`, 'get')
-				return Promise.all([getFundType, getFundData])
+				let getFundData = getData(`fund/${res1}/net/range`, 'get')
+				return getFundData
 			}).then((res2)=>{
-				this.profit2 = res2[1].rangeOneYear
-				this.fundType2 = Number(res2[0].fundTypeCode) === 2 ? 1 : 0
+				this.profit2 = res2.rangeOneYear
 			})
 
 			// 获取第三支基金信息和数据
@@ -112,12 +105,10 @@ export default {
 				this.innerCode3 = res
 				return res
 			}).then((res1)=>{
-				let getFundType = getData(`fund/${res1}/base/info`, 'get'),
-					getFundData = getData(`fund/${res1}/net/range`, 'get')
-				return Promise.all([getFundType, getFundData])
+				let getFundData = getData(`fund/${res1}/net/range`, 'get')
+				return getFundData
 			}).then((res2)=>{
-				this.profit3 = res2[1].rangeOneMonth
-				this.fundType3 = Number(res2[0].fundTypeCode) === 2 ? 1 : 0
+				this.profit3 = res2.rangeOneMonth
 			})
 
 			// 获取第四支基金信息和数据
@@ -125,12 +116,10 @@ export default {
 				this.innerCode4 = res
 				return res
 			}).then((res1)=>{
-				let getFundType = getData(`fund/${res1}/base/info`, 'get'),
-					getFundData = getData(`fund/${res1}/net/range`, 'get')
-				return Promise.all([getFundType, getFundData])
+				let getFundData = getData(`fund/${res1}/net/range`, 'get')
+				return getFundData
 			}).then((res2)=>{
-				this.profit4 = res2[1].rangeOneYear
-				this.fundType4 = Number(res2[0].fundTypeCode) === 2 ? 1 : 0
+				this.profit4 = res2.rangeOneYear
 			})
 		},
 		// getFundData(fundCode, num, profitTime){
@@ -162,16 +151,16 @@ export default {
 		// },
 
 		callDetail1(){
-			callAppType('11', `${this.innerCode1}`, '中融融安二号', `${this.fundType1}`)
+			callAppType('11', `${this.innerCode1}:${this.fundCode[0]}`, '中融融安二号', `${this.fundType[0]}`)
 		},
 		callDetail2(){
-			callAppType('11', `${this.innerCode2}`, '中融新经济C', `${this.fundType2}`)
+			callAppType('11', `${this.innerCode2}:${this.fundCode[1]}`, '中融新经济C', `${this.fundType[1]}`)
 		},
 		callDetail3(){
-			callAppType('11', `${this.innerCode3}`, '方正创新动力', `${this.fundType3}`)
+			callAppType('11', `${this.innerCode3}:${this.fundCode[2]}`, '方正创新动力', `${this.fundType[2]}`)
 		},
 		callDetail4(){
-			callAppType('11', `${this.innerCode4}`, '中融鑫思路C', `${this.fundType4}`)
+			callAppType('11', `${this.innerCode4}:${this.fundCode[3]}`, '中融鑫思路C', `${this.fundType[3]}`)
 		},
 		profitType(profit){
 			if(typeof profit === 'number'){
@@ -204,6 +193,7 @@ export default {
 				border-radius: 16px;
 				background-color: $color-white;
 				padding: 45px 30px;
+				box-shadow: 5px 5px 16px rgba(0, 0, 0, .34); /*no*/
 				&::after{
 					display: block;
 					clear: both;

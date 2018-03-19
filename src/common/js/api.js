@@ -13,6 +13,8 @@ export function getData(url, method, data = null, token = '') {
     }).then((res) => {
         if (res.data.code === 0) {
             return Promise.resolve(res.data.content)
+        } else if (res.data.code === 1003) {
+            return Promise.resolve(res.data)
         }
     }).catch((error) => {
         if (error) {
@@ -39,13 +41,14 @@ function hideLoading() {
  * 安卓、IOS嵌入H5公共方法
  * type{
  *     case 0: 关闭当前页面
- *     case 1: 跳转同一服务器URL {'type':'11','body':'url','Remarks':'title','Reserve':'预留'}
- *     case 11: 跳转基金详情 {'type':'11','body':'innerCode','Remarks':'基金名','Reserve':'货币类型，0为非货币型，1为货币型'}
+ *     case 1: 跳转同一服务器URL {'type':'1','body':'url','Remarks':'title','Reserve':'预留'}
+ *     case 11: 跳转基金详情 {'type':'11','body':'innerCode:fundCode','Remarks':'基金名','Reserve':'货币类型，0为非货币型，1为货币型'}
  *     case 12: 跳转基金信息 {'type':'12','body':'innerCode','Remarks':'基金信息','Reserve':'预留'}
  *     case 13: 跳转基金公司 {'type':'13','body':'innerCode','Remarks':'基金公司','Reserve':'预留'}
  *     case 14: 跳转基金经理 {'type':'14','body':'personalCode','Remarks':'基金经理','Reserve':'预留'}
  *     case 15: 跳转我的页面（未登录跳转注册页面） {'type':'15','body':'','Remarks':'跳转我的或注册页面','Reserve':'预留'}
  *     case 21: 跳转到其他服务器文件类URL {'type':'21','body':'完整的url','Remarks':'基金名','Reserve':'预留'}
+ *     case 31: token失效 {'type':'31','body':'token失效返回的message的值','Remarks':'','Reserve':''}
  *     ...
  * body: {'type':'1','body':'','Remarks':'备注','Reserve':'预留'}
  */

@@ -13,8 +13,8 @@
 				</div>
 				<div class="income-change">
 					<ul class="clearfix">
-						<li><span>本基金</span><span :class="[parseFloat(rangeInfos[0])>0 ? 'color-red': 'color-green']">{{rangeInfos[0]}}</span></li>
-						<li><span>同类平均</span><span :class="[parseFloat(rangeInfos[1])>0 ? 'color-red': 'color-green']">{{rangeInfos[1]}}</span></li>
+						<li><span>本基金</span><span :class="{'color-red' : parseFloat(rangeInfos[0])>0 , 'color-green' : parseFloat(rangeInfos[0])<0}">{{rangeInfos[0]}}</span></li>
+						<li><span>同类平均</span><span :class="{'color-red' : parseFloat(rangeInfos[1])>0 , 'color-green' : parseFloat(rangeInfos[1])<0}">{{rangeInfos[1]}}</span></li>
 						<li><span>同类排名</span><span>{{rangeInfos[2]}}</span></li>
 					</ul>
 				</div>
@@ -29,23 +29,23 @@
 					</tr>
 					<tr>
 						<td>近1月</td>
-						<td v-for="(item, index) in rangeInfoList.rangeInfoOne" :key="index" :class="[parseFloat(item)>0 ? 'color-red': 'color-green']">{{item}}</td>
+						<td v-for="(item, index) in rangeInfoList.rangeInfoOne" :key="index" :class="{'color-red' : parseFloat(item)>0 , 'color-green' : parseFloat(item)<0}">{{item}}</td>
 					</tr>
 					<tr>
 						<td>近3月</td>
-						<td v-for="(item, index) in rangeInfoList.rangeInfoThree" :key="index" :class="[parseFloat(item)>0 ? 'color-red': 'color-green']">{{item}}</td>
+						<td v-for="(item, index) in rangeInfoList.rangeInfoThree" :key="index" :class="{'color-red' : parseFloat(item)>0 , 'color-green' : parseFloat(item)<0}">{{item}}</td>
 					</tr>
 					<tr>
 						<td>近6月</td>
-						<td v-for="(item, index) in rangeInfoList.rangeInfoSix" :key="index" :class="[parseFloat(item)>0 ? 'color-red': 'color-green']">{{item}}</td>
+						<td v-for="(item, index) in rangeInfoList.rangeInfoSix" :key="index" :class="{'color-red' : parseFloat(item)>0 , 'color-green' : parseFloat(item)<0}">{{item}}</td>
 					</tr>
 					<tr>
 						<td>今年以来</td>
-						<td v-for="(item, index) in rangeInfoList.rangeInfoThisYear" :key="index" :class="[parseFloat(item)>0 ? 'color-red': 'color-green']">{{item}}</td>
+						<td v-for="(item, index) in rangeInfoList.rangeInfoThisYear" :key="index" :class="{'color-red' : parseFloat(item)>0 , 'color-green' : parseFloat(item)<0}">{{item}}</td>
 					</tr>
 					<tr>
 						<td>成立以来</td>
-						<td v-for="(item, index) in rangeInfoList.rangeInfoThreeYear" :key="index" :class="[parseFloat(item)>0 ? 'color-red': 'color-green']">{{item}}</td>
+						<td v-for="(item, index) in rangeInfoList.rangeInfoThreeYear" :key="index" :class="{'color-red' : parseFloat(item)>0 , 'color-green' : parseFloat(item)<0}">{{item}}</td>
 					</tr>
 				</table>
 			</div>
@@ -129,15 +129,18 @@
 				</ul>
 			</div>
 			<div class="details-info" v-show="infoShow===1">
-				<ul>
-					<li v-for="(item, index) in notice" :key="index">
-						<div @click="sendUrl(item.filePath)">
-							<div class="notice-info no-wrap">{{item.noticeTitle}}</div>
-							<div class="notice-time">{{item.noticeDate}}</div>
-						</div>
-					</li>
-				</ul>
-				<div class="show-more" @click="callFundNotice">点击查看更多</div>
+				<div v-if="!noticeError">
+					<ul>
+						<li v-for="(item, index) in notice" :key="index">
+							<div @click="sendUrl(item.filePath)">
+								<div class="notice-info no-wrap">{{item.noticeTitle}}</div>
+								<div class="notice-time">{{item.noticeDate}}</div>
+							</div>
+						</li>
+					</ul>
+					<div class="show-more" @click="callFundNotice">点击查看更多</div>
+				</div>
+				<div class="error-msg" v-else>暂无公告</div>
 			</div>
 		</div>
 	</div>
@@ -177,7 +180,8 @@ export default {
 			notice: [],
 			xData: [],
 			yData: [],
-			managerName: null
+			managerName: null,
+			noticeError: false
 		}
 	},
 	created(){
@@ -292,19 +296,11 @@ export default {
 				})
 			}
 		},
-		// 净值、收益格式化
-		// netFormat(net){
-		// 	if(net === null){
-		// 		return '--'
-		// 	}else{
-		// 		return net
-		// 	}
-		// },
 		// 获取基金信息
 		getFundInfo(){
 			getData(`fund/${this.innerCode}/detail/info`, 'get').then((res) => {
-				let netAsset = res.abbrNetAsset
-				let fundManger = res.abbrFundManager
+				let netAsset = res.abbrNetAsset || '无'
+				let fundManger = res.abbrFundManager || '无'
 				this.fundInfo.push(netAsset, fundManger)
 				this.managerName = res.managerList
 			})
@@ -312,8 +308,13 @@ export default {
 		// 获取基金公告
 		getAnnounce(){
 			getData(`fund/${this.innerCode}/notice/0/list/${this.currentPage}/${this.pageSize}`, 'get').then((res) => {
-				for(let i=0; i<5; i++){
-					this.notice.push(res.list[i])
+				let l = res.list.length
+				if(l === 0){
+					this.noticeError = true
+				}else{
+					for(let i=0; i<5; i++){
+						this.notice.push(res.list[i])
+					}
 				}
 			})
 		},
@@ -335,7 +336,7 @@ export default {
 		},
 		// 基金持仓点击跳转
 		callSupport(){
-			callAppType('1', `${depositPath}support.html?innerCode=${this.innerCode}`, '基金持仓')
+			callAppType('1', `${depositPath}support.html?innerCode=${this.innerCode}`, '持仓明细')
 		},
 		// 基金公告点击发送url
 		sendUrl(noticeUrl){
@@ -462,13 +463,13 @@ export default {
 	}
 	.income-info{
 		margin-top: 35px;
-		// .content-table{
-		// 	tr{
-		// 		td:last-child{
-		// 			color: $font-color-n !important;
-		// 		}
-		// 	}
-		// }
+		.content-table{
+			tr{
+				td:last-child{
+					color: $font-color-n !important;
+				}
+			}
+		}
 	}
 	.info-nav{
 		font-size: $font-size-ll;
