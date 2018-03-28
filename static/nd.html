@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="email=no" />
+    <title>诺德基金专场</title>
+    <link href="./css_mobile/index.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="app" id="app">
+        <div class="header">
+            <!--<div class="header-logo">
+            <div class="logo">
+                <img src="img_mobile/logo.png" />
+            </div>
+        </div>-->
+            <img class="banner" src="./img_mobile/banner.jpg" />
+        </div>
+
+        <div class="container">
+            <div class="page">
+                <img class="page1-img" src="./img_mobile/page1.jpg" />
+            </div>
+            <div class="page">
+                <img class="title" src="./img_mobile/title.png" />
+                <div class="img-box">
+                    <img class="img-box-bg" src="./img_mobile/first.png" />
+                    <a id="btn1"><img class="btn btn1 btn-img" src="./img_mobile/button.png" /></a>
+                </div>
+                <div class="img-box">
+                    <img class="img-box-bg" src="./img_mobile/second.png" />
+                    <a id="btn2"><img class="btn btn2 btn-img" src="./img_mobile/button.png" /></a>
+                </div>
+                <div class="img-box">
+                    <img class="img-box-bg" src="./img_mobile/third.png" />
+                    <a id="btn3"><img class="btn btn3 btn-img" src="./img_mobile/button.png" /></a>
+                </div>
+                <div class="text">数据来源:恒生聚源 数据截至:2017 .12.31</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>风险提示：投资有风险，理财需谨慎! 基金的历史业绩并不预示其未来表现，相关数据仅供</p>
+            <p>投资者参考，不构成投资建议。在认购/申购、赎回基金前，投资者请详细阅读基金合同和</p>
+            <p>基金招募说明书，并自行承担投资风险。上述基金产品由其基金管理有限公司发行与管理，</p>
+            <p>我方不承担产品的投资、兑付和风险管理责任。</p>
+            <!--<div class="footer-text">风险提示：投资有风险，理财需谨慎! 基金的历史业绩并不预示其未来表现，相关数据仅供投资者参考，不构成投资建议。在认购/申购、赎回基金前，投资者请详细阅读基金合同和基金招募说明书，并自行承担投资风险。上述基金产品由其基金管理有限公司发行与管理，我方不承担产品的投资、兑付和风险管理责任。</div>-->
+        </div>
+    </div>
+    <script src="./js_moblie/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (document.documentElement.clientWidth > 750) {
+            document.documentElement.style.fontSize = 750 / 7.5 + 'px';
+        } else {
+            document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px';
+        }
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?981d5f552c6ebafff70086f7b5b624d9";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <script>
+        function callAppType(type, body, remarks, reserve) {
+            var paramIOS = {
+                'type': type,
+                'body': body,
+                'remarks': remarks,
+                'reserve': reserve
+            }
+            var paramAndroid = JSON.stringify(paramIOS)
+            console.log(paramAndroid)
+            try {
+                callAndroid.postMessageAndroid(paramAndroid)
+            } catch (error) {
+                window.webkit.messageHandlers.callApp.postMessage(paramIOS)
+            }
+        }
+
+        $("#btn1").click(function() {
+            callAppType('11', '9091:570005', '诺德成长', '')
+        });
+        $("#btn2").click(function() {
+            callAppType('11', '5366:570001', '诺德价值', '')
+        });
+        $("#btn3").click(function() {
+            callAppType('11', '16343:570008', '诺德周期', '')
+        });
+    </script>
+</body>
+
+</html>

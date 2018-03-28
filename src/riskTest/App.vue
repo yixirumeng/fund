@@ -1,6 +1,6 @@
 <template>
 	<div class="invest-sum">
-		<div class="invest" v-show="totalNumber!==0">
+		<div class="invest" v-if="totalNumber!==0">
 			<div class="question-sum">
 				<div class="question-number clearfix">
 					<span>{{currentNumber}}</span><span>/</span><span>{{totalNumber}}</span>
@@ -10,32 +10,31 @@
 						{{item.question_content}}
 					</div>
 					<ul>
-						<li :class="{on: optionColorArr[index] === itemSection.option_no, on1: currentIndex === indexSection}" v-for="(itemSection, indexSection) in item.section" :key="indexSection" @click="collectPoint(index, itemSection.question_no, itemSection.option_no, indexSection)">
+						<li :class="{on: optionColorArr[index] == itemSection.option_no}" v-for="(itemSection, indexSection) in item.section" :key="indexSection" @click="collectPoint(index, itemSection.question_no, itemSection.option_no, indexSection)">
 							{{itemSection.option_content}}
 						</li>
 					</ul>
 					<div class="option-btn">
 						<span v-show="currentNumber !== 1" @click="prev">上一题</span><span v-show="currentNumber !== totalNumber" @click="next(index)">下一题</span>
 					</div>
-					<div class="question-error">
-						<div class="error-msg" v-show="error">
-							{{errorMsg}}
-						</div>
-					</div>
-					<div class="submit-btn" v-show="currentNumber === totalNumber" @click="callTestResult">
-						提交
-					</div>
 				</div>
 			</div>
+			<div class="question-error" v-show="error">
+				<!-- <div class="error-msg" v-show="error"> -->
+					{{errorMsg}}
+				<!-- </div> -->
+			</div>
+			<div class="submit-btn" v-show="currentNumber === totalNumber" @click="callTestResult">
+				提交
+			</div>
 		</div>
-		<img :src="loading" alt="加载中" class="loading" v-show="totalNumber===0">
+		<img :src="loading" alt="加载中" class="loading" v-else>
 	</div>
 </template>
 
 <script>
 import {getData, getQueryString, callAppType, depositPath, getNewUrl} from '@/common/js/api'
 import loading from '@/common/images/loading.gif'
-import axios from 'axios'
 
 export default {
 	data(){
@@ -79,7 +78,7 @@ export default {
 		// 得到答题结果并格式化
 		collectPoint(index, questionNo, optionNo, indexSection){
 			this.currentIndex = indexSection
-			this.optionColorArr[index] = optionNo
+			this.$set(this.optionColorArr, index, optionNo)
 			let answerContent = `${questionNo}:${optionNo}`
 			this.answerArr[index] = answerContent
 			this.error = false
@@ -89,12 +88,14 @@ export default {
 		callTestResult(){
 			if(this.answerArr.length !== this.totalNumber){
 				this.error = true
-				this.errorMsg = '您还有尚未作答的题目，请作答后再提交'
+				this.errorMsg = '您还没有作答'
+				this.errorHide()
 			}else{
 				for(let i=0; i<this.answerArr.length; i++){
 					if(typeof(this.answerArr[i]) === 'undefined'){
 						this.error = true
-						this.errorMsg = '您还有尚未作答的题目，请作答后再提交'
+						this.errorMsg = '您还没有作答'
+						this.errorHide()
 						return false
 					}
 					i === this.answerArr.length-1 ? this.answer += `${this.answerArr[i]}` : this.answer += `${this.answerArr[i]}|`
@@ -113,10 +114,18 @@ export default {
 			if(typeof(this.answerArr[index]) != 'undefined'){
 				this.currentNumber === this.totalNumber ? this.currentNumber = this.totalNumber : this.currentNumber += 1
 				this.currentIndex = -1
-
 			}else{
 				this.error = true
-				this.errorMsg = '您还没有作答，请选择答案后再进行下一题'
+				this.errorMsg = '您还没有作答'
+				this.errorHide()
+			}
+		},
+		// 2秒后错误提示消失
+		errorHide(){
+			if(this.error){
+				setTimeout(() => {
+					this.error = false
+				}, 2000)
 			}
 		}
 	}
@@ -165,9 +174,6 @@ export default {
 						&.on{
 							background-color: rgba(254, 54, 80, .05);
 						}
-						&.on1{
-							background-color: rgba(254, 54, 80, .05);
-						}
 					}
 				}
 			}
@@ -177,6 +183,7 @@ export default {
 				color: $font-color-r;
 				font-size: 40px;
 				line-height: 1.5;
+				font-weight: 600;
 			}
 			.option-btn{
 				margin-top: 30px;
@@ -187,24 +194,31 @@ export default {
 					padding: 0 60px;
 				}
 			}
-			.question-error{
-				font-size: $font-size-n;
-				color: $font-color-r;
-				text-align: center;
-				margin-top: 30px;
-				height: 28px;
-			}
-			.submit-btn{
-				display: block;
-				margin-top: 80px;
-				color: $color-white;
-				width: 100%;
-				height: 80px;
-				line-height: 80px;
-				text-align: center;
-				background-image: url('./submit.png');
-				background-size: 100% 100%;
-			}
+		}
+		.question-error{
+			font-size: $font-size-ll;
+			color: $color-white;
+			text-align: center;
+			background-color: $font-color-n;
+			padding: 40px 24px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border-radius: 5px;
+		}
+		.submit-btn{
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			color: $color-white;
+			width: 100%;
+			height: 96px;
+			line-height: 96px;
+			font-size: $font-size-title;
+			text-align: center;
+			background-image: url('./submit.png');
+			background-size: 100% 100%;
 		}
 	}
 }

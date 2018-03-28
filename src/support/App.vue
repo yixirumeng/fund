@@ -222,6 +222,7 @@ export default {
 	color: $font-color-d;
 	background: $color-white;
 	padding: 0 30px;
+	font-weight: 600;
 	ul{
 		li{
 			float: left;
@@ -255,6 +256,7 @@ export default {
 				margin-top: 4px;
 				font-size: $font-size-n;
 				color: $font-color-n;
+				font-weight: normal;
 			}
 		}
 	}

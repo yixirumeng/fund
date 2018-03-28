@@ -1,0 +1,135 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Microsoft Yahei';
+    font-size: 14px;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+}
+
+.app {
+    max-width: 750px;
+    width: 100%;
+    margin: 0 auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.header {}
+
+.header-logo {
+    position: absolute;
+    top: 1%;
+    width: 100%;
+    /*text-align: center;*/
+}
+
+.logo {
+    position: relative;
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.banner {
+    width: 100%;
+    display: block;
+}
+
+.container {
+    width: 100%;
+    height: auto;
+    background: url(../img_mobile/bg1.jpg) repeat-y;
+}
+
+.page {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #ff8c4c;
+    text-align: center;
+}
+
+.page1-img {
+    width: 100%;
+}
+
+.title {
+    width: 5.7rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.15rem;
+}
+
+.img-box {
+    text-align: center;
+    margin-top: 0.22rem;
+    position: relative;
+}
+
+.img-box-bg {
+    width: 7.3rem;
+}
+
+.text {
+    font-size: 0.16rem;
+    color: #FFFFFF;
+    text-align: right;
+    padding-top: 0.21rem;
+    padding-bottom: 0.48rem;
+    padding-right: 0.1rem;
+}
+
+.btn {
+    position: absolute;
+}
+
+.btn1 {
+    right: 0.39rem;
+    bottom: 0.52rem;
+}
+
+.btn2 {
+    right: 0.39rem;
+    bottom: 0.38rem;
+}
+
+.btn3 {
+    right: 0.39rem;
+    bottom: 0.38rem;
+}
+
+.btn-img {
+    width: 1.73rem;
+    z-index: 1;
+    cursor: pointer;
+    transform: scale(1, 1);
+    transition-duration: 0.5s;
+}
+
+
+/*.btn-img:hover{
+    transform:  scale(1.1,1.1);
+    transition-duration: 0.8s;
+}*/
+
+.footer {
+    font-size: 0.18rem;
+    background-color: #b63ffb;
+    padding: 0.35rem 0;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.footer p {
+    line-height: 1.35em;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-text {
+    font-size: 0.18rem;
+    line-height: 1.4em;
+    text-align: justify;
+    padding: 0 0.1rem;
+}

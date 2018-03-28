@@ -6,12 +6,12 @@
 					<div class="title">{{item.title}}</div>
 					<div class="info-details info-style-reset" v-html="item.content">
 					</div>
-					<!-- <div class="info-source">
+					<div class="info-source">
 						{{item.publishMedia}}
 					</div>
 					<div class="source">
 						{{item.publishTime}}
-					</div> -->
+					</div>
 				</div>
 			</li>
 		</ul>

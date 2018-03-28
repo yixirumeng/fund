@@ -7,7 +7,7 @@ body {
 }
 
 .title {
-    padding: 25px 0;
+    padding: 26px 0;
     font-weight: bold;
     color: $font-color-d;
     font-size: $font-size-ll;
@@ -51,7 +51,8 @@ body {
 }
 
 .nav-on {
-    border-bottom: 7px solid $font-color-r;
+    border-bottom: 3px solid $font-color-r;
+    /*no*/
     color: $font-color-r;
 }
 

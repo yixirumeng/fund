@@ -98,7 +98,7 @@
 					<li @click="callInfo">
 						<div class="archives-info">基金信息</div>
 						<div class="archives-num">
-							最近规模：
+							基金规模：
 							{{fundInfo[0]}}
 						</div>
 					</li>
@@ -288,7 +288,6 @@ export default {
 				})
 			}else if(this.fundType === 1){
 				getData(`fund/${this.innerCode}/history/accrual`, 'get', data).then((res) => {
-					console.log(res)
 					let profitL = res.list.length
 					for(let j=0; j<profitL; j++){
 						this.historyProfit.push(res.list[j])
@@ -299,7 +298,7 @@ export default {
 		// 获取基金信息
 		getFundInfo(){
 			getData(`fund/${this.innerCode}/detail/info`, 'get').then((res) => {
-				let netAsset = res.abbrNetAsset || '无'
+				let netAsset = res.totalAssets || '无'
 				let fundManger = res.abbrFundManager || '无'
 				this.fundInfo.push(netAsset, fundManger)
 				this.managerName = res.managerList
@@ -517,7 +516,7 @@ export default {
 				.archives-manager{
 					float: right;
 					color: $font-color-d;
-					margin-right: 24px;
+					margin-right: 36px;
 					span{
 						color: #1998CF;
 						margin-left: 16px;

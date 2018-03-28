@@ -32,7 +32,7 @@ body{
 	background-color: $border-color;
 	font-size: $font-size-n;
 	text-align: justify;
-	line-height: 1.2;
+	line-height: 1.6;
 	span{
 		color: $font-color-r;
 	}

@@ -193,7 +193,7 @@ export default {
 				border-radius: 16px;
 				background-color: $color-white;
 				padding: 45px 30px;
-				box-shadow: 5px 5px 16px rgba(0, 0, 0, .34); /*no*/
+				box-shadow: 5px 5px 16px rgba(0, 0, 0, .2); /*no*/
 				&::after{
 					display: block;
 					clear: both;
@@ -222,7 +222,7 @@ export default {
 						margin-bottom: 22px;
 						text-align: right;
 						font-weight: 600;
-						text-shadow: 5px 5px 10px rgba(255, 27, 54, .3);
+						text-shadow: 5px 5px 10px rgba(255, 27, 54, .15); /*no*/
 					}
 					p:last-child{
 						font-size: 24px;

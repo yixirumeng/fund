@@ -63,10 +63,12 @@ export default {
 					if(res.code === 1003){
 						callAppType('31', `${res.message}`, '')
 					}else{
-						this.resultMsg = res.invest_risk_tolerance_desc
-						this.riskType = res.ofund_risklevel_desc
-						this.overdue = res.submit_date
-						this.firstTest = false
+						if(parseInt(res.success_type) === 0){
+							this.resultMsg = res.invest_risk_tolerance_desc
+							this.riskType = res.ofund_risklevel_desc
+							this.overdue = res.submit_date
+							this.firstTest = false
+						}
 					}
 				})
 			}else if(newEligContent === null && type === null){
@@ -113,8 +115,8 @@ export default {
 			color: $font-color-r;
 			margin-bottom: 55px;
 			text-align: center;
-			font-weight: 600;
-			letter-spacing: 10px;
+			font-weight: 500;
+			letter-spacing: 5px;
 		}
 		.result-info{
 			text-align: center;

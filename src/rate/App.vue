@@ -9,8 +9,8 @@
 						<td>费率</td>
 					</tr>
 					<tr v-for="(item, index) in affirmRate" :key="index">
-						<td>{{item.range}}</td>
-						<td>{{item.rate}}</td>
+						<td>{{item.range|numFormat}}</td>
+						<td>{{item.rate|numFormat}}</td>
 					</tr>
 				</table>
 			</div>
@@ -20,12 +20,12 @@
 				<h2 class="title">买入</h2>
 				<table class="content-table">
 					<tr>
-						<td>认购金额（M）</td>
+						<td>申购金额（M）</td>
 						<td>费率</td>
 					</tr>
 					<tr v-for="(item, index) in applyRate" :key="index">
-						<td>{{item.range}}</td>
-						<td>{{item.rate}}</td>
+						<td>{{item.range|numFormat}}</td>
+						<td>{{item.rate|numFormat}}</td>
 					</tr>
 				</table>
 			</div>
@@ -39,8 +39,8 @@
 						<td>费率</td>
 					</tr>
 					<tr v-for="(item, index) in redemptionRate" :key="index">
-						<td>{{item.range}}</td>
-						<td>{{item.rate}}</td>
+						<td>{{item.range|numFormat}}</td>
+						<td>{{item.rate|numFormat}}</td>
 					</tr>
 				</table>
 				<div class="content-tip">注：交易费率仅供参考，手续费以基金公司确认为准。</div>
@@ -104,9 +104,9 @@ export default {
 		// 获取费率信息
 		getRate(){
 			getData(`fund/${this.innerCode}/detail/info`, 'get').then((res) => {
-				this.affirmRate = res.affirmRate
-				this.applyRate = res.applyRate
-				this.redemptionRate = res.redemptionRate
+				this.affirmRate = this.emptyFormat(res.affirmRate)
+				this.applyRate = this.emptyFormat(res.applyRate)
+				this.redemptionRate = this.emptyFormat(res.redemptionRate)
 			})
 		},
 		// 获取交易信息
@@ -117,6 +117,28 @@ export default {
 				this.fixDealStatus = res.fixDealStatus
 				this.minBuy = res.minBuy
 			})
+		},
+		// 对后台返回的空数据格式化
+		emptyFormat(arr){
+			if(arr.length === 0){
+				let arrChild = {
+					range: '-',
+					rate: '-'
+				}
+				arr.push(arrChild)
+				return arr
+			}else{
+				return arr
+			}
+		}
+	},
+	filters: {
+		numFormat(val){
+			if(val === '' || typeof(val) === 'undefind'){
+				return '-'
+			}else{
+				return val
+			}
 		}
 	}
 }

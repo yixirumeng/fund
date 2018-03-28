@@ -2,9 +2,18 @@ import axios from 'axios'
 import loading from '../images/loading.gif'
 
 export function getData(url, method, data = null, token = '') {
+    let ajaxUrl
+    if (process.env.NODE_ENV === 'development') {
+        ajaxUrl = 'https://223.100.7.112:25013/fund-business/'
+    } else {
+        if (process.env.type === 'pdt') {
+            ajaxUrl = 'https://www.jinjiwo.com.cn/fund-business/'
+        } else {
+            ajaxUrl = 'https://223.100.7.112:25013/fund-business/'
+        }
+    }
     return axios({
-        // url: `${process.env.AjaxUrl}${url}`,
-        url: `https://223.100.7.112:25013/fund-business/${url}`,
+        url: `${ajaxUrl}${url}`,
         method,
         params: data,
         headers: {

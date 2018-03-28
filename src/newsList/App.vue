@@ -8,7 +8,7 @@
 			</ul>
 		</div>
 		<div class="content">
-			<div class="content-lists" v-for="(item, index) in navs" :key="index" v-show="nowIndex === index">
+			<div class="content-lists">
 				<ul>
 					<li v-for="(info, index) in newsList" :key="index">
 						<div class="lists-title" @click="callContent(info.id)">
@@ -86,7 +86,7 @@ export default {
 		},
 		// 点击文章跳转详情
 		callContent(id){
-			callAppType('1', `${depositPath}newsContent.html?infoId=${id}`, '新闻内容')
+			callAppType('1', `${depositPath}newsContent.html?infoId=${id}`, '理财资讯')
 		},
 		// 获取文章列表
 		getLists(categoryId){
@@ -137,13 +137,11 @@ export default {
 		margin-right: 30px;
 		overflow: hidden;
 		height: 86px;
-		border-bottom: 1px solid $border-color; /*no*/
 	}
 	.support-nav{
 		background-color: $color-white;
 		font-size: $font-size-ll;
 		color: $font-color-d;
-		border-bottom: 1px solid $border-color; /*no*/
 		white-space: nowrap;
 		&.nav-small{
 			display: block;
@@ -181,6 +179,9 @@ export default {
 				li{
 					padding: 36px 0;
 					border-bottom: 1px solid $border-color; /*no*/
+					&:first-child{
+						border-top: 1px solid $border-color; /*no*/
+					}
 					.lists-title{
 						line-height: 1.2;
 						font-size: 34px;
