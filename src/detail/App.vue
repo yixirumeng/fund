@@ -516,7 +516,6 @@ export default {
 				.archives-manager{
 					float: right;
 					color: $font-color-d;
-					margin-right: 36px;
 					span{
 						color: #1998CF;
 						margin-left: 16px;
